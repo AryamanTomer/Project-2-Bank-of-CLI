@@ -1,0 +1,49 @@
+<div class="wrapper">
+  <h1>Account Login</h1>
+  <p>Welcome back! Please enter your credentials to access your secure dashboard.</p>
+  <div class="input-group">
+    <label for="accountId">Account ID</label>
+    <div>
+      <input type="text" id="accountId" name="accountId" required />
+    </div>
+  </div>
+  <div class="input-group">
+    <label for="accountPin">Account PIN</label>
+    <div>
+      <img
+        [hidden]="!showPassword()"
+        (click)="togglePasswordVisibility()"
+        src="/eye-off.svg"
+        alt="Hide Password"
+      />
+      <img
+        [hidden]="showPassword()"
+        (click)="togglePasswordVisibility()"
+        src="/eye.svg"
+        alt="Show Password"
+      />
+      <input
+        type="{{ showPassword() ? 'text' : 'password' }}"
+        id="accountPin"
+        name="accountPin"
+        required
+      />
+    </div>
+  </div>
+  <p [hidden]="!hasError()" class="error">Invalid credentials. Please try again.</p>
+  <div class="button-container">
+    <button
+      (click)="login()"
+      [class.transparent]="isLoading()"
+      [disabled]="isLoading()"
+      type="submit"
+    >
+      Login
+    </button>
+    <div [hidden]="!isLoading()" class="loader"></div>
+  </div>
+  <div class="divider"></div>
+  <p class="description bottom">
+    Don't have an account? <a class="link" href="/register">Register</a>
+  </p>
+</div>
