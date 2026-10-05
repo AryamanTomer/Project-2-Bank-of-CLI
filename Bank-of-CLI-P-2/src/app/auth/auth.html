@@ -1,6 +1,6 @@
 <div class="wrapper">
-  <h1>Account Login</h1>
-  <p>Welcome back! Please enter your credentials to access your secure dashboard.</p>
+  <h1>{{ heading() }}</h1>
+  <p>{{ description() }}</p>
   <div class="input-group">
     <label for="accountId">Account ID</label>
     <div>
@@ -13,13 +13,13 @@
       <img
         [hidden]="!showPassword()"
         (click)="togglePasswordVisibility()"
-        src="/eye-off.svg"
+        src="/assets/auth/eye-off.svg"
         alt="Hide Password"
       />
       <img
         [hidden]="showPassword()"
         (click)="togglePasswordVisibility()"
-        src="/eye.svg"
+        src="/assets/auth/eye.svg"
         alt="Show Password"
       />
       <input
@@ -30,20 +30,21 @@
       />
     </div>
   </div>
-  <p [hidden]="!hasError()" class="error">Invalid credentials. Please try again.</p>
+  <p [hidden]="!errorText()" class="error">{{ errorText() }}</p>
   <div class="button-container">
     <button
-      (click)="login()"
+      (click)="submit()"
       [class.transparent]="isLoading()"
       [disabled]="isLoading()"
       type="submit"
     >
-      Login
+      {{ buttonText() }}
     </button>
     <div [hidden]="!isLoading()" class="loader"></div>
   </div>
   <div class="divider"></div>
   <p class="description bottom">
-    Don't have an account? <a class="link" href="/register">Register</a>
+    {{ footerText() }}
+    <a class="link" routerLink="{{ footerActionLink() }}">{{ footerActionText() }}</a>
   </p>
 </div>
