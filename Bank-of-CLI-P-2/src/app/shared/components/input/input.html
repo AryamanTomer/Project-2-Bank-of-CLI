@@ -5,8 +5,8 @@
     [name]="name() || inputId()"
     [value]="value()"
     (input)="onInput($event)"
-    required
     [class]="classes()"
+    required
   />
   @let iconName = icon();
   @if (iconName) {
