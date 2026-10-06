@@ -1,11 +1,11 @@
 import { Component, inject, signal } from '@angular/core';
+import { ToastService } from '../../service/toast';
 import { Button } from '../../shared/components/button/button';
 import { Card } from '../../shared/components/card/card';
 import { Dropdown } from '../../shared/components/dropdown/dropdown';
 import { Input } from '../../shared/components/input/input';
 import { Label } from '../../shared/components/label/label';
 import { ToastContainer } from '../../shared/components/toast/toast';
-import { ToastService } from '../../service/toast';
 
 // Snippets live here (not in the template) so Angular doesn't parse `{{`, `@` or tags inside them.
 const snippets = {
@@ -58,6 +58,7 @@ this.toast.show('Custom', 'success', 5000); // message, type, duration ms`,
         <div class="flex gap-3">
           <app-button class="w-48" (clicked)="toast.success('Clicked')">Click me</app-button>
           <app-button class="w-48" [disabled]="true">Disabled</app-button>
+          <app-button class="w-48" [disabled]="true" [loading]="true">Loading</app-button>
         </div>
         <pre class="overflow-x-auto rounded-xl bg-gray-100 p-3 text-sm">{{ snippets.button }}</pre>
       </section>
