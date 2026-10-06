@@ -1,115 +1,97 @@
 <div class="transaction-table-container">
   <div id="transaction-table-title">
-    <h1>Recent Transactions</h1>
-    <button id="make-transaction-button" class="clickable"> Make Transactions </button>   <!-- FIXME: ^^ popup for transaction options -->
+    <h1
+    class="text-2xl font-semibold"
+    >Recent Transactions</h1>
+    <app-button type="button" [disabled]="false">Make Transactions</app-button>
+    <!-- FIXME: ^^ popup for transaction options -->
   </div>
 
-  <!-- FIXME: tooltips for all buttons -->
   <form id="transaction-table-form">
-    <input
-      /* FIXME: implement icon for search */
-      [(ngModel)]="searchString"
-      (input)="applyFiltersAndSort()"
-      type="search"
-      id="search-transactions"
+    <app-input
+      inputId="search-transactions"
       name="search-transactions"
+      type="search"
       placeholder="Search Transactions..."
-    >
+      [(value)]="searchString"
+      (valueChange)="applyFiltersAndSort()"
+    />
 
-    <select
-      name="order-by"
-      id="order-by"
-      class="clickable"
-      [(ngModel)]="orderBy"
-      (change)="applyFiltersAndSort()"
-    >
-      <option value="">Order by...</option>
-      <option value="date">Date/Time</option>
-      <option value="category">Category</option>
-      <option value="destination">Destination</option>
-      <option value="status">Status</option>
-      <option value="amount">Amount</option>
-    </select>
+    <app-dropdown
+      [options]="['Date', 'Category', 'Destination', 'Status', 'Amount']"
+      placeHolder="Order by..."
+      [(value)]="orderBy"
+      (valueChange)="applyFiltersAndSort()"
+    />
 
-    <select
-      name="asc-dsc"
-      id="asc-dsc"
-      class="clickable"
-      [(ngModel)]="sortDirection"
-      (change)="applyFiltersAndSort()"
-    >
-      <option value="asc">Asc.</option>
-      <option value="dsc">Dsc.</option>
-    </select>
+    <app-dropdown
+      [options]="['Asc', 'Dsc']"
+      placeHolder="Sort Order"
+      [(value)]="sortDirection"
+      (valueChange)="applyFiltersAndSort()"
+    />
 
-    <select
-      name="category"
-      id="category"
-      class="clickable"
-      [(ngModel)]="selectedCategory"
-      (change)="applyFiltersAndSort()"
-    >
-      <option value="">All categories</option>
-      <option value="deposit">Deposit</option>
-      <option value="withdraw">Withdraw</option>
-      <option value="transfer">Transfer</option>
-    </select>
+    <app-dropdown
+      [options]="['Deposit', 'Withdraw', 'Transfer']"
+      placeHolder="All categories"
+      [(value)]="selectedCategory"
+      (valueChange)="applyFiltersAndSort()"
+    />
   </form>
 
-  <table id="transaction-table">
-    <thead>
-      <tr id="transaction-table-header">
-        <th>Date/Time</th>
-        <th>Category</th>
-        <th>Destination</th>
-        <th>Status</th>
-        <th>Amount</th>
-      </tr>
-    </thead>
-
-    <tbody id="transaction-table">
-      @for (transaction of tableData; track transaction.id) {
-        <tr>
-          <td>{{ transaction.date }}</td>
-          <td>{{ transaction.category }}</td>
-          <td>{{ transaction.destination }}</td>
-          <td>
-            <span class="status-chip" [class]="transaction.status.toLowerCase()">
-              {{ transaction.status }}
-            </span>
-          </td>
-          <td>${{ transaction.amount.toFixed(2) }}</td>
+  <!-- FIXME: loading - implement custom loading screen -->
+  <app-card [loading]="dataLoading()">
+    <table id="transaction-table">
+      <thead>
+        <tr id="transaction-table-header">
+          <th>Date/Time</th>
+          <th>Category</th>
+          <th>Destination</th>
+          <th>Status</th>
+          <th>Amount</th>
         </tr>
-      } @empty {
-        <tr>
-          <td colspan="5">No data available.</td>
-        </tr>
-      }
-    </tbody>
-  </table>
+      </thead>
 
-  <!-- FIXME: implement icon for pagination buttons -->
-  <div id="pagination">
-    <span>
-      Page {{ currentPage }} of {{ totalPages }}
-    </span>
-    <div id="pagination-buttons">
-      <button
-        id="prev-button"
-        class="clickable"
-        (click)="previousPage()"
-        [disabled]="currentPage === 1">
-        &lt;
-      </button>
+      <tbody id="transaction-table-body">
+        @for (transaction of tableData; track transaction.id) {
+          <tr>
+            <td>{{ transaction.date }}</td>
+            <td>{{ transaction.category }}</td>
+            <td>{{ transaction.destination }}</td>
+            <td>
+              <app-label [status]=transaction.status />
+            </td>
+            <td>${{ transaction.amount.toFixed(2) }}</td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="5">No data available.</td>
+          </tr>
+        }
+      </tbody>
+    </table>
 
-      <button
-        id="next-button"
-        class="clickable"
-        (click)="nextPage()"
-        [disabled]="currentPage === totalPages">
-        &gt;
-      </button>
+    <div id="pagination">
+      <span>
+        Page {{ currentPage }} of {{ totalPages }}
+      </span>
+      <div id="pagination-buttons">
+        <button
+          id="prev-button"
+          class="clickable"
+          (click)="previousPage()"
+          [disabled]="currentPage === 1">
+          <ng-icon name="matChevronLeftFillOutline"></ng-icon>
+        </button>
+
+        <button
+          id="next-button"
+          class="clickable"
+          (click)="nextPage()"
+          [disabled]="currentPage === totalPages">
+          <ng-icon name="matChevronRightFillOutline"></ng-icon>
+        </button>
+      </div>
     </div>
-  </div>
-
+  </app-card>
 </div>

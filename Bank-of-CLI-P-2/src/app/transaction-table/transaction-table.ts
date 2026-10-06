@@ -1,5 +1,12 @@
 import { ChangeDetectorRef, Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { matChevronLeftFillOutline, matChevronRightFillOutline } from '@ng-icons/material-symbols/outline';
+import { NgIcon, provideIcons } from '@ng-icons/core';
+import { Button } from '../shared/components/button/button';
+import { Dropdown } from '../shared/components/dropdown/dropdown';
+import { Input } from '../shared/components/input/input';
+import { Label } from '../shared/components/label/label';
+import { Card } from '../shared/components/card/card';
 
 interface Transaction {
   id: number;
@@ -10,12 +17,12 @@ interface Transaction {
   amount: number;
 }
 
-// FIXME: implement filtering logic
 @Component({
-  imports: [FormsModule],
+  imports: [FormsModule, NgIcon, Button, Dropdown, Input, Label, Card],
   selector: 'app-transaction-table',
   styleUrl: './transaction-table.css',
   templateUrl: './transaction-table.html',
+  viewProviders: [provideIcons({ matChevronLeftFillOutline, matChevronRightFillOutline })],
 })
 export class TransactionTable {
 
@@ -24,7 +31,7 @@ export class TransactionTable {
   tableData: Transaction[] = [];
 
   currentPage = 1;
-  rowsPerPage = 10;
+  rowsPerPage = 5;
   totalPages = 0;
 
   // form values
@@ -35,6 +42,11 @@ export class TransactionTable {
 
   constructor(private cdr: ChangeDetectorRef) {
     this.loadTransactions();
+  }
+
+  dataLoading(): boolean {
+    // return this.transactions.length === 0;
+    return true;
   }
 
   loadTransactions(): void {
@@ -69,8 +81,8 @@ export class TransactionTable {
     // Start with all transactions
     let results = this.transactions.filter(transaction => {
 
-    // Search filter
-    const matchesSearch =
+      // Search filter
+      const matchesSearch =
         transaction.category.toLowerCase().includes(search) ||
         transaction.destination.toLowerCase().includes(search) ||
         transaction.status.toLowerCase().includes(search) ||
@@ -79,7 +91,7 @@ export class TransactionTable {
       // Category filter
       const matchesCategory =
         this.selectedCategory === '' ||
-        transaction.category.toLowerCase() === this.selectedCategory;
+        transaction.category.toLowerCase() === this.selectedCategory.toLowerCase();
 
       return matchesSearch && matchesCategory;
     });
@@ -89,7 +101,7 @@ export class TransactionTable {
       results.sort((a, b) => {
         let comparison = 0;
 
-        switch (this.orderBy) {
+        switch (this.orderBy.toLowerCase()) {
           case 'date':
             comparison = a.date.localeCompare(b.date);
             break;
@@ -111,7 +123,7 @@ export class TransactionTable {
             break;
         }
 
-        return this.sortDirection === 'dsc'
+        return this.sortDirection.toLowerCase() === 'dsc'
           ? -comparison
           : comparison;
       });
@@ -125,7 +137,6 @@ export class TransactionTable {
   }
 
 
-  // FIXME: might this need to be a signal? instead of a function????
   previousPage(): void {
     if (this.currentPage > 1) {
       this.currentPage--;

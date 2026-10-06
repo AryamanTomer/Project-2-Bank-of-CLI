@@ -1,12 +1,13 @@
 import { Component, AfterViewInit } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
+import { TransactionTable } from '../../transaction-table/transaction-table';
 
 import Chart from 'chart.js/auto';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [MatCardModule],
+  imports: [MatCardModule, TransactionTable],
   styleUrl: './dashboard.css',
   templateUrl: './dashboard.html',
 })
