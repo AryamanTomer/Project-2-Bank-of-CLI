@@ -1,0 +1,98 @@
+<div class="dashboard">
+
+  <!-- Top section -->
+  <div class="top-section">
+
+    <!-- Welcome card -->
+    <section class="welcome-card">
+      <h1>Welcome back, John.</h1>
+
+      <p>
+        Stay on top of your account activity and transactions.
+      </p>
+
+      <button>
+        New Transaction
+      </button>
+    </section>
+
+    <!-- Balance card -->
+    <section class="balance-card">
+      <p>Total Balance</p>
+
+      <h2>$12,450.00</h2>
+
+      <mat-card class="bank-card">
+        <div class="card-top">
+          <span>BANK OF CLI</span>
+          <span>VISA</span>
+        </div>
+
+        <div class="card-chip"></div>
+
+        <div class="card-number">
+          {{ cardNumber }}
+        </div>
+
+        <div class="card-bottom">
+
+          <div>
+            <span class="card-label">CARD HOLDER</span>
+            <span>{{ cardholderName }}</span>
+          </div>
+
+          <div>
+            <span class="card-label">EXPIRES</span>
+            <span>{{ expirationDate }}</span>
+          </div>
+
+        </div>
+
+      </mat-card>
+    </section>
+
+  </div>
+
+
+  <!-- Analytics section -->
+  <div class="analytics-section">
+
+    <!-- Income / Spending -->
+    <section class="income-spending-card">
+
+      <div class="stat-card">
+        <p>Income</p>
+        <h2>$5,000</h2>
+      </div>
+
+      <div class="stat-card">
+        <p>Spending</p>
+        <h2>$2,000</h2>
+      </div>
+
+    </section>
+
+
+    <!-- Balance History -->
+    <section class="balance-history-card">
+
+      <h2>Balance History</h2>
+
+      <div class="chart">
+        <!-- Graph will go here -->
+        <canvas id="balanceChart"></canvas>
+      </div>
+
+    </section>
+
+  </div>
+
+
+  <!-- Transaction history -->
+  <section class="transactions-section">
+
+    <!-- Your teammate's transaction component will eventually go here -->
+
+  </section>
+
+</div>

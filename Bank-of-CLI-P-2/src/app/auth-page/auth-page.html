@@ -1,0 +1,22 @@
+<div class="wrapper">
+  <div class="card">
+    <div class="left">
+      <img class="logo" src="/assets/auth/logo.png" alt="Logo" />
+      <div>
+        <h2>You can easily</h2>
+        <h3>View account balance, deposit, withdraw, transfer money at any time.</h3>
+      </div>
+    </div>
+    <div class="right">
+      <app-auth
+        [heading]="heading()"
+        [description]="description()"
+        [buttonText]="buttonText()"
+        [footerText]="footerText()"
+        [footerActionText]="footerActionText()"
+        [footerActionLink]="footerActionLink()"
+        [callback]="callback()"
+      ></app-auth>
+    </div>
+  </div>
+</div>
