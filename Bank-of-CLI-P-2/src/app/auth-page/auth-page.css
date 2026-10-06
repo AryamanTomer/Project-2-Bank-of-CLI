@@ -1,0 +1,107 @@
+.wrapper {
+  min-height: 100dvh;
+  background: rgb(248, 248, 248);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: var(--space-2xl);
+}
+
+.card {
+  display: grid;
+  min-height: 50rem;
+  grid-template-columns: 5fr 9fr;
+  border-radius: 2rem;
+  background: white;
+  max-width: 80rem;
+  margin: 0 auto;
+  box-shadow: 0 0 2.5rem 1rem var(--primary-white-90);
+  padding: 1rem;
+
+  > div {
+    border-radius: 1rem;
+    position: relative;
+  }
+}
+
+.left {
+  border-radius: 1rem;
+  background: url('/assets/auth/mesh-desktop.png');
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  .logo {
+    width: 2rem;
+  }
+
+  h2 {
+    font-size: var(--step-4);
+    font-weight: 400;
+    color: white;
+    margin-bottom: var(--space-m);
+  }
+
+  h3 {
+    font-size: var(--step-7);
+    font-weight: 600;
+    line-height: 1.3em;
+    color: white;
+  }
+}
+
+.right {
+  max-width: 35rem;
+  margin: 0 auto;
+  padding: var(--space-2xl) var(--space-xl);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+@media screen and (max-width: 1280px) {
+  .wrapper {
+    background: url('/assets/auth/mesh-tablet.png');
+    background-size: cover;
+  }
+
+  .card {
+    max-width: 35rem;
+    grid-template-columns: auto;
+    box-shadow: none;
+  }
+
+  .left {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 1280px) {
+  .wrapper {
+    background: url('/assets/auth/mesh-tablet.png');
+    background-size: cover;
+    padding: 0;
+  }
+
+  .card {
+    min-height: auto;
+    max-width: 35rem;
+    grid-template-columns: auto;
+    box-shadow: none;
+  }
+
+  .left {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 640px) {
+  .wrapper {
+    background: white;
+  }
+
+  .right {
+    padding: 0;
+  }
+}
