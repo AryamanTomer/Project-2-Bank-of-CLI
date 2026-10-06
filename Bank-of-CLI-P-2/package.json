@@ -19,8 +19,13 @@
     "@angular/material": "^22.2.1",
     "@angular/platform-browser": "^22.2.0",
     "@angular/router": "^22.2.0",
+    "@ng-icons/core": "^36.1.0",
+    "@ng-icons/lucide": "^36.1.0",
+    "@ng-icons/material-symbols": "^36.1.0",
+    "@ng-icons/remixicon": "^36.1.0",
     "chart.js": "^4.5.1",
     "rxjs": "~7.8.0",
+    "tailwind-merge": "^3.7.0",
     "tslib": "^2.3.0"
   },
   "devDependencies": {
