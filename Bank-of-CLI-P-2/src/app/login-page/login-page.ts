@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { AuthPage } from '../auth-page/auth-page';
+import { AuthFields, FormEntries } from '../auth/auth';
 
 @Component({
   imports: [AuthPage],
@@ -15,7 +16,21 @@ export class LoginPage {
   readonly footerText = "Don't have an account?";
   readonly footerActionText = 'Register';
   readonly footerActionLink = '/register';
-  readonly callback = async () => {
-    return Promise.resolve('Invalid credentials. Please try again.');
+  readonly callback = async (formEntries: FormEntries) => {
+    console.log(formEntries);
+    await new Promise((resolve) => setTimeout(resolve, 1500));
+    return 'Invalid credentials. Please try again.';
   };
+  readonly fields: AuthFields = [
+    {
+      name: 'accountId',
+      label: 'Account ID',
+      type: 'text',
+    },
+    {
+      name: 'accountPin',
+      label: 'Account PIN',
+      type: 'password',
+    },
+  ];
 }

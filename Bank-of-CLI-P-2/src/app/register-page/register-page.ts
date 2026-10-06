@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { AuthPage } from '../auth-page/auth-page';
+import { AuthFields, FormEntries } from '../auth/auth';
 
 @Component({
   imports: [AuthPage],
@@ -15,7 +16,29 @@ export class RegisterPage {
   readonly footerText = 'Already have an account?';
   readonly footerActionText = 'Login';
   readonly footerActionLink = '/login';
-  readonly callback = async () => {
-    return Promise.resolve('Account ID already exists. Please try a different account ID.');
+  readonly callback = async (formEntries: FormEntries) => {
+    console.log(formEntries);
+    await new Promise((resolve) => setTimeout(resolve, 1500));
+    return 'Invalid credentials. Please try again.';
   };
+  readonly fields: AuthFields = [
+    {
+      name: 'accountId',
+      label: 'Account ID',
+      type: 'text',
+      placeholder: 'ACT-1001',
+    },
+    {
+      name: 'nickname',
+      label: 'Account Nickname',
+      type: 'text',
+      placeholder: 'Superman',
+    },
+    {
+      name: 'accountPin',
+      label: 'Account PIN',
+      type: 'password',
+      placeholder: '••••',
+    },
+  ];
 }

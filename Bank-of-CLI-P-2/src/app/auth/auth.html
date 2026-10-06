@@ -1,47 +1,56 @@
 <div class="wrapper">
   <h1>{{ heading() }}</h1>
   <p>{{ description() }}</p>
-  <div class="input-group">
-    <label for="accountId">Account ID</label>
-    <div>
-      <input type="text" id="accountId" name="accountId" required />
+  <form
+    (input)="isFormValid.set($any($event.currentTarget).checkValidity())"
+    (submit)="submit($event)"
+  >
+    @for (field of fields(); track field.name) {
+      <div class="input-group">
+        <label [for]="field.name">{{ field.label }}</label>
+        <div>
+          @if (field.type === 'password') {
+            <img
+              [hidden]="!showPassword()"
+              (click)="togglePasswordVisibility()"
+              src="/assets/auth/eye-off.svg"
+              alt="Hide Password"
+            />
+            <img
+              [hidden]="showPassword()"
+              (click)="togglePasswordVisibility()"
+              src="/assets/auth/eye.svg"
+              alt="Show Password"
+            />
+            <input
+              [type]="showPassword() ? 'text' : 'password'"
+              [name]="field.name"
+              [placeholder]="field.placeholder || ''"
+              required
+            />
+          } @else {
+            <input
+              [type]="field.type"
+              [name]="field.name"
+              [placeholder]="field.placeholder || ''"
+              required
+            />
+          }
+        </div>
+      </div>
+    }
+    <p [hidden]="!errorText()" class="error">{{ errorText() }}</p>
+    <div class="button-container">
+      <button
+        [class.transparent]="isLoading()"
+        [disabled]="isLoading() || !isFormValid()"
+        type="submit"
+      >
+        {{ buttonText() }}
+      </button>
+      <div [hidden]="!isLoading()" class="loader"></div>
     </div>
-  </div>
-  <div class="input-group">
-    <label for="accountPin">Account PIN</label>
-    <div>
-      <img
-        [hidden]="!showPassword()"
-        (click)="togglePasswordVisibility()"
-        src="/assets/auth/eye-off.svg"
-        alt="Hide Password"
-      />
-      <img
-        [hidden]="showPassword()"
-        (click)="togglePasswordVisibility()"
-        src="/assets/auth/eye.svg"
-        alt="Show Password"
-      />
-      <input
-        type="{{ showPassword() ? 'text' : 'password' }}"
-        id="accountPin"
-        name="accountPin"
-        required
-      />
-    </div>
-  </div>
-  <p [hidden]="!errorText()" class="error">{{ errorText() }}</p>
-  <div class="button-container">
-    <button
-      (click)="submit()"
-      [class.transparent]="isLoading()"
-      [disabled]="isLoading()"
-      type="submit"
-    >
-      {{ buttonText() }}
-    </button>
-    <div [hidden]="!isLoading()" class="loader"></div>
-  </div>
+  </form>
   <div class="divider"></div>
   <p class="description bottom">
     {{ footerText() }}

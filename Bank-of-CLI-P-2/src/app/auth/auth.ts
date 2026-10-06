@@ -1,6 +1,10 @@
-import { Component, input, signal } from '@angular/core';
-
+import { afterNextRender, Component, input, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
+
+export type AuthFields = { name: string; label: string; type: string; placeholder?: string }[];
+
+export type FormEntries = Record<string, FormDataEntryValue>;
+
 @Component({
   imports: [RouterLink],
   selector: 'app-auth',
@@ -14,29 +18,28 @@ export class Auth {
   footerText = input.required<string>();
   footerActionText = input.required<string>();
   footerActionLink = input.required<string>();
-  callback = input.required<() => Promise<string>>();
+  callback = input.required<(formEntries: FormEntries) => Promise<string>>();
+  fields = input.required<AuthFields>();
 
   protected showPassword = signal(false);
   protected isLoading = signal(false);
   protected errorText = signal('');
+  protected isFormValid = signal(false);
 
   protected togglePasswordVisibility(): void {
     this.showPassword.set(!this.showPassword());
   }
 
-  protected async submit(): Promise<void> {
+  protected async submit(e: SubmitEvent): Promise<void> {
+    e.preventDefault();
     this.isLoading.set(true);
 
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-
     try {
-      const error = await this.callback()();
+      const formElement = e.currentTarget as HTMLFormElement;
+      const formValues: FormEntries = Object.fromEntries(new FormData(formElement).entries());
 
-      if (!error) {
-        return;
-      }
-
-      this.errorText.set(error);
+      const error = await this.callback()(formValues);
+      if (error) this.errorText.set(error);
     } catch (err) {
       this.errorText.set('An unexpected error occurred.');
     } finally {
