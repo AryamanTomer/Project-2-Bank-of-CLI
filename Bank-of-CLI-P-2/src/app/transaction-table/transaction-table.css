@@ -1,0 +1,135 @@
+/* FIXME: merge the existing global css in */
+.transaction-table-container {
+  padding: 2vw;
+  width: 100%;
+}
+
+#transaction-table-title {
+  padding-bottom: 2vw;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+#make-transaction-button {
+  background-image: linear-gradient(to right, #312BB0, #853DDF);
+  padding-top: 0.75vw;
+  padding-bottom: 0.75vw;
+  padding-left: 2vw;
+  padding-right: 2vw;
+  color: white;
+  border-radius: 1vw;
+  font-weight: bold;
+}
+
+#transaction-table-form {
+  padding-bottom: 2vw;
+  display: flex;
+  gap: 1vw;
+  width: 100%;
+}
+
+#transaction-table-form input {
+  background-color: rgb(0, 0, 0, 5%);
+  box-sizing: border-box;
+  padding: 0.75rem 1rem;
+  border-radius: 0.75rem;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+#transaction-table-form select {
+  background-color: rgb(133 61 223 / 17%);
+  padding: 0.75rem 2.5rem 0.75rem 1rem;
+  border-radius: 0.75rem;
+  flex: 0 1 auto;
+}
+
+#transaction-table-form input, #transaction-table-form select{
+  box-sizing: border-box;
+  padding: 1vw;
+  border-radius: 1vw;
+}
+
+#pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+#pagination span {
+  font-style: italic;
+}
+
+#pagination-buttons {
+  display: flex;
+  gap: 2vw;
+}
+
+/* FIXME: these need to be circles */
+#prev-button, #next-button {
+  background-color: rgb(133, 61, 223, 17%);
+  padding-bottom: 1vw;
+  padding-top: 1vw;
+  padding-left: 1.5vw;
+  padding-right: 1.5vw;
+  border-radius: 10vw;
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+/* table css */
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+thead th {
+  text-align: left;
+  padding: 12px 16px;
+  background-color: rgb(133, 61, 223, 17%);
+  font-weight: normal;
+}
+
+/* Round the top-left and top-right corners */
+thead th:first-child {
+  border-radius: 1vw 0 0 1vw;
+}
+
+thead th:last-child {
+  border-radius: 0 1vw 1vw 0;
+}
+
+tbody td {
+  padding: 12px 16px;
+}
+
+/* Lines between rows, but not directly under the header */
+tbody tr + tr {
+  border-top: 1px solid #ddd;
+}
+
+.status-chip {
+  display: inline-block;
+  padding: 0.35rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.status-chip.approved {
+  color: #166534;
+  background: #dcfce7;
+}
+
+.status-chip.pending {
+  color: #92400e;
+  background: #fef3c7;
+}
+
+.status-chip.rejected {
+  color: #991b1b;
+  background: #fee2e2;
+}
+
