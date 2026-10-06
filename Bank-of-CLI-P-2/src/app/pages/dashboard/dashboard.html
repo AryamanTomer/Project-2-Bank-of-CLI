@@ -2,10 +2,9 @@
 
   <!-- Top section -->
   <div class="top-section">
-
     <!-- Welcome card -->
-    <section class="welcome-card">
-      <h1>Welcome back, John.</h1>
+    <section class="welcome-card" [appLoadingSkeleton]="loading()">
+      <h1> Welcome back, John.</h1>
 
       <p>
         Stay on top of your account activity and transactions.
@@ -17,7 +16,7 @@
     </section>
 
     <!-- Balance card -->
-    <section class="balance-card">
+    <section class="balance-card" [appLoadingSkeleton]="loading()">
       <p>Total Balance</p>
 
       <h2>$12,450.00</h2>
@@ -58,7 +57,7 @@
   <div class="analytics-section">
 
     <!-- Income / Spending -->
-    <section class="income-spending-card">
+    <section class="income-spending-card" [appLoadingSkeleton]="loading()">
 
       <div class="stat-card">
         <p>Income</p>
@@ -74,7 +73,7 @@
 
 
     <!-- Balance History -->
-    <section class="balance-history-card">
+    <section class="balance-history-card" [appLoadingSkeleton]="loading()">
 
       <h2>Balance History</h2>
 
@@ -89,7 +88,7 @@
 
 
   <!-- Transaction history -->
-  <section class="transactions-section">
+  <section class="transactions-section" [appLoadingSkeleton]="loading()">
 
     <!-- Your teammate's transaction component will eventually go here -->
 

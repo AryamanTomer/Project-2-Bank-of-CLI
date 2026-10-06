@@ -169,3 +169,35 @@ select {
 body {
   font-family: 'Inter', sans-serif;
 }
+
+.skeleton-loading :is(h1, h2, h3, h4, p, span, a, button, label):not(.no-skeleton) {
+  color: transparent !important;
+  background-color: var(--primary-white-90);
+ background-image: linear-gradient(
+    90deg,
+    var(--primary-white-80) 0%,
+    var(--primary-white-80) 35%,
+    color-mix(in srgb, var(--primary-white-80) 70%, white) 50%,
+    var(--primary-white-80) 65%,
+    var(--primary-white-80) 100%
+  ) !important;
+
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.6s linear infinite;
+  border-radius: 6px;
+  width: fit-content;
+  user-select: none;
+}
+
+@keyframes skeleton-shimmer {
+  0% {
+    background-position: 100% 0;
+  }
+  100% {
+    background-position: -100% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skeleton-loading * { animation: none !important; }
+}

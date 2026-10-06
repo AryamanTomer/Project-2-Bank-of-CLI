@@ -1,16 +1,27 @@
-import { Component, AfterViewInit } from '@angular/core';
+import { Component, AfterViewInit, signal } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
+import { LoadingSkeleton } from '../../shared/directives/loading-skeleton';
 
 import Chart from 'chart.js/auto';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [MatCardModule],
+  imports: [MatCardModule, LoadingSkeleton],
   styleUrl: './dashboard.css',
   templateUrl: './dashboard.html',
 })
 export class Dashboard implements AfterViewInit {
+  loading = signal(true);
+
+  constructor() {
+    this.fakeLoad();
+  }
+
+  fakeLoad(){
+    this.loading.set(true);
+    setTimeout(() => this.loading.set(false), 2000);
+  }
 
   cardholderName = 'John Doe';
   cardNumber = '4827 1938 6274 9183';
