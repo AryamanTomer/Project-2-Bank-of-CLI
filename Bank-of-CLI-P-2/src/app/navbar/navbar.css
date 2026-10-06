@@ -1,12 +1,23 @@
-/* Outer wrapper: centres the bar near the top of the page */
+/* Keeps the navbar pinned to the top */
+:host {
+  display: block;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+/* centres the bar near the top of the page */
 .navbar {
   display: flex;
   justify-content: center;
   padding: 1.5rem 1rem 0;
+  /* Let clicks pass through the empty space beside the pill */
+  pointer-events: none;
 }
 
-/* The white pill that holds the three links */
+/* The white pill that holds the links */
 .nav-bar {
+  pointer-events: auto;
   display: flex;
   align-items: center;
   border-radius: 9999px;
@@ -17,7 +28,7 @@
     0 8px 16px rgba(0, 0, 0, 0.08);
 }
 
-/* A single link/button inside the bar */
+/* single button inside the bar */
 .nav-pill {
   display: block;
   border-radius: 9999px;
@@ -37,7 +48,7 @@
   color: #7c3aed;
 }
 
-/* Purple gradient for the current page */
+/* Selection highlight for the current page */
 .nav-pill-active,
 .nav-pill-active:hover {
   background: linear-gradient(90deg, #8b5cf6, #4c2a85);
@@ -50,7 +61,7 @@
   position: relative;
 }
 
-/* Keeps the button in front of the menu that tucks behind it */
+/* Keeps the button in front of the menu*/
 .dropdown-toggle {
   position: relative;
   z-index: 20;
@@ -72,7 +83,6 @@
   background: #f5f5f5;
   box-shadow: 0 4px 0 rgba(139, 92, 246, 0.35);
   transform: translateX(-50%);
-  /* Hidden until opened */
   visibility: hidden;
   opacity: 0;
   transition: opacity 150ms, visibility 150ms;
