@@ -11,6 +11,7 @@ export class Button {
   class = input('');
   type = input<'button' | 'submit'>('button');
   disabled = input(false);
+  loading = input(false);
   classes = computed(() => twMerge('', this.class()));
   clicked = output<void>();
 }

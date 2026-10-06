@@ -1,8 +1,10 @@
 import { Component, computed, input, model, signal } from '@angular/core';
-import { twMerge } from 'tailwind-merge';
-import { matSearchOutline } from '@ng-icons/material-symbols/outline';
-import { lucideEye, lucideEyeOff } from '@ng-icons/lucide';
 import { NgIcon, provideIcons } from '@ng-icons/core';
+import { lucideEye, lucideEyeOff } from '@ng-icons/lucide';
+import { matSearchOutline } from '@ng-icons/material-symbols/outline';
+import { twMerge } from 'tailwind-merge';
+
+export type InputType = 'text' | 'password' | 'search';
 
 @Component({
   imports: [NgIcon],
@@ -13,7 +15,8 @@ import { NgIcon, provideIcons } from '@ng-icons/core';
 })
 export class Input {
   class = input('');
-  type = input<'text' | 'password' | 'search'>('text');
+  type = input<InputType>('text');
+  label = input<string>('text');
   inputId = input.required<string>();
   name = input('');
   value = model('');
