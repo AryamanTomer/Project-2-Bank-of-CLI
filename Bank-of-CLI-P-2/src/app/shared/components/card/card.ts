@@ -1,0 +1,15 @@
+import { Component, computed, input } from '@angular/core';
+import { twMerge } from 'tailwind-merge';
+
+@Component({
+  selector: 'app-card',
+  templateUrl: './card.html',
+  host: { '[class]': 'classes()' },
+})
+export class Card {
+  class = input('');
+  loading = input(false);
+  classes = computed(() =>
+     twMerge('block border-2 border-gray-200 p-4 rounded-xl shadow-lg', this.class()),
+);
+}

@@ -1,0 +1,41 @@
+:host {
+  display: block;
+}
+
+/* In the components layer so Tailwind utilities passed via `class` can override these defaults. */
+@layer components {
+  button {
+    width: 100%;
+    background: linear-gradient(
+      to right,
+      oklch(from var(--primary) l c calc(h - 20)),
+      oklch(from var(--primary) l c calc(h + 20))
+    );
+    color: white;
+    font-weight: 600;
+    font-size: var(--step-2);
+    padding: 0.75em 1em;
+    border-radius: 0.75rem;
+    transition:
+      outline 0.3s ease,
+      filter 0.3s ease;
+
+    &:enabled {
+      cursor: pointer;
+      &:hover,
+      &:focus {
+        outline: none;
+        filter: hue-rotate(30deg);
+      }
+    }
+
+    &:disabled {
+      cursor: not-allowed;
+      filter: opacity(0.75);
+    }
+
+    &.transparent {
+      color: transparent;
+    }
+  }
+}
