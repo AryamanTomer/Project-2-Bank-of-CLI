@@ -106,7 +106,11 @@ form {
   }
 }
 
-.button-container {
+.margin-top-medium {
+  margin-top: var(--space-m);
+}
+
+/* .button-container {
   margin-top: var(--space-m);
   position: relative;
 
@@ -161,7 +165,7 @@ form {
   .transparent {
     color: transparent;
   }
-}
+} */
 
 .divider {
   background: rgb(200, 200, 200);

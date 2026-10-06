@@ -40,7 +40,7 @@
       </div>
     }
     <p [hidden]="!errorText()" class="error">{{ errorText() }}</p>
-    <div class="button-container">
+    <!-- <div class="button-container">
       <button
         [class.transparent]="isLoading()"
         [disabled]="isLoading() || !isFormValid()"
@@ -49,7 +49,14 @@
         {{ buttonText() }}
       </button>
       <div [hidden]="!isLoading()" class="loader"></div>
-    </div>
+    </div> -->
+    <app-button
+      class="margin-top-medium"
+      type="submit"
+      [disabled]="isLoading() || !isFormValid()"
+      [loading]="isLoading()"
+      >{{ buttonText() }}</app-button
+    >
   </form>
   <div class="divider"></div>
   <p class="description bottom">

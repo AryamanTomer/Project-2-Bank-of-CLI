@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { AuthPage } from '../auth-page/auth-page';
-import { AuthFields, FormEntries } from '../auth/auth';
+import { AuthPage } from '../../shared/components/auth-page/auth-page';
+import { AuthFields, FormEntries } from '../../shared/components/auth/auth';
 
 @Component({
   imports: [AuthPage],
