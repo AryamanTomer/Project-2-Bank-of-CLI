@@ -1,13 +1,14 @@
 import { Component, input, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Button } from '../button/button';
+import { Input, InputType } from '../input/input';
 
-export type AuthFields = { name: string; label: string; type: string; placeholder?: string }[];
+export type AuthFields = { name: string; label: string; type: InputType; placeholder?: string }[];
 
 export type FormEntries = Record<string, FormDataEntryValue>;
 
 @Component({
-  imports: [RouterLink, Button],
+  imports: [RouterLink, Button, Input],
   selector: 'app-auth',
   styleUrl: './auth.css',
   templateUrl: './auth.html',
