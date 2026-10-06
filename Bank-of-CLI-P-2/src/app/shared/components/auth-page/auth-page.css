@@ -4,16 +4,16 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: var(--space-2xl);
+  padding: 0 var(--space-5xl);
 }
 
 .card {
   display: grid;
-  min-height: 50rem;
-  grid-template-columns: 5fr 9fr;
+  min-height: 45rem;
+  grid-template-columns: 1fr 2fr;
   border-radius: 2rem;
   background: white;
-  max-width: 80rem;
+  max-width: 75rem;
   margin: 0 auto;
   box-shadow: 0 0 2.5rem 1rem var(--primary-white-90);
   padding: 1rem;
@@ -27,7 +27,8 @@
 .left {
   border-radius: 1rem;
   background: url('/assets/auth/mesh-desktop.png');
-  padding: 1.5rem;
+  background-size: cover;
+  padding: var(--space-l);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -37,14 +38,14 @@
   }
 
   h2 {
-    font-size: var(--step-4);
+    font-size: var(--step-3);
     font-weight: 400;
     color: white;
     margin-bottom: var(--space-m);
   }
 
   h3 {
-    font-size: var(--step-7);
+    font-size: var(--step-6);
     font-weight: 600;
     line-height: 1.3em;
     color: white;
@@ -61,23 +62,15 @@
 }
 
 @media screen and (max-width: 1280px) {
-  .wrapper {
-    background: url('/assets/auth/mesh-tablet.png');
-    background-size: cover;
-  }
-
   .card {
-    max-width: 35rem;
-    grid-template-columns: auto;
-    box-shadow: none;
+    grid-template-columns: 6fr 10fr;
   }
-
-  .left {
-    display: none;
+  .wrapper {
+    padding: 0 var(--space-3xl);
   }
 }
 
-@media screen and (max-width: 1280px) {
+@media screen and (max-width: 1080px) {
   .wrapper {
     background: url('/assets/auth/mesh-tablet.png');
     background-size: cover;
