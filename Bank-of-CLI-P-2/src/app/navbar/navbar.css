@@ -45,13 +45,17 @@
 }
 
 .nav-pill:hover {
-  color: #7c3aed;
+  color: var(--primary);
 }
 
 /* Selection highlight for the current page */
 .nav-pill-active,
 .nav-pill-active:hover {
-  background: linear-gradient(90deg, #8b5cf6, #4c2a85);
+  background: linear-gradient(
+    to right,
+    oklch(from var(--primary) l c calc(h - 20)),
+    oklch(from var(--primary) l c calc(h + 20))
+  );
   color: #fff;
   font-weight: 700;
 }
@@ -101,7 +105,7 @@
 
 .dropdown-link:hover,
 .dropdown-link-active {
-  color: #7c3aed;
+  color: var(--primary);
 }
 
 .dropdown-link-active {
