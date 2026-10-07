@@ -159,8 +159,8 @@ body {
   font-family: 'Inter', sans-serif;
 }
 
-.skeleton-loading :is(h1, h2, h3, h4, p, span, a, button, label, .card-number):not(.no-skeleton, .no-skeleton *),
-.skeleton-loading:not(:has(*), .chart) {
+.skeleton-loading :is(h1, h2, h3, h4, p, span, a, button, label, .card-number)
+:not(:has(*), .chart, .no-skeleton, .no-skeleton *) {
   color: transparent !important;
   background: var(--color-gray-200, #e5e7eb) !important;
   border-color: transparent !important;
