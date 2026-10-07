@@ -3,88 +3,89 @@
   <!-- Top section -->
   <div class="top-section">
 
-    <!-- Welcome card -->
-    <section class="welcome-card">
+    <!-- Welcome -->
+    <app-card class="welcome-card">
+      <span class="date-badge">
+        {{ currentDate | date:'EEE, MMM d' }}
+      </span>
       <h1>Welcome back, John.</h1>
-
       <p>
         Stay on top of your account activity and transactions.
       </p>
-
-      <button>
+      <app-button class="new-transaction-button">
         New Transaction
-      </button>
-    </section>
+      </app-button>
+    </app-card>
 
-    <!-- Balance card -->
-    <section class="balance-card">
-      <p>Total Balance</p>
-
+    <!-- Total Balance -->
+    <app-card class="balance-card">
+      <p class="balance-label">Total Balance</p>
       <h2>$12,450.00</h2>
-
       <mat-card class="bank-card">
         <div class="card-top">
           <span>BANK OF CLI</span>
           <span>VISA</span>
         </div>
-
         <div class="card-chip"></div>
-
         <div class="card-number">
           {{ cardNumber }}
         </div>
-
         <div class="card-bottom">
-
           <div>
             <span class="card-label">CARD HOLDER</span>
             <span>{{ cardholderName }}</span>
           </div>
-
           <div>
             <span class="card-label">EXPIRES</span>
             <span>{{ expirationDate }}</span>
           </div>
-
         </div>
-
       </mat-card>
-    </section>
-
+    </app-card>
   </div>
 
-
-  <!-- Analytics section -->
+  <!-- Analytics -->
   <div class="analytics-section">
-
-    <!-- Income / Spending -->
-    <section class="income-spending-card">
-
-      <div class="stat-card">
-        <p>Income</p>
-        <h2>$5,000</h2>
+    <!-- This Month -->
+    <app-card class="monthly-summary">
+      <h2 class="summary-title">This Month</h2>
+      <div class="income-spending-card">
+        <!-- Income -->
+        <app-card class="stat-card">
+          <div class="stat-header">
+            <p>Income</p>
+            <div class="stat-icon">
+              <ng-icon name="matSavingsFillOutline"></ng-icon>
+            </div>
+          </div>
+          <div class="stat-bottom">
+            <h2>$5,000</h2>
+            <span class="change positive">↑ 7%</span>
+          </div>
+        </app-card>
+        <!-- Spending -->
+        <app-card class="stat-card">
+          <div class="stat-header">
+            <p>Spending</p>
+            <div class="stat-icon">
+              <ng-icon name="matMoneyBagFillOutline"></ng-icon>
+            </div>
+          </div>
+          <div class="stat-bottom">
+            <h2>$2,000</h2>
+            <span class="change negative">↓ 6%</span>
+          </div>
+        </app-card>
       </div>
-
-      <div class="stat-card">
-        <p>Spending</p>
-        <h2>$2,000</h2>
-      </div>
-
-    </section>
-
+    </app-card>
 
     <!-- Balance History -->
-    <section class="balance-history-card">
-
-      <h2>Balance History</h2>
-
+    <app-card class="balance-history-card">
+      <h2 class="balance-text">Balance History</h2>
       <div class="chart">
-        <!-- Graph will go here -->
         <canvas id="balanceChart"></canvas>
       </div>
-
-    </section>
-
+    </app-card>
   </div>
 
 

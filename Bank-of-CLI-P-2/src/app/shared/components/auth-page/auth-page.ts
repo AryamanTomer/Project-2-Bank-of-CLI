@@ -1,5 +1,5 @@
 import { Component, input } from '@angular/core';
-import { Auth } from '../auth/auth';
+import { Auth, AuthFields, FormEntries } from '../auth/auth';
 
 @Component({
   imports: [Auth],
@@ -14,5 +14,6 @@ export class AuthPage {
   footerText = input.required<string>();
   footerActionText = input.required<string>();
   footerActionLink = input.required<string>();
-  callback = input.required<() => Promise<string>>();
+  callback = input.required<(formEntries: FormEntries) => Promise<string>>();
+  fields = input.required<AuthFields>();
 }

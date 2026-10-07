@@ -1,0 +1,42 @@
+<nav class="navbar">
+  <ul class="nav-bar">
+    <!-- Dashboard -->
+    <li>
+      <a class="nav-pill" routerLink="/dashboard" routerLinkActive="nav-pill-active" (click)="closeMenu()">
+        Dashboard
+      </a>
+    </li>
+
+    <!-- Transaction (dropdown) -->
+    <li
+      class="dropdown"
+      routerLinkActive
+      #txActive="routerLinkActive"
+      (pointerenter)="onPointerEnter($event)"
+      (pointerleave)="onPointerLeave($event)"
+      (focusout)="onFocusOut($event)"
+    >
+      <button
+        type="button"
+        class="nav-pill dropdown-toggle"
+        [class.nav-pill-active]="txActive.isActive || menuOpen()"
+        aria-haspopup="true"
+        aria-controls="transaction-menu"
+        [attr.aria-expanded]="menuOpen()"
+        (click)="toggleMenu()"
+      >
+        Transaction
+      </button>
+
+      <ul id="transaction-menu" class="dropdown-menu" [class.dropdown-menu-open]="menuOpen()">
+        @for (item of transactionLinks; track item.path) {
+          <li>
+            <a class="dropdown-link" [routerLink]="item.path" routerLinkActive="dropdown-link-active" (click)="closeMenu()">
+              {{ item.label }}
+            </a>
+          </li>
+        }
+      </ul>
+    </li>
+  </ul>
+</nav>
