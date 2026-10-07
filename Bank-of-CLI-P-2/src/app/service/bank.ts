@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { Account } from '../models/Account.model';
 
 interface AccountRecord {
@@ -12,6 +13,14 @@ interface AccountRecord {
 @Injectable({ providedIn: 'root'})
 export class BankService {
     private accounts = new Map<string, AccountRecord>();
+
+    constructor(private readonly http: HttpClient) {}
+
+    loadFromFile(): void {
+        this.http.get<AccountRecord[]>('accounts.json').subscribe((accounts) => {
+            this.load(accounts);
+        });
+    }
 
     load(accountSeed: AccountRecord[]): void {
         this.accounts.clear();

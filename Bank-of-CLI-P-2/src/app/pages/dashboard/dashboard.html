@@ -1,17 +1,13 @@
 <div class="dashboard">
-
   <!-- Top section -->
   <div class="top-section">
-
     <!-- Welcome -->
     <app-card class="welcome-card">
       <span class="date-badge">
-        {{ currentDate | date:'EEE, MMM d' }}
+        {{ currentDate | date: 'EEE, MMM d' }}
       </span>
       <h1>Welcome back, John.</h1>
-      <p>
-        Stay on top of your account activity and transactions.
-      </p>
+      <p>Stay on top of your account activity and transactions.</p>
       <app-button class="new-transaction-button">
         New Transaction
       </app-button> 
@@ -28,16 +24,16 @@
         </div>
         <div class="card-chip"></div>
         <div class="card-number">
-          {{ cardNumber }}
+          <pre>{{ cardNumber }}</pre>
         </div>
         <div class="card-bottom">
           <div>
             <span class="card-label">CARD HOLDER</span>
-            <span>{{ cardholderName }}</span>
+            <pre>{{ cardholderName }}</pre>
           </div>
           <div>
             <span class="card-label">EXPIRES</span>
-            <span>{{ expirationDate }}</span>
+            <pre>{{ expirationDate }}</pre>
           </div>
         </div>
       </mat-card>
@@ -88,12 +84,10 @@
     </app-card>
   </div>
 
-
   <!-- Transaction history -->
   <div class="transaction-history-section">
     <app-card class="transactions-card">
-        <app-transaction-table></app-transaction-table>
+      <app-transaction-table></app-transaction-table>
     </app-card>
   </div>
-
 </div>

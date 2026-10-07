@@ -22,7 +22,7 @@
 
 .top-section {
   display: grid;
-  grid-template-columns: 2fr 1fr;
+  grid-template-columns: 2fr auto;
   gap: var(--space-m);
   align-items: stretch;
 }
@@ -35,13 +35,13 @@
   background: var(--primary-white-80);
   color: var(--primary);
 
-  padding: 6px 10px;
+  padding: 0.5em 1em;
   border-radius: 6px;
 
   font-size: var(--step--2);
   font-weight: 600;
 
-  margin-bottom: 20px;
+  margin-bottom: var(--space-m);
 }
 
 .welcome-card h1 {
@@ -51,6 +51,7 @@
 
 .welcome-card p {
   color: #777;
+  font-size: var(--step-0);
   margin: var(--space-2xs) 0 var(--space-m);
 }
 
@@ -69,6 +70,7 @@
 
 .balance-label {
   color: #777;
+  font-size: var(--step-0);
 }
 
 /* Bank card */
@@ -173,7 +175,6 @@
   border-radius: 20px;
 }
 
-
 /* Income / Spending + icon */
 .stat-header {
   display: flex;
@@ -187,7 +188,6 @@
   font-weight: 500;
 }
 
-
 /* Circle around icon */
 .stat-icon {
   width: 32px;
@@ -199,12 +199,11 @@
 
   border-radius: 50%;
 
-  background: #DEDEDE;
+  background: #dedede;
   color: black;
 
   font-weight: 700;
 }
-
 
 /* Amount + percentage */
 .stat-bottom {
@@ -216,7 +215,6 @@
   font-weight: 600;
   margin-bottom: var(--space-xs);
 }
-
 
 /* Percentage pills */
 .change {
@@ -277,7 +275,6 @@
 /* Responsive */
 
 @media (max-width: 900px) {
-
   .top-section,
   .analytics-section {
     grid-template-columns: 1fr;

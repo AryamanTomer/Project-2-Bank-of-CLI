@@ -1,8 +1,10 @@
 import { Component, computed, input } from '@angular/core';
 import { twMerge } from 'tailwind-merge';
+import { LoadingSkeleton } from '../../directives/loading-skeleton/loading-skeleton';
 
 @Component({
   selector: 'app-card',
+  imports: [LoadingSkeleton],
   templateUrl: './card.html',
   // host: { '[class]': 'classes()' },
 })

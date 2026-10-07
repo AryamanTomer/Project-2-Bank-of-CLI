@@ -1,4 +1,5 @@
 <div class="wrapper">
+  <app-toast></app-toast>
   <h1>{{ heading() }}</h1>
   <p>{{ description() }}</p>
   <form
@@ -12,13 +13,13 @@
           [type]="field.type"
           [inputId]="field.name"
           [name]="field.name"
-          [label]="field.label"
+          [placeholder]="field.placeholder"
         ></app-input>
       </div>
     }
     <p [hidden]="!errorText()" class="error">{{ errorText() }}</p>
     <app-button
-      class="margin-top-medium"
+      class="margin-top"
       type="submit"
       [disabled]="isLoading() || !isFormValid()"
       [loading]="isLoading()"
