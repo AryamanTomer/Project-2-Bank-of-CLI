@@ -302,4 +302,13 @@
   .dashboard {
     padding: var(--space-m);
   }
+
+  .balance-card {
+    min-width: 0;
+  }
+
+  .bank-card {
+    width: 100%;
+    max-width: 360px;
+  }
 }
