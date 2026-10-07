@@ -19,7 +19,7 @@
     }
     <p [hidden]="!errorText()" class="error">{{ errorText() }}</p>
     <app-button
-      class="margin-top-medium"
+      class="margin-top"
       type="submit"
       [disabled]="isLoading() || !isFormValid()"
       [loading]="isLoading()"

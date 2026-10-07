@@ -16,7 +16,7 @@ import {
 export class RegisterPage {
   readonly heading = 'Register Account';
   readonly description =
-    'Get started with a new account. Fill in your details below to set up your secure dashboard.';
+    'Get started with a new account. Fill in your details below to set up your secure account dashboard.';
   readonly buttonText = 'Register';
   readonly footerText = 'Already have an account?';
   readonly footerActionText = 'Login';
@@ -50,7 +50,7 @@ export class RegisterPage {
     // };
     return {
       success: true,
-      toast: 'Registration successful! Please login with your new credentials.',
+      toast: 'Registration successful! You will be redirected to the login page in 3s.',
       redirect: '/login',
     };
   };

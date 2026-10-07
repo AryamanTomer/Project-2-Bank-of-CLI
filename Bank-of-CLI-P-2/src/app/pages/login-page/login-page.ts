@@ -16,7 +16,7 @@ import {
 export class LoginPage {
   readonly heading = 'Account Login';
   readonly description =
-    'Welcome back! Please enter your credentials to access your secure dashboard.';
+    'Welcome back! Please enter your login credentials to access your secure account dashboard.';
   readonly buttonText = 'Login';
   readonly footerText = "Don't have an account?";
   readonly footerActionText = 'Register';
