@@ -54,12 +54,6 @@
   margin: var(--space-3xs) 0 var(--space-m);
 }
 
-.transaction-history-section {
-  display: grid;
-  gap: 24px;
-  margin-top: 24px;
-}
-
 .balance-label {
   color: #777;
 }
@@ -269,6 +263,13 @@
 
 .transactions-section {
   margin-top: var(--space-m);
+}
+
+/* Transaction History Section */
+.transaction-history-section {
+  display: grid;
+  gap: 24px;
+  margin-top: 24px;
 }
 
 /* Responsive */
