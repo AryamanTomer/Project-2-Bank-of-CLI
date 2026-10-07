@@ -6,11 +6,13 @@
       <span class="date-badge">
         {{ currentDate | date: 'EEE, MMM d' }}
       </span>
-      <h1>Welcome back, John.</h1>
+      <h1>Welcome back, {{ nickname }}.</h1>
       <p>Stay on top of your account activity and transactions.</p>
       <app-button class="new-transaction-button">
-        New Transaction
-      </app-button> 
+        <div class="flex justify-center items-center gap-3">
+          <span>New Transaction</span>
+          <ng-icon name="matAddCircleRound" size="20" class="pointer-events-none" /></div
+      ></app-button>
     </app-card>
 
     <!-- Total Balance -->

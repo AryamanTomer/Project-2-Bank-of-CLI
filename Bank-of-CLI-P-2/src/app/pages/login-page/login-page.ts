@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { AuthPage } from '../../shared/components/auth-page/auth-page';
 import {
   ActionResult,
@@ -7,6 +7,8 @@ import {
   FormEntries,
 } from '../../shared/components/auth/auth';
 
+import { AuthService } from '../../service/auth/auth.service';
+
 @Component({
   imports: [AuthPage],
   selector: 'app-login-page',
@@ -14,6 +16,8 @@ import {
   templateUrl: './login-page.html',
 })
 export class LoginPage {
+  private readonly authService = inject(AuthService);
+
   readonly heading = 'Account Login';
   readonly description =
     'Welcome back! Please enter your login credentials to access your secure account dashboard.';
@@ -33,13 +37,21 @@ export class LoginPage {
       type: 'password',
     },
   ];
+
   readonly callback: AuthCallback = async <T>(formEntries: FormEntries): ActionResult<T> => {
-    console.log(formEntries);
+    // console.log(formEntries);
+
     await new Promise((resolve) => setTimeout(resolve, 1500));
-    // return {
-    //   success: false,
-    //   errors: ['Invalid credentials. Please try again.'],
-    // };
+
+    if (formEntries['accountId'] === 'ACT-1001') {
+      return {
+        success: false,
+        errors: ['Invalid credentials. Please try again.'],
+      };
+    }
+
+    await this.authService.login(formEntries as any);
+
     return {
       success: true,
       redirect: '/dashboard',
