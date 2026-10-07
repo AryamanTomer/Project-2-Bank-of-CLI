@@ -9,6 +9,7 @@ import { Label } from '../../../shared/components/label/label';
 import { LoadingRow } from '../../../shared/components/loading-row/loading-row';
 import { CdkMenu, CdkMenuItem, CdkMenuTrigger } from '@angular/cdk/menu';
 import { ConnectedPosition } from '@angular/cdk/overlay';
+import { HttpClient } from '@angular/common/http';
 
 interface Transaction {
   id: number;
@@ -53,7 +54,10 @@ export class TransactionTable {
     { originX: 'start', originY: 'bottom', overlayX: 'start', overlayY: 'top', offsetY: 8 },
   ];
 
-  constructor(private cdr: ChangeDetectorRef) {
+  constructor(
+    private readonly cdr: ChangeDetectorRef,
+    private readonly http: HttpClient
+  ) {
     this.loadTransactions();
   }
 
@@ -64,15 +68,18 @@ export class TransactionTable {
   }
 
   loadTransactions(): void {
-    fetch('transactions.json')
-      .then(response => response.json())
-      .then(data => {
+    this.http.get<Transaction[]>('transactions.json').subscribe({
+      next: data => {
         this.transactions = data;
         this.filteredTransactions = data;
         this.updateTable();
 
         this.cdr.detectChanges();
-      });
+      },
+      error: error => {
+        console.error('Failed to load transactions: ', error);
+      }
+    });
   }
 
   updateTable(): void {
