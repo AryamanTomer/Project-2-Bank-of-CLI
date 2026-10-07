@@ -1,5 +1,6 @@
 import { Component, AfterViewInit } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
+import { TransactionTable } from './transaction-table/transaction-table';
 import { Button } from '../../shared/components/button/button';
 import { Card } from '../../shared/components/card/card';
 import { DatePipe } from '@angular/common';
@@ -17,6 +18,7 @@ import {
   standalone: true,
   imports: [
     MatCardModule,
+    TransactionTable,
     Button,
     Card,
     DatePipe,
