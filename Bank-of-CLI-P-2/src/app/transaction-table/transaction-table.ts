@@ -6,7 +6,9 @@ import { Button } from '../shared/components/button/button';
 import { Dropdown } from '../shared/components/dropdown/dropdown';
 import { Input } from '../shared/components/input/input';
 import { Label } from '../shared/components/label/label';
-import { Card } from '../shared/components/card/card';
+import { LoadingRow } from '../shared/components/loading-row/loading-row';
+import { CdkMenu, CdkMenuItem, CdkMenuTrigger } from '@angular/cdk/menu';
+import { ConnectedPosition } from '@angular/cdk/overlay';
 
 interface Transaction {
   id: number;
@@ -18,7 +20,7 @@ interface Transaction {
 }
 
 @Component({
-  imports: [FormsModule, NgIcon, Button, Dropdown, Input, Label, Card],
+  imports: [FormsModule, NgIcon, Button, Dropdown, Input, Label, LoadingRow, CdkMenu, CdkMenuItem, CdkMenuTrigger],
   selector: 'app-transaction-table',
   styleUrl: './transaction-table.css',
   templateUrl: './transaction-table.html',
@@ -40,13 +42,25 @@ export class TransactionTable {
   sortDirection: string = '';
   selectedCategory: string = '';
 
+  // menu values
+  // Tried in order; the CDK uses the first one that fits on screen
+  menuPositions: ConnectedPosition[] = [
+    // Left of the button, top edges aligned
+    { originX: 'start', originY: 'top', overlayX: 'end', overlayY: 'top', offsetX: -8 },
+    // Below, right edges aligned
+    { originX: 'end', originY: 'bottom', overlayX: 'end', overlayY: 'top', offsetY: 8 },
+    // Below, left edges aligned (mobile, where the button wraps to the left)
+    { originX: 'start', originY: 'bottom', overlayX: 'start', overlayY: 'top', offsetY: 8 },
+  ];
+
   constructor(private cdr: ChangeDetectorRef) {
     this.loadTransactions();
   }
 
+  // loading values
+  loadingRows = Array.from({ length: this.rowsPerPage });
   dataLoading(): boolean {
-    // return this.transactions.length === 0;
-    return true;
+    return this.transactions.length === 0;
   }
 
   loadTransactions(): void {

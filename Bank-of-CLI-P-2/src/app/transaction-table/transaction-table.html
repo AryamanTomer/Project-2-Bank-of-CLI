@@ -1,10 +1,31 @@
+<!-- FIXME: ^^ popup for transaction options -->
 <div class="transaction-table-container">
   <div id="transaction-table-title">
     <h1
     class="text-2xl font-semibold"
     >Recent Transactions</h1>
-    <app-button type="button" [disabled]="false">Make Transactions</app-button>
-    <!-- FIXME: ^^ popup for transaction options -->
+    <!-- <app-button
+      type="button"
+      [disabled]="false"
+    >
+      Make Transactions
+    </app-button> -->
+    <app-button
+  type="button"
+  [disabled]="false"
+  [cdkMenuTriggerFor]="transactionMenu"
+  [cdkMenuPosition]="menuPositions"
+>
+  Make Transactions
+</app-button>
+<ng-template #transactionMenu>
+  <div cdkMenu class="transaction-menu">
+    <button cdkMenuItem >Deposit</button>
+    <button cdkMenuItem >Withdraw</button>
+    <button cdkMenuItem >Transfer</button>
+  </div>
+</ng-template>
+
   </div>
 
   <form id="transaction-table-form">
@@ -12,12 +33,14 @@
       inputId="search-transactions"
       name="search-transactions"
       type="search"
+      class="w-full"
       placeholder="Search Transactions..."
       [(value)]="searchString"
       (valueChange)="applyFiltersAndSort()"
     />
 
     <app-dropdown
+      class="w-full sm:w-fit"
       [options]="['Date', 'Category', 'Destination', 'Status', 'Amount']"
       placeHolder="Order by..."
       [(value)]="orderBy"
@@ -25,6 +48,7 @@
     />
 
     <app-dropdown
+      class="w-full sm:w-fit"
       [options]="['Asc', 'Dsc']"
       placeHolder="Sort Order"
       [(value)]="sortDirection"
@@ -32,6 +56,7 @@
     />
 
     <app-dropdown
+      class="w-full sm:w-fit"
       [options]="['Deposit', 'Withdraw', 'Transfer']"
       placeHolder="All categories"
       [(value)]="selectedCategory"
@@ -39,59 +64,62 @@
     />
   </form>
 
-  <!-- FIXME: loading - implement custom loading screen -->
-  <app-card [loading]="dataLoading()">
-    <table id="transaction-table">
-      <thead>
-        <tr id="transaction-table-header">
-          <th>Date/Time</th>
-          <th>Category</th>
-          <th>Destination</th>
-          <th>Status</th>
-          <th>Amount</th>
-        </tr>
-      </thead>
+  <table id="transaction-table">
+    <thead>
+      <tr id="transaction-table-header">
+        <th>Date/Time</th>
+        <th>Category</th>
+        <th>Destination</th>
+        <th>Status</th>
+        <th>Amount</th>
+      </tr>
+    </thead>
 
-      <tbody id="transaction-table-body">
+    <tbody id="transaction-table-body">
+      @if (dataLoading()) {
+        @for (_ of loadingRows; track $index) {
+          <tr app-loading-row></tr>
+        }
+      } @else {
         @for (transaction of tableData; track transaction.id) {
           <tr>
-            <td>{{ transaction.date }}</td>
-            <td>{{ transaction.category }}</td>
-            <td>{{ transaction.destination }}</td>
-            <td>
+            <td data-label="Date/Time">{{ transaction.date }}</td>
+            <td data-label="Category">{{ transaction.category }}</td>
+            <td data-label="Destination">{{ transaction.destination }}</td>
+            <td data-label="Status">
               <app-label [status]=transaction.status />
             </td>
-            <td>${{ transaction.amount.toFixed(2) }}</td>
+            <td data-label="Amount">${{ transaction.amount.toFixed(2) }}</td>
           </tr>
         } @empty {
           <tr>
-            <td colspan="5">No data available.</td>
+            <td colspan="5" class="empty-cell">No data available.</td>
           </tr>
         }
-      </tbody>
-    </table>
+      }
+    </tbody>
+  </table>
 
-    <div id="pagination">
-      <span>
-        Page {{ currentPage }} of {{ totalPages }}
-      </span>
-      <div id="pagination-buttons">
-        <button
-          id="prev-button"
-          class="clickable"
-          (click)="previousPage()"
-          [disabled]="currentPage === 1">
-          <ng-icon name="matChevronLeftFillOutline"></ng-icon>
-        </button>
+  <div id="pagination">
+    <span>
+      Page {{ currentPage }} of {{ totalPages }}
+    </span>
+    <div id="pagination-buttons">
+      <button
+        id="prev-button"
+        class="clickable"
+        (click)="previousPage()"
+        [disabled]="currentPage === 1">
+        <ng-icon name="matChevronLeftFillOutline"></ng-icon>
+      </button>
 
-        <button
-          id="next-button"
-          class="clickable"
-          (click)="nextPage()"
-          [disabled]="currentPage === totalPages">
-          <ng-icon name="matChevronRightFillOutline"></ng-icon>
-        </button>
-      </div>
+      <button
+        id="next-button"
+        class="clickable"
+        (click)="nextPage()"
+        [disabled]="currentPage === totalPages">
+        <ng-icon name="matChevronRightFillOutline"></ng-icon>
+      </button>
     </div>
-  </app-card>
+  </div>
 </div>

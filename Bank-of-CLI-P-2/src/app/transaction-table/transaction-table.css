@@ -22,12 +22,6 @@
   min-width: 0;
 }
 
-#transaction-table-form input, #transaction-table-form select{
-  box-sizing: border-box;
-  padding: 1vw;
-  border-radius: 1vw;
-}
-
 #pagination {
   display: flex;
   align-items: center;
@@ -93,3 +87,112 @@ tbody td {
 tbody tr + tr {
   border-top: 1px solid #ddd;
 }
+
+/* mobile: stack each transaction into a card */
+@media (max-width: 640px) {
+  .transaction-table-container {
+    padding: 16px;
+  }
+
+  #transaction-table-title {
+    flex-wrap: wrap;
+    gap: 12px;
+    padding-bottom: 16px;
+  }
+
+  /* one control per row */
+  #transaction-table-form {
+    flex-direction: column;
+    gap: 8px;
+    padding-bottom: 16px;
+  }
+
+  #transaction-table-form app-input,
+  #transaction-table-form app-dropdown {
+    width: 100%;
+  }
+
+  #transaction-table thead {
+    display: none;
+  }
+
+  #transaction-table,
+  #transaction-table tbody,
+  #transaction-table tbody tr {
+    display: block;
+    width: 100%;
+  }
+
+  #transaction-table tbody tr {
+    padding: 12px 0;
+  }
+
+  tbody tr + tr {
+    border-top: 1px solid #ddd;
+  }
+
+  #transaction-table tbody td {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 4px 0;
+    text-align: right;
+  }
+
+  #transaction-table tbody td::before {
+    content: attr(data-label);
+    font-weight: 500;
+    color: #6b7280;
+    text-align: left;
+  }
+
+  #transaction-table tbody td.empty-cell {
+    justify-content: center;
+    padding: 16px 0;
+  }
+
+  #transaction-table tbody td.empty-cell::before {
+    content: none;
+  }
+
+  #pagination {
+    padding-top: 16px;
+  }
+
+  #pagination-buttons {
+    gap: 12px;
+  }
+
+  /* 40px keeps the buttons a comfortable tap target */
+  #prev-button, #next-button {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+/* make transactions menu */
+.transaction-menu {
+  display: flex;
+  flex-direction: column;
+  min-width: 160px;
+  padding: 6px;
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+.transaction-menu button {
+  padding: 10px 12px;
+  border-radius: 8px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.transaction-menu button:hover,
+.transaction-menu button:focus-visible {
+  /* hardcoded to be the same as the dropdown chips */
+  background-color: #e9d5ff;
+  outline: none;
+}
+
