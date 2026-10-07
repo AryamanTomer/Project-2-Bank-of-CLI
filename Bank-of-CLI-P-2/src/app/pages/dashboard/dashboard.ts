@@ -1,40 +1,31 @@
-import { Component, AfterViewInit } from '@angular/core';
+import { DatePipe } from '@angular/common';
+import { AfterViewInit, Component } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
-import { TransactionTable } from './transaction-table/transaction-table';
 import { Button } from '../../shared/components/button/button';
 import { Card } from '../../shared/components/card/card';
-import { DatePipe } from '@angular/common';
+import { TransactionTable } from './transaction-table/transaction-table';
 
 import Chart from 'chart.js/auto';
 
 import { NgIcon, provideIcons } from '@ng-icons/core';
-import {
-  matMoneyBagFillOutline,
-  matSavingsFillOutline
-} from '@ng-icons/material-symbols/outline';
+import { matMoneyBagFillOutline, matSavingsFillOutline } from '@ng-icons/material-symbols/outline';
+import { matAddCircleRound } from '@ng-icons/material-symbols/round';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [
-    MatCardModule,
-    TransactionTable,
-    Button,
-    Card,
-    DatePipe,
-    NgIcon
-  ],
+  imports: [MatCardModule, TransactionTable, Button, Card, DatePipe, NgIcon],
   providers: [
     provideIcons({
       matMoneyBagFillOutline,
-      matSavingsFillOutline
-    })
+      matSavingsFillOutline,
+      matAddCircleRound,
+    }),
   ],
   styleUrl: './dashboard.css',
   templateUrl: './dashboard.html',
 })
 export class Dashboard implements AfterViewInit {
-
   cardholderName = 'John Doe';
   cardNumber = '4827 1938 6274 9183';
   expirationDate = '08/30';
@@ -67,9 +58,9 @@ export class Dashboard implements AfterViewInit {
 
             // Actual dot
             pointBackgroundColor: '#C3A9E9',
-            pointHoverRadius: 7
-          }
-        ]
+            pointHoverRadius: 7,
+          },
+        ],
       },
 
       options: {
@@ -78,8 +69,8 @@ export class Dashboard implements AfterViewInit {
 
         plugins: {
           legend: {
-            display: false
-          }
+            display: false,
+          },
         },
 
         scales: {
@@ -90,19 +81,19 @@ export class Dashboard implements AfterViewInit {
             ticks: {
               stepSize: yAxis.step,
 
-              callback: function(value) {
+              callback: function (value) {
                 const amount = Number(value);
 
                 if (amount >= 1000) {
-                  return '$' + (amount / 1000) + 'k';
+                  return '$' + amount / 1000 + 'k';
                 }
 
                 return '$' + amount;
-              }
-            }
-          }
-        }
-      }
+              },
+            },
+          },
+        },
+      },
     });
   }
 
@@ -110,15 +101,9 @@ export class Dashboard implements AfterViewInit {
     const months: string[] = [];
 
     for (let i = 4; i >= 0; i--) {
-      const date = new Date(
-        this.currentDate.getFullYear(),
-        this.currentDate.getMonth() - i,
-        1
-      );
+      const date = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth() - i, 1);
 
-      months.push(
-        date.toLocaleString('en-US', { month: 'short' })
-      );
+      months.push(date.toLocaleString('en-US', { month: 'short' }));
     }
 
     return months;
@@ -140,7 +125,7 @@ export class Dashboard implements AfterViewInit {
     return {
       min,
       max,
-      step
+      step,
     };
   }
 }

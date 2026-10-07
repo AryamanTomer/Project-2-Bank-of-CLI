@@ -17,11 +17,11 @@ export class ToastService {
     setTimeout(() => this.dismiss(id), duration);
   }
 
-  success(message: string) {
-    this.show(message, 'success');
+  success(message: string, duration = 3000) {
+    this.show(message, 'success', duration);
   }
-  error(message: string) {
-    this.show(message, 'error');
+  error(message: string, duration = 3000) {
+    this.show(message, 'error', duration);
   }
 
   dismiss(id: number) {
