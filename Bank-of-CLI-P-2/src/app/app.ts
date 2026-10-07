@@ -25,7 +25,7 @@ export class App {
   protected readonly showNavbar = toSignal(
     this.router.events.pipe(
       filter((e) => e instanceof NavigationEnd),
-      map((e) => !['/login', '/register'].some((p) => e.urlAfterRedirects.startsWith(p))),
+      map((e) => !['/login', '/register','/not-found'].some((p) => e.urlAfterRedirects.startsWith(p))),
     ),
     { initialValue: false },
   );

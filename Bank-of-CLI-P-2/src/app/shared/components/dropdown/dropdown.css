@@ -1,0 +1,7 @@
+select {
+  border-radius: 0.75rem;
+  padding: 1em 1.25em;
+  font-size: var(--step-0);
+  background: var(--primary-white-80);
+  border-right: 1.25em solid transparent; /* Pad the default chevron */
+}

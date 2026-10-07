@@ -9,11 +9,11 @@
 
 .card {
   display: grid;
-  min-height: 45rem;
-  grid-template-columns: 1fr 2fr;
+  min-height: 40rem;
+  grid-template-columns: 10fr 20fr;
   border-radius: 2rem;
   background: white;
-  max-width: 75rem;
+  max-width: 70rem;
   margin: 0 auto;
   box-shadow: 0 0 2.5rem 1rem var(--primary-white-90);
   padding: 1rem;
@@ -28,7 +28,7 @@
   border-radius: 1rem;
   background: url('/assets/auth/mesh-desktop.png');
   background-size: cover;
-  padding: var(--space-l);
+  padding: var(--space-m);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -38,35 +38,43 @@
   }
 
   h2 {
-    font-size: var(--step-3);
+    font-size: var(--step-2);
     font-weight: 400;
     color: white;
-    margin-bottom: var(--space-m);
+    margin-bottom: var(--space-xs);
   }
 
   h3 {
-    font-size: var(--step-6);
-    font-weight: 600;
-    line-height: 1.3em;
+    font-size: var(--step-5);
+    font-weight: 550;
+    line-height: 1.4em;
     color: white;
+    padding-right: var(--space-l);
+    text-wrap: pretty;
   }
 }
 
 .right {
   max-width: 35rem;
   margin: 0 auto;
-  padding: var(--space-2xl) var(--space-xl);
+  padding: var(--space-2xl) var(--space-2xl);
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
 
+@media screen and (max-width: 1440px) {
+  .card {
+    grid-template-columns: 11fr 20fr;
+  }
+}
+
 @media screen and (max-width: 1280px) {
   .card {
-    grid-template-columns: 6fr 10fr;
+    grid-template-columns: 12fr 20fr;
   }
   .wrapper {
-    padding: 0 var(--space-3xl);
+    padding: 0 var(--space-4xl);
   }
 }
 
@@ -82,6 +90,8 @@
     max-width: 35rem;
     grid-template-columns: auto;
     box-shadow: none;
+    border-radius: 1rem;
+    padding: 0;
   }
 
   .left {
@@ -95,6 +105,18 @@
   }
 
   .right {
-    padding: 0;
+    padding: 0 var(--space-l);
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .right {
+    padding: 0 var(--space-m);
+  }
+}
+
+@media screen and (max-width: 320px) {
+  .right {
+    padding: 0 var(--space-s);
   }
 }
