@@ -2,11 +2,11 @@ import { ChangeDetectorRef, Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { matChevronLeftFillOutline, matChevronRightFillOutline } from '@ng-icons/material-symbols/outline';
 import { NgIcon, provideIcons } from '@ng-icons/core';
-import { Button } from '../shared/components/button/button';
-import { Dropdown } from '../shared/components/dropdown/dropdown';
-import { Input } from '../shared/components/input/input';
-import { Label } from '../shared/components/label/label';
-import { LoadingRow } from '../shared/components/loading-row/loading-row';
+import { Button } from '../../../shared/components/button/button';
+import { Dropdown } from '../../../shared/components/dropdown/dropdown';
+import { Input } from '../../../shared/components/input/input';
+import { Label } from '../../../shared/components/label/label';
+import { LoadingRow } from '../../../shared/components/loading-row/loading-row';
 import { CdkMenu, CdkMenuItem, CdkMenuTrigger } from '@angular/cdk/menu';
 import { ConnectedPosition } from '@angular/cdk/overlay';
 

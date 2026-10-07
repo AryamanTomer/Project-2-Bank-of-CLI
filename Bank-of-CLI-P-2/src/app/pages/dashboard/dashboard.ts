@@ -1,6 +1,6 @@
 import { Component, AfterViewInit } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
-import { TransactionTable } from '../../transaction-table/transaction-table';
+import { TransactionTable } from './transaction-table/transaction-table';
 
 import Chart from 'chart.js/auto';
 
