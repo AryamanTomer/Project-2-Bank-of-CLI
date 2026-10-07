@@ -16,7 +16,7 @@ export type InputType = 'text' | 'password' | 'search';
 export class Input {
   class = input('');
   type = input<InputType>('text');
-  label = input<string>('text');
+  placeholder = input<string | undefined>('');
   inputId = input.required<string>();
   name = input('');
   value = model('');

@@ -1,24 +1,25 @@
 <div class="transaction-table-container">
   <div id="transaction-table-title">
-    <h1
-    class="text-2xl font-semibold"
-    >Recent Transactions</h1>
+    <h1 class="text-2xl font-semibold">Recent Transactions</h1>
     <app-button
+      class="new-transaction-button"
       type="button"
       [disabled]="false"
       [cdkMenuTriggerFor]="transactionMenu"
       [cdkMenuPosition]="menuPositions"
     >
-      Make Transactions
+      <div class="flex justify-center items-center gap-3">
+        <span>New Transaction</span>
+        <ng-icon name="matAddCircleRound" size="20" class="pointer-events-none" />
+      </div>
     </app-button>
-<ng-template #transactionMenu>
-  <div cdkMenu class="transaction-menu">
-    <button cdkMenuItem >Deposit</button>
-    <button cdkMenuItem >Withdraw</button>
-    <button cdkMenuItem >Transfer</button>
-  </div>
-</ng-template>
-
+    <ng-template #transactionMenu>
+      <div cdkMenu class="transaction-menu">
+        <button cdkMenuItem>Deposit</button>
+        <button cdkMenuItem>Withdraw</button>
+        <button cdkMenuItem>Transfer</button>
+      </div>
+    </ng-template>
   </div>
 
   <form id="transaction-table-form">
@@ -33,7 +34,7 @@
     />
 
     <app-dropdown
-      class="w-full sm:w-fit"
+      class="w-full sm:w-fit min-h-full"
       [options]="['Date', 'Category', 'Destination', 'Status', 'Amount']"
       placeHolder="Order by..."
       [(value)]="orderBy"
@@ -41,7 +42,7 @@
     />
 
     <app-dropdown
-      class="w-full sm:w-fit"
+      class="w-full sm:w-fit min-h-full"
       [options]="['Asc', 'Dsc']"
       placeHolder="Sort Order"
       [(value)]="sortDirection"
@@ -49,7 +50,7 @@
     />
 
     <app-dropdown
-      class="w-full sm:w-fit"
+      class="w-full sm:w-fit min-h-full"
       [options]="['Deposit', 'Withdraw', 'Transfer']"
       placeHolder="All categories"
       [(value)]="selectedCategory"
@@ -80,7 +81,7 @@
             <td data-label="Category">{{ transaction.category }}</td>
             <td data-label="Destination">{{ transaction.destination }}</td>
             <td data-label="Status">
-              <app-label [status]=transaction.status />
+              <app-label [status]="transaction.status" />
             </td>
             <td data-label="Amount">${{ transaction.amount.toFixed(2) }}</td>
           </tr>
@@ -94,15 +95,14 @@
   </table>
 
   <div id="pagination">
-    <span>
-      Page {{ currentPage }} of {{ totalPages }}
-    </span>
+    <span> Page {{ currentPage }} of {{ totalPages }} </span>
     <div id="pagination-buttons">
       <button
         id="prev-button"
         class="clickable"
         (click)="previousPage()"
-        [disabled]="currentPage === 1">
+        [disabled]="currentPage === 1"
+      >
         <ng-icon name="matChevronLeftFillOutline"></ng-icon>
       </button>
 
@@ -110,7 +110,8 @@
         id="next-button"
         class="clickable"
         (click)="nextPage()"
-        [disabled]="currentPage === totalPages">
+        [disabled]="currentPage === totalPages"
+      >
         <ng-icon name="matChevronRightFillOutline"></ng-icon>
       </button>
     </div>

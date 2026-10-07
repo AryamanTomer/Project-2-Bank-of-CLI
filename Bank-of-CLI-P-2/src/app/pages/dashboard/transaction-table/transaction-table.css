@@ -37,15 +37,13 @@
   gap: 2vw;
 }
 
-#prev-button, #next-button {
+#prev-button,
+#next-button {
   width: 3vw;
   height: 3vw;
   padding: 0;
   border-radius: 50%;
-
-  /* hardcoded to be the same as the dropdown chips */
-  background-color: #e9d5ff;
-
+  background: var(--primary-white-80);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -65,18 +63,16 @@ thead th {
   text-align: left;
   padding: 12px 16px;
   font-weight: normal;
-
-  /* hardcoded to be the same as the dropdown chips */
-  background-color: #e9d5ff;
+  background: var(--primary-white-80);
 }
 
 /* Round the top-left and top-right corners */
 thead th:first-child {
-  border-radius: 1vw 0 0 1vw;
+  border-radius: 0.75em 0 0 0.75em;
 }
 
 thead th:last-child {
-  border-radius: 0 1vw 1vw 0;
+  border-radius: 0 0.75em 0.75em 0;
 }
 
 tbody td {
@@ -165,7 +161,8 @@ tbody tr + tr {
   }
 
   /* 40px keeps the buttons a comfortable tap target */
-  #prev-button, #next-button {
+  #prev-button,
+  #next-button {
     width: 40px;
     height: 40px;
   }
@@ -191,8 +188,6 @@ tbody tr + tr {
 
 .transaction-menu button:hover,
 .transaction-menu button:focus-visible {
-  /* hardcoded to be the same as the dropdown chips */
-  background-color: #e9d5ff;
+  background: var(--primary-white-80);
   outline: none;
 }
-
