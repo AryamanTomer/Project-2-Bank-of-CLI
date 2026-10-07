@@ -1,3 +1,19 @@
+:host ::ng-deep .top-section > app-card > div,
+:host ::ng-deep .analytics-section > app-card > div {
+  height: 100%;
+  box-sizing: border-box;
+}
+
+:host ::ng-deep .top-section > app-card.welcome-card > div {
+  padding: var(--space-2xl);
+}
+
+:host ::ng-deep app-card.stat-card > div {
+  background-color: rgb(240, 240, 240);
+  border: none;
+  box-shadow: none;
+}
+
 .dashboard {
   padding: var(--space-xl);
   max-width: 1400px;
@@ -6,15 +22,12 @@
 
 .top-section {
   display: grid;
-  grid-template-columns: 2fr 1fr;
+  grid-template-columns: 2fr auto;
   gap: var(--space-m);
+  align-items: stretch;
 }
 
 /* Welcome */
-
-.welcome-card {
-  padding: var(--space-2xl);
-}
 
 .date-badge {
   display: inline-block;
@@ -22,13 +35,13 @@
   background: var(--primary-white-80);
   color: var(--primary);
 
-  padding: 6px 10px;
+  padding: 0.5em 1em;
   border-radius: 6px;
 
   font-size: var(--step--2);
   font-weight: 600;
 
-  margin-bottom: 20px;
+  margin-bottom: var(--space-m);
 }
 
 .welcome-card h1 {
@@ -38,6 +51,7 @@
 
 .welcome-card p {
   color: #777;
+  font-size: var(--step-0);
   margin: var(--space-2xs) 0 var(--space-m);
 }
 
@@ -56,6 +70,7 @@
 
 .balance-label {
   color: #777;
+  font-size: var(--step-0);
 }
 
 /* Bank card */
@@ -107,7 +122,7 @@
   border-radius: 18px;
 
     background: linear-gradient(
-    to right,
+    45deg,
     oklch(from var(--primary) l c calc(h - 20)),
     oklch(from var(--primary) l c calc(h + 20))
   );
@@ -138,7 +153,6 @@
 .monthly-summary {
   width: 100%;
   max-width: 400px;
-  height: 100%;
 }
 
 /* Holds Income + Spending */
@@ -156,14 +170,10 @@
   max-width: 150px;
 
   aspect-ratio: 1 / 1;
-
-  background: #F6F6F6;
-
   border: none;
   box-shadow: none;
   border-radius: 20px;
 }
-
 
 /* Income / Spending + icon */
 .stat-header {
@@ -178,7 +188,6 @@
   font-weight: 500;
 }
 
-
 /* Circle around icon */
 .stat-icon {
   width: 32px;
@@ -190,12 +199,11 @@
 
   border-radius: 50%;
 
-  background: #DEDEDE;
+  background: #dedede;
   color: black;
 
   font-weight: 700;
 }
-
 
 /* Amount + percentage */
 .stat-bottom {
@@ -207,7 +215,6 @@
   font-weight: 600;
   margin-bottom: var(--space-xs);
 }
-
 
 /* Percentage pills */
 .change {
@@ -233,6 +240,7 @@
 .balance-text {
   font-size: var(--step-7);
   font-weight: 700;
+  margin-bottom: var(--space-s);
 }
 
 /* Chart */
@@ -245,14 +253,6 @@
   position: relative;
   height: 250px;
   width: 100%;
-}
-
-.balance-history-card {
-  min-height: 300px;
-}
-
-.balance-history-card h2 {
-  margin-bottom: var(--space-s);
 }
 
 .chart {
@@ -275,7 +275,6 @@
 /* Responsive */
 
 @media (max-width: 900px) {
-
   .top-section,
   .analytics-section {
     grid-template-columns: 1fr;
@@ -299,5 +298,14 @@
 @media (max-width: 600px) {
   .dashboard {
     padding: var(--space-m);
+  }
+
+  .balance-card {
+    min-width: 0;
+  }
+
+  .bank-card {
+    width: 100%;
+    max-width: 360px;
   }
 }

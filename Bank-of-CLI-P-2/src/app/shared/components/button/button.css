@@ -54,10 +54,10 @@
       oklch(from var(--primary) l c calc(h + 20))
     );
     color: white;
-    font-weight: 600;
+    font-weight: 550;
     font-size: var(--step-1);
-    padding: 0.75em 1em;
-    border-radius: 0.75rem;
+    padding: 0.75em 1.75em;
+    border-radius: 0.75em;
     transition:
       outline 0.3s ease,
       filter 0.3s ease;

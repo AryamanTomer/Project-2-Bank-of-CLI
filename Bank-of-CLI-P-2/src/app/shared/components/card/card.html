@@ -5,11 +5,11 @@
     <div class="h-4 w-5/6 rounded bg-gray-200"></div>
   </div>
 } @else {
-  <div>
+  <div [class]="classes()">
     <ng-content />
   </div>
 } -->
 
-<div [appLoadingSkeleton]="loading()">
+<div [class]="classes()" [appLoadingSkeleton]="loading()">
   <ng-content />
 </div>
