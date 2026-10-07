@@ -6,7 +6,7 @@
       <span class="date-badge">
         {{ currentDate | date: 'EEE, MMM d' }}
       </span>
-      <h1>Welcome back, John.</h1>
+      <h1>Welcome back, {{ account()?.accountName }}.</h1>
       <p>Stay on top of your account activity and transactions.</p>
       <app-button class="new-transaction-button">
         <div class="flex justify-center items-center gap-3">
@@ -19,7 +19,7 @@
     <!-- Total Balance -->
     <app-card class="balance-card">
       <p class="balance-label">Total Balance</p>
-      <h2>$12,450.00</h2>
+      <h2>${{ account()?.balance.toFixed(2) }}</h2>
       <mat-card class="bank-card">
         <div class="card-top">
           <span>BANK OF CLI</span>

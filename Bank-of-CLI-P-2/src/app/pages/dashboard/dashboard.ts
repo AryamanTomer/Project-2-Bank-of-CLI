@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { AfterViewInit, Component } from '@angular/core';
+import { AfterViewInit, Component, inject, computed } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { Button } from '../../shared/components/button/button';
 import { Card } from '../../shared/components/card/card';
@@ -10,6 +10,7 @@ import Chart from 'chart.js/auto';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { matMoneyBagFillOutline, matSavingsFillOutline } from '@ng-icons/material-symbols/outline';
 import { matAddCircleRound } from '@ng-icons/material-symbols/round';
+import { BankService } from '../../service/bank';
 
 @Component({
   selector: 'app-dashboard',
@@ -26,11 +27,17 @@ import { matAddCircleRound } from '@ng-icons/material-symbols/round';
   templateUrl: './dashboard.html',
 })
 export class Dashboard implements AfterViewInit {
+  private readonly bank = inject(BankService);
   cardholderName = 'John Doe';
   cardNumber = '4827 1938 6274 9183';
   expirationDate = '08/30';
 
   currentDate = new Date();
+
+  protected readonly account = computed(() => {
+    const id = this.bank.currentAccountId();
+    return id ? this.bank.getAccount(id) : undefined;
+  })
 
   ngAfterViewInit(): void {
     const yAxis = this.getYAxisRange();

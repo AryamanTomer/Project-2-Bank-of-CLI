@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { AuthPage } from '../../shared/components/auth-page/auth-page';
 import {
   ActionResult,
@@ -6,6 +6,7 @@ import {
   AuthFields,
   FormEntries,
 } from '../../shared/components/auth/auth';
+import { BankService } from '../../service/bank';
 
 @Component({
   imports: [AuthPage],
@@ -14,6 +15,7 @@ import {
   templateUrl: './login-page.html',
 })
 export class LoginPage {
+  private readonly bank = inject(BankService);
   readonly heading = 'Account Login';
   readonly description =
     'Welcome back! Please enter your login credentials to access your secure account dashboard.';
@@ -40,6 +42,16 @@ export class LoginPage {
     //   success: false,
     //   errors: ['Invalid credentials. Please try again.'],
     // };
+    const error = this.bank.login(
+      String(formEntries['accountId'] ?? ''),
+      String(formEntries['accountPin'] ?? ''),
+    );
+    if (error) {
+      return {
+        success: false,
+        errors: [error],
+      };
+    }
     return {
       success: true,
       redirect: '/dashboard',

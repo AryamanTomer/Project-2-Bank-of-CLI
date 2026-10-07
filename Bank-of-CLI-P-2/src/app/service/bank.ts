@@ -1,6 +1,7 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Account } from '../models/Account.model';
+
 
 interface AccountRecord {
     accountId: string;
@@ -12,6 +13,9 @@ interface AccountRecord {
 
 @Injectable({ providedIn: 'root'})
 export class BankService {
+
+    readonly currentAccountId = signal<string | null>(null);
+
     private accounts = new Map<string, AccountRecord>();
 
     constructor(private readonly http: HttpClient) {}
@@ -38,5 +42,28 @@ export class BankService {
         if(!record) return undefined;
 
         return { ...record, dateCreated: new Date(record.dateCreated) };
+    }
+
+    login(accountId: string, accountPin: string): string {
+        const account = this.getAccount(accountId);
+        if(!account || account.accountPin !== accountPin) {
+            return 'Invalid credentials. Please try again, your account may not exist.';
+        }
+        this.currentAccountId.set(accountId);
+        return '';
+    }
+
+    register(accountId: string, accountPin: string, accountName: string): string {
+        if(this.accounts.has(accountId)) {
+            return 'Account ID already exists. Please try a different account ID.';
+        }
+        this.accounts.set(accountId, {
+            accountId,
+            accountPin,
+            accountName,
+            balance: 0,
+            dateCreated: new Date().toISOString(),
+        });
+        return '';
     }
 }
