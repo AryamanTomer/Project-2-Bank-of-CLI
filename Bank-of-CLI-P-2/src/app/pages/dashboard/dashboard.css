@@ -1,3 +1,19 @@
+:host ::ng-deep .top-section > app-card > div,
+:host ::ng-deep .analytics-section > app-card > div {
+  height: 100%;
+  box-sizing: border-box;
+}
+
+:host ::ng-deep .top-section > app-card.welcome-card > div {
+  padding: var(--space-2xl);
+}
+
+:host ::ng-deep app-card.stat-card > div {
+  background-color: rgb(240, 240, 240);
+  border: none;
+  box-shadow: none;
+}
+
 .dashboard {
   padding: var(--space-xl);
   max-width: 1400px;
@@ -8,13 +24,10 @@
   display: grid;
   grid-template-columns: 2fr 1fr;
   gap: var(--space-m);
+  align-items: stretch;
 }
 
 /* Welcome */
-
-.welcome-card {
-  padding: var(--space-2xl);
-}
 
 .date-badge {
   display: inline-block;
@@ -138,7 +151,6 @@
 .monthly-summary {
   width: 100%;
   max-width: 400px;
-  height: 100%;
 }
 
 /* Holds Income + Spending */
@@ -156,9 +168,6 @@
   max-width: 150px;
 
   aspect-ratio: 1 / 1;
-
-  background: #F6F6F6;
-
   border: none;
   box-shadow: none;
   border-radius: 20px;
@@ -233,6 +242,7 @@
 .balance-text {
   font-size: var(--step-7);
   font-weight: 700;
+  margin-bottom: var(--space-s);
 }
 
 /* Chart */
@@ -245,14 +255,6 @@
   position: relative;
   height: 250px;
   width: 100%;
-}
-
-.balance-history-card {
-  min-height: 300px;
-}
-
-.balance-history-card h2 {
-  margin-bottom: var(--space-s);
 }
 
 .chart {
