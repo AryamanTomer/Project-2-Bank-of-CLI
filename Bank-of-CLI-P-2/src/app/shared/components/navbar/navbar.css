@@ -195,6 +195,9 @@
 
 .dropdown-link {
   display: block;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
   padding: 0.375rem 1rem;
   color: #000;
 }

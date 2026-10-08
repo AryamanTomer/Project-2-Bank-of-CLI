@@ -1,22 +1,14 @@
-import { Component, inject, signal } from '@angular/core';
+﻿import { Component, inject, signal } from '@angular/core';
 import { ToastService } from '../../service/toast';
-import { MatDialog } from '@angular/material/dialog';
-import { PopUp } from '../../shared/components/pop-up/pop-up';
-import { InputPopUp } from '../../shared/components/input-pop-up/input-pop-up';
+import { TransactionFlow } from '../../service/transaction-flow';
+import { TransactionType } from '../../models/TransactionType.model';
 import { Button } from '../../shared/components/button/button';
 import { Card } from '../../shared/components/card/card';
 import { Dropdown } from '../../shared/components/dropdown/dropdown';
 import { Input } from '../../shared/components/input/input';
 import { Label } from '../../shared/components/label/label';
 import { ToastContainer } from '../../shared/components/toast/toast';
-import { Transaction } from '../../models/Transaction.model';
-import { TransactionStatus } from '../../models/TransactionStatus.model';
-import { TransactionType } from '../../models/TransactionType.model';
 import { CdkMenu, CdkMenuItem, CdkMenuTrigger } from '@angular/cdk/menu';
-import { firstValueFrom } from 'rxjs';
-import { LoadingPopUp } from '../../shared/components/loading-pop-up/loading-pop-up';
-import { SucessfulTransactionPopUp } from '../../shared/components/sucessful-transaction-pop-up/sucessful-transaction-pop-up';
-import { ErrorPopUp } from '../../shared/components/error-pop-up/error-pop-up';
 
 // Snippets live here (not in the template) so Angular doesn't parse `{{`, `@` or tags inside them.
 const snippets = {
@@ -301,69 +293,12 @@ export class Docs {
   protected password = signal('');
   protected search = signal('');
 
-  private readonly dialog = inject(MatDialog);
+  private readonly flow = inject(TransactionFlow);
   protected readonly types = TransactionType;
   protected readonly result = signal('No transaction yet.');
 
-  // Input -> (destination check) -> confirm. Back/error-continue return to input; cancel aborts.
-  protected async processTransaction(transactionType: TransactionType): Promise<void> {
-    const tx: Transaction = {
-      transactionId: '',
-      accountId: '001',
-      recipientAccountId: '0001',
-      amount: 0,
-      description: '',
-      transactionType,
-      dateCreated: new Date(),
-      transferId: null,
-      transactionStatus: TransactionStatus.Pending,
-    };
-
-    while (true) {
-      const next = await firstValueFrom(
-        this.dialog
-          .open<InputPopUp, Transaction, boolean>(InputPopUp, { width: '700px', data: tx })
-          .afterClosed(),
-      );
-      if (!next) return;
-
-      if (tx.recipientAccountId !== '0001') {
-        await firstValueFrom(
-          this.dialog
-            .open<ErrorPopUp, { error: string }, boolean>(ErrorPopUp, {
-              width: '700px',
-              data: { error: 'Destination account not found' },
-            })
-            .afterClosed(),
-        );
-        continue;
-      }
-
-      if (!(await this.loading(2000))) continue;
-
-      const confirmed = await firstValueFrom(
-        this.dialog
-          .open<PopUp, Transaction, boolean>(PopUp, { width: 'auto', height: 'auto', data: tx })
-          .afterClosed(),
-      );
-      if (confirmed === undefined) return;
-      if (confirmed) {
-        if (!(await this.loading(3000))) continue;
-        tx.transactionStatus = TransactionStatus.Approved;
-        await firstValueFrom(
-          this.dialog.open(SucessfulTransactionPopUp, { width: '700px', data: tx }).afterClosed(),
-        );
-        this.result.set(JSON.stringify(tx, null, 2));
-        return;
-      }
-    }
-  }
-
-  private async loading(ms: number): Promise<boolean> {
-    const ref = this.dialog.open<LoadingPopUp, void, boolean>(LoadingPopUp, { width: 'auto' });
-    const timer = setTimeout(() => ref.close(true), ms);
-    const done = await firstValueFrom(ref.afterClosed());
-    clearTimeout(timer);
-    return done === true;
+  protected async processTransaction(type: TransactionType): Promise<void> {
+    const tx = await this.flow.run(type);
+    if (tx) this.result.set(JSON.stringify(tx, null, 2));
   }
 }

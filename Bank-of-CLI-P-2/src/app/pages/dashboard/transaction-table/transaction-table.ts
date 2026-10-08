@@ -1,4 +1,4 @@
-import { CdkMenu, CdkMenuItem, CdkMenuTrigger } from '@angular/cdk/menu';
+﻿import { CdkMenu, CdkMenuItem, CdkMenuTrigger } from '@angular/cdk/menu';
 import { ConnectedPosition } from '@angular/cdk/overlay';
 import { ChangeDetectorRef, Component, effect, inject, input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -8,22 +8,14 @@ import {
   matChevronLeftFillOutline,
   matChevronRightFillOutline,
 } from '@ng-icons/material-symbols/outline';
-import { MatDialog } from '@angular/material/dialog';
-import { firstValueFrom } from 'rxjs';
-import { Transaction as BankTransaction } from '../../../models/Transaction.model';
-import { TransactionStatus } from '../../../models/TransactionStatus.model';
 import { TransactionType } from '../../../models/TransactionType.model';
 import { BankService } from '../../../service/bank';
+import { TransactionFlow } from '../../../service/transaction-flow';
 import { Button } from '../../../shared/components/button/button';
 import { Dropdown } from '../../../shared/components/dropdown/dropdown';
-import { ErrorPopUp } from '../../../shared/components/error-pop-up/error-pop-up';
 import { Input } from '../../../shared/components/input/input';
-import { InputPopUp } from '../../../shared/components/input-pop-up/input-pop-up';
 import { Label } from '../../../shared/components/label/label';
-import { LoadingPopUp } from '../../../shared/components/loading-pop-up/loading-pop-up';
 import { LoadingRow } from '../../../shared/components/loading-row/loading-row';
-import { PopUp } from '../../../shared/components/pop-up/pop-up';
-import { SucessfulTransactionPopUp } from '../../../shared/components/sucessful-transaction-pop-up/sucessful-transaction-pop-up';
 
 interface Transaction {
   id: string;
@@ -54,7 +46,7 @@ interface Transaction {
 })
 export class TransactionTable {
   private readonly bank = inject(BankService);
-  private readonly dialog = inject(MatDialog);
+  private readonly flow = inject(TransactionFlow);
   protected readonly types = TransactionType;
 
   transactions: Transaction[] = [];
@@ -199,89 +191,8 @@ export class TransactionTable {
     this.updateTable();
   }
 
-  // Same flow as TransactionPage; the table refreshes itself through bank.revision().
-  protected async processTransaction(transactionType: TransactionType): Promise<void> {
-    const tx: BankTransaction = {
-      transactionId: '',
-      accountId: this.bank.currentAccountId() ?? '',
-      recipientAccountId: this.bank.currentAccountId() ?? '',
-      amount: 0,
-      description: '',
-      transactionType,
-      dateCreated: new Date(),
-      transferId: null,
-      transactionStatus: TransactionStatus.Pending,
-    };
-
-    while (true) {
-      const next = await firstValueFrom(
-        this.dialog
-          .open<InputPopUp, BankTransaction, boolean>(InputPopUp, { width: '700px', data: tx })
-          .afterClosed(),
-      );
-      if (!next) return;
-
-      if (
-        transactionType === TransactionType.TransferOut &&
-        !this.bank.getAccount((tx.recipientAccountId ?? '').trim())
-      ) {
-        await this.showError('Destination account not found');
-        continue;
-      }
-
-      const confirmed = await firstValueFrom(
-        this.dialog
-          .open<PopUp, BankTransaction, boolean>(PopUp, { width: 'auto', height: 'auto', data: tx })
-          .afterClosed(),
-      );
-      if (confirmed === undefined) return;
-      if (!confirmed) continue;
-
-      if (!(await this.showLoading(3000))) continue;
-      const error = this.send(tx);
-      if (error) {
-        await this.showError(error);
-        continue;
-      }
-
-      tx.transactionStatus = TransactionStatus.Approved;
-      await firstValueFrom(
-        this.dialog.open(SucessfulTransactionPopUp, { width: '700px', data: tx }).afterClosed(),
-      );
-      return;
-    }
-  }
-
-  // BankService validates, creates and stores the record; returns '' on success.
-  private send(tx: BankTransaction): string {
-    const note = tx.description ?? '';
-    switch (tx.transactionType) {
-      case TransactionType.Deposit:
-        return this.bank.deposit(tx.amount, note);
-      case TransactionType.Withdraw:
-        return this.bank.withdraw(tx.amount, note);
-      default:
-        return this.bank.transfer(tx.amount, tx.recipientAccountId ?? '', note);
-    }
-  }
-
-  private showError(error: string): Promise<boolean | undefined> {
-    return firstValueFrom(
-      this.dialog
-        .open<ErrorPopUp, { error: string }, boolean>(ErrorPopUp, {
-          width: '700px',
-          data: { error },
-        })
-        .afterClosed(),
-    );
-  }
-
-  private async showLoading(ms: number): Promise<boolean> {
-    const ref = this.dialog.open<LoadingPopUp, void, boolean>(LoadingPopUp, { width: 'auto' });
-    const timer = setTimeout(() => ref.close(true), ms);
-    const done = await firstValueFrom(ref.afterClosed());
-    clearTimeout(timer);
-    return done === true;
+  protected processTransaction(type: TransactionType) {
+    return this.flow.run(type);
   }
 
   previousPage(): void {
