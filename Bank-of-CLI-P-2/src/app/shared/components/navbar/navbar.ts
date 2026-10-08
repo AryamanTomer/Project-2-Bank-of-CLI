@@ -1,15 +1,16 @@
 import { Component, inject, signal } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
-import { lucideLogOut } from '@ng-icons/lucide';
+import { lucideLogOut, lucideMoon, lucideSun } from '@ng-icons/lucide';
 import { AuthService } from '../../../service/auth/auth.service';
 import { BankService } from '../../../service/bank';
+import { ThemeService } from '../../../service/theme';
 import { Logo } from '../logo/logo';
 
 @Component({
   selector: 'app-navbar',
   imports: [RouterLink, RouterLinkActive, Logo, NgIcon],
-  viewProviders: [provideIcons({ lucideLogOut })],
+  viewProviders: [provideIcons({ lucideLogOut, lucideMoon, lucideSun })],
 
   templateUrl: './navbar.html',
   styleUrl: './navbar.css',
@@ -17,6 +18,7 @@ import { Logo } from '../logo/logo';
 export class Navbar {
   private readonly authService = inject(AuthService);
   private readonly bank = inject(BankService);
+  protected readonly theme = inject(ThemeService);
   constructor(private router: Router) {}
 
   protected readonly transactionLinks = [

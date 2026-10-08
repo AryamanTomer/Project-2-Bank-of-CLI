@@ -1,11 +1,17 @@
 import { CdkMenu, CdkMenuItem, CdkMenuTrigger } from '@angular/cdk/menu';
 import { ConnectedPosition } from '@angular/cdk/overlay';
 import { DatePipe } from '@angular/common';
-import { AfterViewInit, Component, computed, DestroyRef, effect, inject } from '@angular/core';
+import { AfterViewInit, Component, computed, DestroyRef, effect, inject, signal } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
-import { RouterLink } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { firstValueFrom } from 'rxjs';
 import { Button } from '../../shared/components/button/button';
 import { Card } from '../../shared/components/card/card';
+import { ErrorPopUp } from '../../shared/components/error-pop-up/error-pop-up';
+import { InputPopUp } from '../../shared/components/input-pop-up/input-pop-up';
+import { LoadingPopUp } from '../../shared/components/loading-pop-up/loading-pop-up';
+import { PopUp } from '../../shared/components/pop-up/pop-up';
+import { SucessfulTransactionPopUp } from '../../shared/components/sucessful-transaction-pop-up/sucessful-transaction-pop-up';
 import { TransactionTable } from './transaction-table/transaction-table';
 
 import Chart from 'chart.js/auto';
@@ -31,7 +37,6 @@ import { BankService } from '../../service/bank';
     CdkMenu,
     CdkMenuItem,
     CdkMenuTrigger,
-    RouterLink,
   ],
   providers: [
     provideIcons({
@@ -42,19 +47,25 @@ import { BankService } from '../../service/bank';
   ],
   styleUrl: './dashboard.css',
   templateUrl: './dashboard.html',
+  host: { '(document:keydown.enter)': 'stopLoading()' }
 })
 export class Dashboard implements AfterViewInit {
   private readonly bank = inject(BankService);
+  private readonly dialog = inject(MatDialog);
+  protected readonly types = TransactionType;
   private chart?: Chart;
+
+  // Tried in order; the CDK uses the first one that fits on screen
+  menuPositions: ConnectedPosition[] = [
+    { originX: 'end', originY: 'bottom', overlayX: 'end', overlayY: 'top', offsetY: 8 },
+    { originX: 'start', originY: 'bottom', overlayX: 'start', overlayY: 'top', offsetY: 8 },
+    { originX: 'start', originY: 'top', overlayX: 'end', overlayY: 'top', offsetX: -8 },
+  ];
   protected readonly accountsLoaded = this.bank.accountsLoaded;
   protected readonly transactionsLoaded = this.bank.transactionsLoaded;
   cardNumber = '4827 1938 6274 9183';
   expirationDate = '08/30';
   currentDate = new Date();
-  menuPositions: ConnectedPosition[] = [
-    { originX: 'end', originY: 'bottom', overlayX: 'end', overlayY: 'top', offsetY: 8 },
-    { originX: 'start', originY: 'bottom', overlayX: 'start', overlayY: 'top', offsetY: 8 },
-  ];
 
   protected readonly account = computed(() => {
     this.bank.revision();
@@ -101,13 +112,30 @@ export class Dashboard implements AfterViewInit {
     return { labels, values };
   });
 
+  // Deliberate 10s loading state; Enter skips it. Still waits on real data.
+  private readonly delayActive = signal(true);
+  private loadingTimer?: ReturnType<typeof setTimeout>;
+  protected readonly isLoading = computed(
+    () => this.delayActive() || !this.accountsLoaded() || !this.transactionsLoaded(),
+  );
+
+  stopLoading(): void {
+    clearTimeout(this.loadingTimer);
+    this.delayActive.set(false);
+  }
+
   constructor() {
-    inject(DestroyRef).onDestroy(() => this.chart?.destroy());
+    inject(DestroyRef).onDestroy(() => {
+      this.chart?.destroy();
+      clearTimeout(this.loadingTimer);
+    });
     effect(() => {
       const history = this.balanceHistory();
       if (!this.chart) return;
       this.applyHistory(history);
     });
+
+    this.loadingTimer = setTimeout(() => this.stopLoading(), 10000);
   }
 
   ngAfterViewInit(): void {
@@ -175,6 +203,92 @@ export class Dashboard implements AfterViewInit {
         },
       },
     });
+  }
+
+  // Input -> (destination check) -> confirm -> bank call. Back/error-continue return to input;
+  // cancel aborts. The dashboard refreshes itself through bank.revision().
+  protected async processTransaction(transactionType: TransactionType): Promise<void> {
+    const tx: Transaction = {
+      transactionId: '',
+      accountId: this.bank.currentAccountId() ?? '',
+      recipientAccountId: this.bank.currentAccountId() ?? '',
+      amount: 0,
+      description: '',
+      transactionType,
+      dateCreated: new Date(),
+      transferId: null,
+      transactionStatus: TransactionStatus.Pending,
+    };
+
+    while (true) {
+      const next = await firstValueFrom(
+        this.dialog
+          .open<InputPopUp, Transaction, boolean>(InputPopUp, { width: '700px', data: tx })
+          .afterClosed(),
+      );
+      if (!next) return;
+
+      if (
+        transactionType === TransactionType.TransferOut &&
+        !this.bank.getAccount((tx.recipientAccountId ?? '').trim())
+      ) {
+        await this.showError('Destination account not found');
+        continue;
+      }
+
+      const confirmed = await firstValueFrom(
+        this.dialog
+          .open<PopUp, Transaction, boolean>(PopUp, { width: 'auto', height: 'auto', data: tx })
+          .afterClosed(),
+      );
+      if (confirmed === undefined) return;
+      if (!confirmed) continue;
+
+      if (!(await this.showLoading(3000))) continue;
+      const error = this.send(tx);
+      if (error) {
+        await this.showError(error);
+        continue;
+      }
+
+      tx.transactionStatus = TransactionStatus.Approved;
+      await firstValueFrom(
+        this.dialog.open(SucessfulTransactionPopUp, { width: '700px', data: tx }).afterClosed(),
+      );
+      return;
+    }
+  }
+
+  // BankService validates, creates and stores the record; returns '' on success.
+  private send(tx: Transaction): string {
+    const note = tx.description ?? '';
+    switch (tx.transactionType) {
+      case TransactionType.Deposit:
+        return this.bank.deposit(tx.amount, note);
+      case TransactionType.Withdraw:
+        return this.bank.withdraw(tx.amount, note);
+      default:
+        return this.bank.transfer(tx.amount, tx.recipientAccountId ?? '', note);
+    }
+  }
+
+  private showError(error: string): Promise<boolean | undefined> {
+    return firstValueFrom(
+      this.dialog
+        .open<ErrorPopUp, { error: string }, boolean>(ErrorPopUp, {
+          width: '700px',
+          data: { error },
+        })
+        .afterClosed(),
+    );
+  }
+
+  private async showLoading(ms: number): Promise<boolean> {
+    const ref = this.dialog.open<LoadingPopUp, void, boolean>(LoadingPopUp, { width: 'auto' });
+    const timer = setTimeout(() => ref.close(true), ms);
+    const done = await firstValueFrom(ref.afterClosed());
+    clearTimeout(timer);
+    return done === true;
   }
 
   getLastFiveMonths(): string[] {

@@ -367,3 +367,27 @@
     max-width: 360px;
   }
 }
+/* make transactions menu */
+.transaction-menu {
+  display: flex;
+  flex-direction: column;
+  min-width: 160px;
+  padding: 6px;
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+.transaction-menu button {
+  padding: 10px 12px;
+  border-radius: 8px;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.transaction-menu button:hover,
+.transaction-menu button:focus-visible {
+  background: var(--primary-white-80);
+  outline: none;
+}

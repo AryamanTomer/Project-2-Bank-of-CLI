@@ -56,6 +56,17 @@
     </li>
   </ul>
   <div class="right">
+    <button
+      type="button"
+      [attr.aria-label]="theme.theme() === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'"
+      (click)="theme.toggle()"
+    >
+      <ng-icon
+        [name]="theme.theme() === 'dark' ? 'lucideSun' : 'lucideMoon'"
+        size="15"
+        class="text-gray-500 pointer-events-none"
+      />
+    </button>
     <button type="button" aria-label="Sign out" (click)="logout()">
       <ng-icon name="lucideLogOut" size="15" class="text-gray-500 pointer-events-none" />
     </button>
