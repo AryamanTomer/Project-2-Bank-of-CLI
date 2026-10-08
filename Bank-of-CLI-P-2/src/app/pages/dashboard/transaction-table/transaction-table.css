@@ -103,7 +103,7 @@ tbody tr + tr {
 }
 
 /* mobile: stack each transaction into a card */
-@media (max-width: 640px) {
+@media (max-width: 900px) {
   .transaction-table-container {
     padding: 16px;
   }
