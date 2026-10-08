@@ -8,12 +8,25 @@
       </span>
       <h1>Welcome back, {{ account()?.accountName }}.</h1>
       <p>Stay on top of your account activity and transactions.</p>
-      <app-button class="new-transaction-button no-skeleton">
+      <app-button
+        class="new-transaction-button"
+        type="button"
+        [disabled]="false"
+        [cdkMenuTriggerFor]="transactionMenu"
+        [cdkMenuPosition]="menuPositions"
+      >
         <div class="flex justify-center items-center gap-3">
           <span>New Transaction</span>
           <ng-icon name="matAddCircleRound" size="20" class="pointer-events-none" />
         </div>
       </app-button>
+      <ng-template #transactionMenu>
+        <div cdkMenu class="transaction-menu">
+          <button cdkMenuItem (click)="processTransaction(types.Deposit)">Deposit</button>
+          <button cdkMenuItem (click)="processTransaction(types.Withdraw)">Withdraw</button>
+          <button cdkMenuItem (click)="processTransaction(types.TransferOut)">Transfer</button>
+        </div>
+      </ng-template>
     </app-card>
 
     <!-- Total Balance -->
