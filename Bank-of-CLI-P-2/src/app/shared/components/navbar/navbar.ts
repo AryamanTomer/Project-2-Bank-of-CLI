@@ -2,8 +2,8 @@ import { Component, inject, signal } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { lucideLogOut } from '@ng-icons/lucide';
-import { AuthService } from '../service/auth/auth.service';
-import { Logo } from '../shared/components/logo/logo';
+import { AuthService } from '../../../service/auth/auth.service';
+import { Logo } from '../logo/logo';
 
 @Component({
   selector: 'app-navbar',
