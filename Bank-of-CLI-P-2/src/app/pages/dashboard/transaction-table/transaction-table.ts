@@ -1,7 +1,7 @@
 import { CdkMenu, CdkMenuItem, CdkMenuTrigger } from '@angular/cdk/menu';
 import { ConnectedPosition } from '@angular/cdk/overlay';
 import { HttpClient } from '@angular/common/http';
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectorRef, Component, input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import {
@@ -75,13 +75,15 @@ export class TransactionTable {
   }
 
   // loading values
+  loading = input(false);
   loadingRows = Array.from({ length: this.rowsPerPage });
   dataLoading(): boolean {
-    return this.transactions.length === 0;
+    return this.loading() || this.transactions.length === 0;
   }
 
   loadTransactions(): void {
-    this.http.get<Transaction[]>('transactions.json').subscribe({
+    this.http.get<Transaction[]>('transactions.json')
+    .subscribe({
       next: (data) => {
         this.transactions = data;
         this.filteredTransactions = data;
