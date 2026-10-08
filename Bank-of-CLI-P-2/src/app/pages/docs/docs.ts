@@ -243,7 +243,7 @@ export class Docs {
 
       const confirmed = await firstValueFrom(
         this.dialog
-          .open<PopUp, Transaction, boolean>(PopUp, { width: '700px', data: tx })
+          .open<PopUp, Transaction, boolean>(PopUp, { width: 'auto', height: 'auto', data: tx })
           .afterClosed(),
       );
       if (confirmed === undefined) return; // dismissed

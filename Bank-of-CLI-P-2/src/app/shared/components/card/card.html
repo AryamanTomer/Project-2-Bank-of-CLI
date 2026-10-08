@@ -6,4 +6,8 @@
   </div>
 } @else {
   <ng-content />
-}
+} -->
+
+<div [class]="classes()" [appLoadingSkeleton]="loading()">
+  <ng-content />
+</div>
