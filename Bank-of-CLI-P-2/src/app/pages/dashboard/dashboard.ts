@@ -51,12 +51,9 @@ export class Dashboard implements AfterViewInit {
 
   // Tried in order; the CDK uses the first one that fits on screen
   menuPositions: ConnectedPosition[] = [
-    // Left of the button, top edges aligned
-    { originX: 'start', originY: 'top', overlayX: 'end', overlayY: 'top', offsetX: -8 },
-    // Below, right edges aligned
     { originX: 'end', originY: 'bottom', overlayX: 'end', overlayY: 'top', offsetY: 8 },
-    // Below, left edges aligned (mobile, where the button wraps to the left)
     { originX: 'start', originY: 'bottom', overlayX: 'start', overlayY: 'top', offsetY: 8 },
+    { originX: 'start', originY: 'top', overlayX: 'end', overlayY: 'top', offsetX: -8 },
   ];
   protected readonly accountsLoaded = this.bank.accountsLoaded;
   protected readonly transactionsLoaded = this.bank.transactionsLoaded;

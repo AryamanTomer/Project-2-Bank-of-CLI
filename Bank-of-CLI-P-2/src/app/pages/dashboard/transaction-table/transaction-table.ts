@@ -2,7 +2,6 @@
 import { ConnectedPosition } from '@angular/cdk/overlay';
 import { ChangeDetectorRef, Component, effect, inject, input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import {
   matChevronLeftFillOutline,
