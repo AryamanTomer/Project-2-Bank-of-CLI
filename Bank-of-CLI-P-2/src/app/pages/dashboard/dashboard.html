@@ -8,7 +8,7 @@
       </span>
       <h1>Welcome back, {{ nickname }}.</h1>
       <p>Stay on top of your account activity and transactions.</p>
-      <app-button class="new-transaction-button">
+      <app-button class="new-transaction-button no-skeleton">
         <div class="flex justify-center items-center gap-3">
           <span>New Transaction</span>
           <ng-icon name="matAddCircleRound" size="20" class="pointer-events-none" /></div
@@ -17,11 +17,11 @@
 
     <!-- Total Balance -->
     <app-card class="balance-card">
-      <p class="balance-label">Total Balance</p>
+      <p class="balance-label no-skeleton">Total Balance</p>
       <h2>$12,450.00</h2>
       <mat-card class="bank-card">
         <div class="card-top">
-          <span>BANK OF CLI</span>
+          <span class="no-skeleton">BANK OF CLI</span>
           <span>VISA</span>
         </div>
         <div class="card-chip"></div>
@@ -30,11 +30,11 @@
         </div>
         <div class="card-bottom">
           <div>
-            <span class="card-label">CARD HOLDER</span>
+            <span class="card-label no-skeleton">CARD HOLDER</span>
             <pre>{{ cardholderName }}</pre>
           </div>
           <div>
-            <span class="card-label">EXPIRES</span>
+            <span class="card-label no-skeleton">EXPIRES</span>
             <pre>{{ expirationDate }}</pre>
           </div>
         </div>
@@ -46,12 +46,12 @@
   <div class="analytics-section">
     <!-- This Month -->
     <app-card class="monthly-summary">
-      <h2 class="summary-title">This Month</h2>
+      <h2 class="summary-title no-skeleton">This Month</h2>
       <div class="income-spending-card">
         <!-- Income -->
         <app-card class="stat-card">
           <div class="stat-header">
-            <p>Income</p>
+            <p class="no-skeleton">Income</p>
             <div class="stat-icon">
               <ng-icon name="matSavingsFillOutline"></ng-icon>
             </div>
@@ -64,7 +64,7 @@
         <!-- Spending -->
         <app-card class="stat-card">
           <div class="stat-header">
-            <p>Spending</p>
+            <p class="no-skeleton">Spending</p>
             <div class="stat-icon">
               <ng-icon name="matMoneyBagFillOutline"></ng-icon>
             </div>
@@ -78,7 +78,7 @@
     </app-card>
 
     <!-- Balance History -->
-    <app-card class="balance-history-card">
+    <app-card class="balance-history-card no-skeleton">
       <h2 class="balance-text">Balance History</h2>
       <div class="chart">
         <canvas id="balanceChart"></canvas>
@@ -88,7 +88,7 @@
 
   <!-- Transaction history -->
   <div class="transaction-history-section">
-    <app-card class="transactions-card">
+    <app-card class="transactions-card no-skeleton">
       <app-transaction-table></app-transaction-table>
     </app-card>
   </div>
