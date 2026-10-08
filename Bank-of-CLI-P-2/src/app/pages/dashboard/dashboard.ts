@@ -1,8 +1,17 @@
+import { CdkMenu, CdkMenuItem, CdkMenuTrigger } from '@angular/cdk/menu';
+import { ConnectedPosition } from '@angular/cdk/overlay';
 import { DatePipe } from '@angular/common';
 import { AfterViewInit, Component, computed, DestroyRef, effect, inject, signal } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
+import { MatDialog } from '@angular/material/dialog';
+import { firstValueFrom } from 'rxjs';
 import { Button } from '../../shared/components/button/button';
 import { Card } from '../../shared/components/card/card';
+import { ErrorPopUp } from '../../shared/components/error-pop-up/error-pop-up';
+import { InputPopUp } from '../../shared/components/input-pop-up/input-pop-up';
+import { LoadingPopUp } from '../../shared/components/loading-pop-up/loading-pop-up';
+import { PopUp } from '../../shared/components/pop-up/pop-up';
+import { SucessfulTransactionPopUp } from '../../shared/components/sucessful-transaction-pop-up/sucessful-transaction-pop-up';
 import { TransactionTable } from './transaction-table/transaction-table';
 
 import Chart from 'chart.js/auto';
@@ -18,7 +27,17 @@ import { BankService } from '../../service/bank';
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [MatCardModule, TransactionTable, Button, Card, DatePipe, NgIcon],
+  imports: [
+    MatCardModule,
+    TransactionTable,
+    Button,
+    Card,
+    DatePipe,
+    NgIcon,
+    CdkMenu,
+    CdkMenuItem,
+    CdkMenuTrigger,
+  ],
   providers: [
     provideIcons({
       matMoneyBagFillOutline,
@@ -32,7 +51,19 @@ import { BankService } from '../../service/bank';
 })
 export class Dashboard implements AfterViewInit {
   private readonly bank = inject(BankService);
+  private readonly dialog = inject(MatDialog);
+  protected readonly types = TransactionType;
   private chart?: Chart;
+
+  // Tried in order; the CDK uses the first one that fits on screen
+  menuPositions: ConnectedPosition[] = [
+    // Left of the button, top edges aligned
+    { originX: 'start', originY: 'top', overlayX: 'end', overlayY: 'top', offsetX: -8 },
+    // Below, right edges aligned
+    { originX: 'end', originY: 'bottom', overlayX: 'end', overlayY: 'top', offsetY: 8 },
+    // Below, left edges aligned (mobile, where the button wraps to the left)
+    { originX: 'start', originY: 'bottom', overlayX: 'start', overlayY: 'top', offsetY: 8 },
+  ];
   protected readonly accountsLoaded = this.bank.accountsLoaded;
   protected readonly transactionsLoaded = this.bank.transactionsLoaded;
   cardNumber = '4827 1938 6274 9183';
@@ -175,6 +206,92 @@ export class Dashboard implements AfterViewInit {
         },
       },
     });
+  }
+
+  // Input -> (destination check) -> confirm -> bank call. Back/error-continue return to input;
+  // cancel aborts. The dashboard refreshes itself through bank.revision().
+  protected async processTransaction(transactionType: TransactionType): Promise<void> {
+    const tx: Transaction = {
+      transactionId: '',
+      accountId: this.bank.currentAccountId() ?? '',
+      recipientAccountId: this.bank.currentAccountId() ?? '',
+      amount: 0,
+      description: '',
+      transactionType,
+      dateCreated: new Date(),
+      transferId: null,
+      transactionStatus: TransactionStatus.Pending,
+    };
+
+    while (true) {
+      const next = await firstValueFrom(
+        this.dialog
+          .open<InputPopUp, Transaction, boolean>(InputPopUp, { width: '700px', data: tx })
+          .afterClosed(),
+      );
+      if (!next) return;
+
+      if (
+        transactionType === TransactionType.TransferOut &&
+        !this.bank.getAccount((tx.recipientAccountId ?? '').trim())
+      ) {
+        await this.showError('Destination account not found');
+        continue;
+      }
+
+      const confirmed = await firstValueFrom(
+        this.dialog
+          .open<PopUp, Transaction, boolean>(PopUp, { width: 'auto', height: 'auto', data: tx })
+          .afterClosed(),
+      );
+      if (confirmed === undefined) return;
+      if (!confirmed) continue;
+
+      if (!(await this.showLoading(3000))) continue;
+      const error = this.send(tx);
+      if (error) {
+        await this.showError(error);
+        continue;
+      }
+
+      tx.transactionStatus = TransactionStatus.Approved;
+      await firstValueFrom(
+        this.dialog.open(SucessfulTransactionPopUp, { width: '700px', data: tx }).afterClosed(),
+      );
+      return;
+    }
+  }
+
+  // BankService validates, creates and stores the record; returns '' on success.
+  private send(tx: Transaction): string {
+    const note = tx.description ?? '';
+    switch (tx.transactionType) {
+      case TransactionType.Deposit:
+        return this.bank.deposit(tx.amount, note);
+      case TransactionType.Withdraw:
+        return this.bank.withdraw(tx.amount, note);
+      default:
+        return this.bank.transfer(tx.amount, tx.recipientAccountId ?? '', note);
+    }
+  }
+
+  private showError(error: string): Promise<boolean | undefined> {
+    return firstValueFrom(
+      this.dialog
+        .open<ErrorPopUp, { error: string }, boolean>(ErrorPopUp, {
+          width: '700px',
+          data: { error },
+        })
+        .afterClosed(),
+    );
+  }
+
+  private async showLoading(ms: number): Promise<boolean> {
+    const ref = this.dialog.open<LoadingPopUp, void, boolean>(LoadingPopUp, { width: 'auto' });
+    const timer = setTimeout(() => ref.close(true), ms);
+    const done = await firstValueFrom(ref.afterClosed());
+    clearTimeout(timer);
+    return done === true;
   }
 
   getLastFiveMonths(): string[] {
