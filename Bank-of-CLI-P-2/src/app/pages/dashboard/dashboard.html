@@ -46,7 +46,7 @@
   <!-- Analytics -->
   <div class="analytics-section">
     <!-- This Month -->
-    <app-card class="monthly-summary">
+    <app-card class="monthly-summary" [loading]="!accountsLoaded()">
       <h2 class="summary-title no-skeleton">This Month</h2>
       <div class="income-spending-card">
         <!-- Income -->
@@ -90,7 +90,7 @@
   <!-- Transaction history -->
   <div class="transaction-history-section">
     <app-card class="transactions-card no-skeleton">
-      <app-transaction-table></app-transaction-table>
+      <app-transaction-table [loading]="!transactionsLoaded()"></app-transaction-table>
     </app-card>
   </div>
 </div>

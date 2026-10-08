@@ -29,6 +29,7 @@ import { BankService } from '../../service/bank';
 export class Dashboard implements AfterViewInit {
   private readonly bank = inject(BankService);
   protected readonly accountsLoaded = this.bank.accountsLoaded;
+  protected readonly transactionsLoaded = this.bank.transactionsLoaded;
   cardNumber = '4827 1938 6274 9183';
   expirationDate = '08/30';
   currentDate = new Date();

@@ -1,6 +1,6 @@
 import { CdkMenu, CdkMenuItem, CdkMenuTrigger } from '@angular/cdk/menu';
 import { ConnectedPosition } from '@angular/cdk/overlay';
-import { ChangeDetectorRef, Component, effect, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, effect, inject, input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
@@ -84,9 +84,10 @@ export class TransactionTable {
   }
 
   // loading values
+  loading = input(false);
   loadingRows = Array.from({ length: this.rowsPerPage });
   dataLoading(): boolean {
-    return !this.bank.transactionsLoaded();
+    return this.loading() || !this.bank.transactionsLoaded();
   }
 
   private rowsFor(accountId: string): Transaction[] {
