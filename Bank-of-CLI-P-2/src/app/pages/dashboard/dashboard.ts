@@ -138,7 +138,7 @@ export class Dashboard implements AfterViewInit {
       this.applyHistory(history);
     });
 
-    this.loadingTimer = setTimeout(() => this.stopLoading(), 10000);
+    this.loadingTimer = setTimeout(() => this.stopLoading(), 60000);
   }
 
   ngAfterViewInit(): void {
