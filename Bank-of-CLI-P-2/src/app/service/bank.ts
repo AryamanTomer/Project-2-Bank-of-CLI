@@ -94,6 +94,11 @@ export class BankService {
     return '';
   }
 
+  logout(): void {
+    this.currentAccountId.set(null);
+    localStorage.removeItem(this.accountIdKey);
+  }
+
   register(accountId: string, accountPin: string, accountName: string): string {
     if (this.accounts.has(accountId)) {
       return 'Account ID already exists. Please try a different account ID.';

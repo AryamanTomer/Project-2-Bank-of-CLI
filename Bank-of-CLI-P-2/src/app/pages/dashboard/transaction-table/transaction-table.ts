@@ -4,7 +4,10 @@ import { ChangeDetectorRef, Component, effect, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
-import { matChevronLeftFillOutline, matChevronRightFillOutline } from '@ng-icons/material-symbols/outline';
+import {
+  matChevronLeftFillOutline,
+  matChevronRightFillOutline,
+} from '@ng-icons/material-symbols/outline';
 import { TransactionType } from '../../../models/TransactionType.model';
 import { BankService } from '../../../service/bank';
 import { Button } from '../../../shared/components/button/button';
@@ -23,7 +26,19 @@ interface Transaction {
 }
 
 @Component({
-  imports: [FormsModule, NgIcon, Button, Dropdown, Input, Label, LoadingRow, CdkMenu, CdkMenuItem, CdkMenuTrigger, RouterLink],
+  imports: [
+    FormsModule,
+    NgIcon,
+    Button,
+    Dropdown,
+    Input,
+    Label,
+    LoadingRow,
+    CdkMenu,
+    CdkMenuItem,
+    CdkMenuTrigger,
+    RouterLink,
+  ],
   selector: 'app-transaction-table',
   styleUrl: './transaction-table.css',
   templateUrl: './transaction-table.html',
@@ -107,25 +122,19 @@ export class TransactionTable {
   }
 
   updateTable(): void {
-    this.totalPages = Math.ceil(
-      this.filteredTransactions.length / this.rowsPerPage
-    );
+    this.totalPages = Math.ceil(this.filteredTransactions.length / this.rowsPerPage);
 
     const startIndex = (this.currentPage - 1) * this.rowsPerPage;
     const endIndex = startIndex + this.rowsPerPage;
 
-    this.tableData = this.filteredTransactions.slice(
-      startIndex,
-      endIndex
-    );
+    this.tableData = this.filteredTransactions.slice(startIndex, endIndex);
   }
 
   applyFiltersAndSort(): void {
     const search = this.searchString.toLowerCase().trim();
 
     // Start with all transactions
-    let results = this.transactions.filter(transaction => {
-
+    let results = this.transactions.filter((transaction) => {
       // Search filter
       const matchesSearch =
         transaction.category.toLowerCase().includes(search) ||
@@ -142,7 +151,7 @@ export class TransactionTable {
     });
 
     // Sorting
-    if (this.orderBy !== '') {
+    if (this.orderBy !== '' && this.sortDirection !== '') {
       results.sort((a, b) => {
         let comparison = 0;
 
@@ -168,9 +177,7 @@ export class TransactionTable {
             break;
         }
 
-        return this.sortDirection.toLowerCase() === 'dsc'
-          ? -comparison
-          : comparison;
+        return this.sortDirection.toLowerCase() === 'descending' ? -comparison : comparison;
       });
     }
 
@@ -180,7 +187,6 @@ export class TransactionTable {
 
     this.updateTable();
   }
-
 
   previousPage(): void {
     if (this.currentPage > 1) {
@@ -195,5 +201,4 @@ export class TransactionTable {
       this.updateTable();
     }
   }
-
 }

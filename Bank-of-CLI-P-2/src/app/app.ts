@@ -2,7 +2,7 @@ import { Component, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { filter, map } from 'rxjs';
-import { Navbar } from './navbar/navbar';
+import { Navbar } from './shared/components/navbar/navbar';
 
 @Component({
   imports: [RouterOutlet, Navbar],

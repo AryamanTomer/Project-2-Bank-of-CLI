@@ -1,8 +1,19 @@
 <nav class="navbar">
+  <a class="left" routerLink="/dashboard">
+    <div class="logo-container">
+      <app-logo fill="white" [size]="25"></app-logo>
+    </div>
+    <p>Bank of CLI</p>
+  </a>
   <ul class="nav-bar">
     <!-- Dashboard -->
     <li>
-      <a class="nav-pill" routerLink="/dashboard" routerLinkActive="nav-pill-active" (click)="closeMenu()">
+      <a
+        class="nav-pill"
+        routerLink="/dashboard"
+        routerLinkActive="nav-pill-active"
+        (click)="closeMenu()"
+      >
         Dashboard
       </a>
     </li>
@@ -31,7 +42,12 @@
       <ul id="transaction-menu" class="dropdown-menu" [class.dropdown-menu-open]="menuOpen()">
         @for (item of transactionLinks; track item.path) {
           <li>
-            <a class="dropdown-link" [routerLink]="item.path" routerLinkActive="dropdown-link-active" (click)="closeMenu()">
+            <a
+              class="dropdown-link"
+              [routerLink]="item.path"
+              routerLinkActive="dropdown-link-active"
+              (click)="closeMenu()"
+            >
               {{ item.label }}
             </a>
           </li>
@@ -39,4 +55,9 @@
       </ul>
     </li>
   </ul>
+  <div class="right">
+    <button type="button" aria-label="Sign out" (click)="logout()">
+      <ng-icon name="lucideLogOut" size="15" class="text-gray-500 pointer-events-none" />
+    </button>
+  </div>
 </nav>

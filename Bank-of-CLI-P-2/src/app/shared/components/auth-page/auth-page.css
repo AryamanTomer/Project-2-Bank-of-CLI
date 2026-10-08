@@ -34,10 +34,6 @@
   flex-direction: column;
   justify-content: space-between;
 
-  .logo {
-    width: 2rem;
-  }
-
   h2 {
     font-size: var(--step-2);
     font-weight: 400;
@@ -90,6 +86,7 @@
     background: url('/assets/auth/mesh-tablet.png');
     filter: hue-rotate(calc(var(--hue-rotate) * 1deg));
     background-size: cover;
+    background-position: center;
     position: absolute;
   }
 

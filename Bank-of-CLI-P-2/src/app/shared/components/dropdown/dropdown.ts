@@ -12,4 +12,5 @@ export class Dropdown {
   options = input<string[]>([]);
   placeHolder = input('Select');
   value = model('');
+  disabled = input(false);
 }

@@ -1,7 +1,5 @@
-import { Component, computed, input, signal, inject } from '@angular/core';
-import { MatButton } from '@angular/material/button';
+import { Component, inject } from '@angular/core';
 import { Card } from '../card/card';
-import { Input } from '../input/input';
 import {
   MAT_DIALOG_DATA,
   MatDialogActions,
@@ -10,21 +8,10 @@ import {
   MatDialogTitle,
 } from '@angular/material/dialog';
 import { NgIcon, provideIcons } from '@ng-icons/core';
-import { Transaction } from '../../../models/Transaction.model';
-import { TransactionStatus } from '../../../models/TransactionStatus.model';
 import { matErrorRound } from '@ng-icons/material-symbols/round';
 
 @Component({
-  imports: [
-    MatDialogTitle,
-    MatDialogContent,
-    MatDialogActions,
-    MatDialogClose,
-    MatButton,
-    Card,
-    Input,
-    NgIcon,
-  ],
+  imports: [MatDialogTitle, MatDialogContent, MatDialogActions, MatDialogClose, Card, NgIcon],
   viewProviders: [provideIcons({ matErrorRound })],
   selector: 'app-error-pop-up',
   styleUrl: './error-pop-up.css',

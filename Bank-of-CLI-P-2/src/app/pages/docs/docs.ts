@@ -14,6 +14,8 @@ import { TransactionStatus } from '../../models/TransactionStatus.model';
 import { TransactionType } from '../../models/TransactionType.model';
 import { CdkMenu, CdkMenuItem, CdkMenuTrigger } from '@angular/cdk/menu';
 import { firstValueFrom } from 'rxjs';
+import { LoadingPopUp } from '../../shared/components/loading-pop-up/loading-pop-up';
+import { SucessfulTransactionPopUp } from '../../shared/components/sucessful-transaction-pop-up/sucessful-transaction-pop-up';
 import { ErrorPopUp } from '../../shared/components/error-pop-up/error-pop-up';
 
 // Snippets live here (not in the template) so Angular doesn't parse `{{`, `@` or tags inside them.
@@ -88,9 +90,9 @@ this.toast.show('Custom', 'success', 5000); // message, type, duration ms`,
           Content-projected container with a border, padding and shadow. Input:
           <code>loading</code> (boolean) swaps the content for a skeleton.
         </p>
-        <app-card class="max-w-sm">Anything goes in here</app-card>
+        <app-card class="max-w-sm"> <p>Anything goes in here </p></app-card>
         <app-card class="max-w-sm" [loading]="cardLoading()">
-          Loaded content: this is hidden while loading.
+          <p>Loaded content: this is hidden while loading.</p>
         </app-card>
         <app-button class="w-48" (clicked)="cardLoading.set(!cardLoading())">
           {{ cardLoading() ? 'Stop loading' : 'Start loading' }}
@@ -241,17 +243,31 @@ export class Docs {
         continue;
       }
 
+      if (!(await this.loading(2000))) continue;
+
       const confirmed = await firstValueFrom(
         this.dialog
-          .open<PopUp, Transaction, boolean>(PopUp, { width: '700px', data: tx })
+          .open<PopUp, Transaction, boolean>(PopUp, { width: 'auto', height: 'auto', data: tx })
           .afterClosed(),
       );
-      if (confirmed === undefined) return; // dismissed
+      if (confirmed === undefined) return;
       if (confirmed) {
+        if (!(await this.loading(3000))) continue;
+        tx.transactionStatus = TransactionStatus.Approved;
+        await firstValueFrom(
+          this.dialog.open(SucessfulTransactionPopUp, { width: '700px', data: tx }).afterClosed(),
+        );
         this.result.set(JSON.stringify(tx, null, 2));
         return;
       }
-      // false = Back -> loop to input
     }
+  }
+
+  private async loading(ms: number): Promise<boolean> {
+    const ref = this.dialog.open<LoadingPopUp, void, boolean>(LoadingPopUp, { width: 'auto' });
+    const timer = setTimeout(() => ref.close(true), ms);
+    const done = await firstValueFrom(ref.afterClosed());
+    clearTimeout(timer);
+    return done === true;
   }
 }

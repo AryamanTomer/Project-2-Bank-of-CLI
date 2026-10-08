@@ -28,32 +28,30 @@
       name="search-transactions"
       type="search"
       class="w-full"
-      placeholder="Search Transactions..."
+      placeholder="Find Transactions..."
       [(value)]="searchString"
       (valueChange)="applyFiltersAndSort()"
     />
-
     <app-dropdown
-      class="w-full sm:w-fit min-h-full"
+      class="w-full md:w-full min-h-full"
+      [options]="['Deposit', 'Withdraw', 'Transfer']"
+      placeHolder="All Categories"
+      [(value)]="selectedCategory"
+      (valueChange)="applyFiltersAndSort()"
+    />
+    <app-dropdown
+      class="w-full md:w-full min-h-full"
       [options]="['Date', 'Category', 'Destination', 'Status', 'Amount']"
-      placeHolder="Order by..."
+      placeHolder="Order By"
       [(value)]="orderBy"
       (valueChange)="applyFiltersAndSort()"
     />
-
     <app-dropdown
-      class="w-full sm:w-fit min-h-full"
-      [options]="['Asc', 'Dsc']"
+      class="w-full md:w-full min-h-full"
+      [options]="['Ascending', 'Descending']"
       placeHolder="Sort Order"
+      [disabled]="orderBy === ''"
       [(value)]="sortDirection"
-      (valueChange)="applyFiltersAndSort()"
-    />
-
-    <app-dropdown
-      class="w-full sm:w-fit min-h-full"
-      [options]="['Deposit', 'Withdraw', 'Transfer']"
-      placeHolder="All categories"
-      [(value)]="selectedCategory"
       (valueChange)="applyFiltersAndSort()"
     />
   </form>
