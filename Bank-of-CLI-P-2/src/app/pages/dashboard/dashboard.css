@@ -174,7 +174,7 @@
   padding: 24px;
   border-radius: 18px;
 
-    background: linear-gradient(
+  background: linear-gradient(
     45deg,
     oklch(from var(--primary) l c calc(h - 20)),
     oklch(from var(--primary) l c calc(h + 20))

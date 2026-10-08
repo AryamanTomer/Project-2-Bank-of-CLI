@@ -8,7 +8,7 @@
       </span>
       <div class="welcome-row">
         <div class="welcome-copy">
-          <h1>Welcome back, {{ account()?.accountName }}.</h1>
+          <h1>Welcome back, {{ account()?.accountName | titlecase }}.</h1>
           <p>Stay on top of your account activity and transactions.</p>
         </div>
         <app-button

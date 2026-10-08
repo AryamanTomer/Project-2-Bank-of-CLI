@@ -1,11 +1,21 @@
 ﻿import { CdkMenu, CdkMenuItem, CdkMenuTrigger } from '@angular/cdk/menu';
 import { ConnectedPosition } from '@angular/cdk/overlay';
 import { DatePipe } from '@angular/common';
-import { AfterViewInit, Component, computed, DestroyRef, effect, inject, signal } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  computed,
+  DestroyRef,
+  effect,
+  inject,
+  signal,
+} from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { Button } from '../../shared/components/button/button';
 import { Card } from '../../shared/components/card/card';
 import { TransactionTable } from './transaction-table/transaction-table';
+
+import { TitleCasePipe } from '@angular/common';
 
 import Chart from 'chart.js/auto';
 
@@ -31,6 +41,7 @@ import { TransactionFlow } from '../../service/transaction-flow';
     CdkMenu,
     CdkMenuItem,
     CdkMenuTrigger,
+    TitleCasePipe,
   ],
   providers: [
     provideIcons({
@@ -41,7 +52,7 @@ import { TransactionFlow } from '../../service/transaction-flow';
   ],
   styleUrl: './dashboard.css',
   templateUrl: './dashboard.html',
-  host: { '(document:keydown.enter)': 'stopLoading()' }
+  host: { '(document:keydown.enter)': 'stopLoading()' },
 })
 export class Dashboard implements AfterViewInit {
   private readonly bank = inject(BankService);
@@ -266,9 +277,7 @@ export class Dashboard implements AfterViewInit {
     previous: number,
   ): { text: string; direction: 'up' | 'down' | 'flat' } {
     if (previous === 0) {
-      return current === 0
-        ? { text: '0%', direction: 'flat' }
-        : { text: '—', direction: 'flat' };
+      return current === 0 ? { text: '0%', direction: 'flat' } : { text: '—', direction: 'flat' };
     }
     const percent = Math.round(((current - previous) / previous) * 100);
     if (percent > 0) return { text: `↑ ${percent}%`, direction: 'up' };
@@ -282,8 +291,7 @@ export class Dashboard implements AfterViewInit {
     this.chart.data.labels = history.labels;
     this.chart.data.datasets[0].data = history.values;
     const scale = this.chart.options.scales?.['y'] as
-      | { min?: number; max?: number; ticks?: { stepSize?: number } }
-      | undefined;
+      { min?: number; max?: number; ticks?: { stepSize?: number } } | undefined;
     if (scale) {
       scale.min = yAxis.min;
       scale.max = yAxis.max;
