@@ -133,7 +133,7 @@ classes = computed(() =>
         <div class="flex flex-wrap gap-3">
           <app-button class="w-48" (clicked)="toast.success('Clicked')">Click me</app-button>
           <app-button class="w-48" [disabled]="true">Disabled</app-button>
-          <app-button class="w-48" [disabled]="true">Loading</app-button>
+          <app-button class="w-48" [disabled]="true" [loading]="true">Loading</app-button>
         </div>
         <pre class="overflow-x-auto rounded-xl bg-gray-900 p-4 text-sm text-gray-100">{{
           snippets.button
