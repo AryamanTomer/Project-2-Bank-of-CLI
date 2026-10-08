@@ -4,6 +4,7 @@ import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { filter, map } from 'rxjs';
 import { Navbar } from './shared/components/navbar/navbar';
 import { BankService } from './service/bank';
+import { ThemeService } from './service/theme';
 
 @Component({
   imports: [RouterOutlet, Navbar],
@@ -15,6 +16,7 @@ export class App {
   protected readonly title = signal('Bank-of-CLI-P-2');
 
   private readonly router = inject(Router);
+  private readonly theme = inject(ThemeService);
 
   // Hide the navbar on the login/register screens
   protected readonly showNavbar = toSignal(
