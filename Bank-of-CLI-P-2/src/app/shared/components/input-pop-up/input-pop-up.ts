@@ -18,9 +18,12 @@ import { Card } from '../card/card';
 })
 export class InputPopUp {
   protected readonly data = inject<Transaction>(MAT_DIALOG_DATA);
-  title = (<Record<string, string>>{ WITHDRAW: 'Withdrawal', DEPOSIT: 'Deposit' })[this.data.transactionType] ?? 'Transfer';
-  badge = (<Record<string, string>>
-    {
+  title =
+    (<Record<string, string>>{ WITHDRAW: 'Withdrawal', DEPOSIT: 'Deposit' })[
+      this.data.transactionType
+    ] ?? 'Transfer';
+  badge =
+    (<Record<string, string>>{
       WITHDRAW: 'bg-red-100 text-red-700',
       DEPOSIT: 'bg-green-100 text-green-700',
     })[this.data.transactionType] ?? 'bg-yellow-100 text-yellow-700';
