@@ -90,9 +90,9 @@ this.toast.show('Custom', 'success', 5000); // message, type, duration ms`,
           Content-projected container with a border, padding and shadow. Input:
           <code>loading</code> (boolean) swaps the content for a skeleton.
         </p>
-        <app-card class="max-w-sm">Anything goes in here</app-card>
+        <app-card class="max-w-sm"> <p>Anything goes in here </p></app-card>
         <app-card class="max-w-sm" [loading]="cardLoading()">
-          Loaded content: this is hidden while loading.
+          <p>Loaded content: this is hidden while loading.</p>
         </app-card>
         <app-button class="w-48" (clicked)="cardLoading.set(!cardLoading())">
           {{ cardLoading() ? 'Stop loading' : 'Start loading' }}
