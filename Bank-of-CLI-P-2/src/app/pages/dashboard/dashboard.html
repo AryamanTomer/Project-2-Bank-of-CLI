@@ -2,23 +2,24 @@
   <!-- Top section -->
   <div class="top-section">
     <!-- Welcome -->
-    <app-card class="welcome-card">
+    <app-card class="welcome-card" [loading]="isLoading()">
       <span class="date-badge">
         {{ currentDate | date: 'EEE, MMM d' }}
       </span>
-      <h1>Welcome back, {{ nickname }}.</h1>
+      <h1>Welcome back, {{ account()?.accountName }}.</h1>
       <p>Stay on top of your account activity and transactions.</p>
       <app-button class="new-transaction-button no-skeleton">
         <div class="flex justify-center items-center gap-3">
           <span>New Transaction</span>
-          <ng-icon name="matAddCircleRound" size="20" class="pointer-events-none" /></div
-      ></app-button>
+          <ng-icon name="matAddCircleRound" size="20" class="pointer-events-none" />
+        </div>
+      </app-button>
     </app-card>
 
     <!-- Total Balance -->
-    <app-card class="balance-card">
+    <app-card class="balance-card" [loading]="isLoading()">
       <p class="balance-label no-skeleton">Total Balance</p>
-      <h2>$12,450.00</h2>
+      <h2>${{ account()?.balance?.toFixed(2) }}</h2>
       <mat-card class="bank-card">
         <div class="card-top">
           <span class="no-skeleton">BANK OF CLI</span>
@@ -31,7 +32,7 @@
         <div class="card-bottom">
           <div>
             <span class="card-label no-skeleton">CARD HOLDER</span>
-            <pre>{{ cardholderName }}</pre>
+            <pre>{{ account()?.accountName }}</pre>
           </div>
           <div>
             <span class="card-label no-skeleton">EXPIRES</span>
@@ -45,7 +46,7 @@
   <!-- Analytics -->
   <div class="analytics-section">
     <!-- This Month -->
-    <app-card class="monthly-summary">
+    <app-card class="monthly-summary" [loading]="isLoading()">
       <h2 class="summary-title no-skeleton">This Month</h2>
       <div class="income-spending-card">
         <!-- Income -->
@@ -57,8 +58,14 @@
             </div>
           </div>
           <div class="stat-bottom">
-            <h2>$5,000</h2>
-            <span class="change positive">↑ 7%</span>
+            <h2>${{ monthSummary().income }}</h2>
+            <span
+              class="change"
+              [class.positive]="monthSummary().incomeDirection === 'up'"
+              [class.negative]="monthSummary().incomeDirection === 'down'"
+            >
+              {{ monthSummary().incomeChange }}
+            </span>
           </div>
         </app-card>
         <!-- Spending -->
@@ -70,8 +77,14 @@
             </div>
           </div>
           <div class="stat-bottom">
-            <h2>$2,000</h2>
-            <span class="change negative">↓ 6%</span>
+            <h2>${{ monthSummary().spending }}</h2>
+            <span
+              class="change"
+              [class.positive]="monthSummary().spendingDirection === 'up'"
+              [class.negative]="monthSummary().spendingDirection === 'down'"
+            >
+              {{ monthSummary().spendingChange }}
+            </span>
           </div>
         </app-card>
       </div>
@@ -89,7 +102,7 @@
   <!-- Transaction history -->
   <div class="transaction-history-section">
     <app-card class="transactions-card no-skeleton">
-      <app-transaction-table></app-transaction-table>
+      <app-transaction-table [loading]="isLoading()"></app-transaction-table>
     </app-card>
   </div>
 </div>

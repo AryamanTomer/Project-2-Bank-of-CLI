@@ -2,8 +2,9 @@ import { Component, inject, signal } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { lucideLogOut } from '@ng-icons/lucide';
-import { AuthService } from '../service/auth/auth.service';
-import { Logo } from '../shared/components/logo/logo';
+import { AuthService } from '../../../service/auth/auth.service';
+import { BankService } from '../../../service/bank';
+import { Logo } from '../logo/logo';
 
 @Component({
   selector: 'app-navbar',
@@ -15,6 +16,7 @@ import { Logo } from '../shared/components/logo/logo';
 })
 export class Navbar {
   private readonly authService = inject(AuthService);
+  private readonly bank = inject(BankService);
   constructor(private router: Router) {}
 
   protected readonly transactionLinks = [
@@ -60,6 +62,7 @@ export class Navbar {
 
   protected logout() {
     this.authService.logout();
-    this.router.navigate(['login']);
+    this.bank.logout();
+    this.router.navigate(['/login']);
   }
 }
