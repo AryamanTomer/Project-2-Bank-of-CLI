@@ -89,7 +89,8 @@ classes = computed(() =>
           </li>
           <li>
             <strong>Tailwind classes passed from outside</strong> via the <code>class</code> input
-            (e.g. <code>{{ snippets.passedClass }}</code>).
+            (e.g. <code>{{ snippets.passedClass }}</code
+            >).
           </li>
         </ol>
         <!-- <p class="text-gray-600">
@@ -179,7 +180,7 @@ classes = computed(() =>
         <h2 class="flex items-center gap-3 border-b border-gray-200 pb-3 text-2xl font-semibold">
           Input <code>app-input</code>
         </h2>
-        <p class="text-gray-600">
+        <p class="">
           Inputs: <code>inputId</code> (required), <code>name</code>, <code>type</code> ('text' |
           'password' | 'search'), <code>class</code>. Two-way: <code>[(value)]</code>.
         </p>
