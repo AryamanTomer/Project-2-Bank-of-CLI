@@ -1,0 +1,108 @@
+@if (data.transactionType == 'TRANSFER_IN' || data.transactionType == 'TRANSFER_OUT') {
+  <h1 mat-dialog-title>Transfer Details</h1>
+  <mat-dialog-content>
+    <div class="">
+      <span class="text-md"> Review the amount and destination before you continue. </span>
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-2 md:gap-2 mt-4">
+        <app-card
+          class="flex flex-col sm:min-w-2/5 sm:max-w-2/5 shadow-none overflow-auto {{ redStyle }}"
+        >
+          <h2 class="text-black text-(length:--step-2)">From {{ data.accountId }}</h2>
+          <h2 class="font-bold text-(length:--step-5) text-black self-center-safe py-3">
+            {{ usdFormatter.format(data.amount) }}
+          </h2>
+        </app-card>
+        <ng-icon name="matArrowForwardFillOutline" size="40" />
+        <app-card
+          class="flex flex-col sm:min-w-2/5 sm:max-w-2/5 shadow-none {{ greenStyle }} overflow-auto"
+        >
+          <h2 class="text-black text-(length:--step-2)">To {{ data.recipientAccountId }}</h2>
+          <h2 class="font-bold text-(length:--step-5) text-black self-center-safe py-3">
+            {{ usdFormatter.format(data.amount) }}
+          </h2>
+        </app-card>
+      </div>
+      <div class="border border-gray-200 w-full my-4"></div>
+      <div class="flex flex-col md:flex-row gap-4">
+        <app-card class="flex flex-col w-full md:w-1/2 shadow-none">
+          <h1 class="text-gray-400 text-md pb-1">Transaction Type</h1>
+
+          <h1 class="font-semibold text-black text-md pb-1">TRANSFER</h1>
+        </app-card>
+        <app-card class="flex flex-col w-full md:w-1/2 shadow-none">
+          <h1 class="text-gray-400 text-md pb-1">Destination</h1>
+
+          <h1 class="font-semibold text-black text-md pb-1">{{ data.recipientAccountId }}</h1>
+        </app-card>
+      </div>
+      <app-card class="flex flex-col w-full shadow-none mt-4">
+        <h1 class="text-gray-400 text-md pb-1">Notes</h1>
+        <p>{{ data.description }}</p>
+      </app-card>
+    </div>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end" class="flex flex-row gap-x-5">
+    <app-card class="py-2.5 border">
+      <!-- mat-dialog-close closes the dialog. With no value, the result is undefined. -->
+      <button [mat-dialog-close]="false">Back</button>
+    </app-card>
+    <div class="button-container">
+      <!-- [mat-dialog-close]="true" closes the dialog and sends `true` back to the parent. -->
+      <button [mat-dialog-close]="true" class="button-container">Continue</button>
+    </div>
+  </mat-dialog-actions>
+} @else {
+  <h1 mat-dialog-title>
+    {{
+      data.transactionType.charAt(0) +
+        data.transactionType.substring(1, data.transactionType.length).toLowerCase()
+    }}
+    Details
+  </h1>
+  <mat-dialog-content>
+    <div class="max-w-fit">
+      <span class="text-md"> Review the amount and destination before you continue. </span>
+      <app-card
+        class="flex flex-col md:min-w-1/2 md:max-w-full shadow-none mt-3 {{ style }} overflow-auto"
+      >
+        <h2 class="text-black text-md text-(length:--step-2)">Amount</h2>
+        <h2 class="font-bold text-(length:--step-10) text-black self-center-safe py-3">
+          {{ usdFormatter.format(data.amount) }}
+        </h2>
+      </app-card>
+      <div class="border border-gray-200 w-full my-4"></div>
+      <div class="flex flex-col md:flex-row gap-4">
+        <app-card class="flex flex-col md:w-1/2 shadow-none">
+          <h1 class="text-gray-400 text-(length:--step-1) pb-1 text-wrap">Transaction Type</h1>
+
+          <h1 class="font-semibold text-black text-(length:--step-1) pb-1">
+            {{ data.transactionType }}
+          </h1>
+        </app-card>
+        <app-card class="flex flex-col md:w-1/2 shadow-none">
+          <h1 class="text-gray-400 text-(length:--step-1) pb-1">Destination</h1>
+
+          <h1 class="font-semibold text-black text-(length:--step-1) pb-1">
+            {{ data.recipientAccountId }}
+          </h1>
+        </app-card>
+      </div>
+      <app-card class="flex flex-col w-full shadow-none mt-4">
+        <h1 class="text-gray-400 text-md pb-1 text-(length:--step-1)">Notes</h1>
+        <p class="text-(length:--step-1)">{{ data.description }}</p>
+      </app-card>
+    </div>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end" class="flex flex-row gap-x-5">
+    <app-card class="py-2.5 border">
+      <!-- mat-dialog-close closes the dialog. With no value, the result is undefined. -->
+      <button [mat-dialog-close]="false">Back</button>
+    </app-card>
+    <div class="button-container">
+      <!-- [mat-dialog-close]="true" closes the dialog and sends `true` back to the parent. -->
+      <button [mat-dialog-close]="true" class="button-container">Continue</button>
+    </div>
+  </mat-dialog-actions>
+}
