@@ -73,6 +73,7 @@ export class Auth {
         formElement.reset();
         this.isLoading.set(false);
         this.isFormValid.set(false);
+        this.errorText.set('');
         if (result.toast) {
           this.toast.success(result.toast, this.toastDurationMs);
           await new Promise((resolve) => setTimeout(resolve, this.toastDurationMs));

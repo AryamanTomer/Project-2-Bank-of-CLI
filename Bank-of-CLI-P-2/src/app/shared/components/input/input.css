@@ -11,15 +11,23 @@ input {
   outline: 2px solid transparent;
   transition:
     outline 0.3s ease,
-    filter 0.3s ease;
+    filter 0.3s ease,
+    color 0.3s ease;
 
-  &:focus {
-    outline: 2px solid var(--primary);
-    filter: brightness(0.95);
+  &:enabled {
+    &:focus {
+      outline: 2px solid var(--primary);
+      filter: brightness(0.95);
+    }
+
+    &:hover {
+      filter: brightness(0.95);
+    }
   }
 
-  &:hover {
-    filter: brightness(0.95);
+  &:disabled {
+    cursor: not-allowed;
+    color: rgb(200, 200, 200);
   }
 
   &::placeholder {

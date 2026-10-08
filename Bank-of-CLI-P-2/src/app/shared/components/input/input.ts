@@ -20,6 +20,7 @@ export class Input {
   inputId = input.required<string>();
   name = input('');
   value = model('');
+  disabled = input(false);
 
   protected showPassword = signal(false);
 
