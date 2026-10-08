@@ -1,15 +1,18 @@
 import { Component, inject, signal } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
-import { lucideLogOut } from '@ng-icons/lucide';
+import { lucideLogOut, lucideMoon, lucideSun } from '@ng-icons/lucide';
 import { AuthService } from '../../../service/auth/auth.service';
+import { TransactionType } from '../../../models/TransactionType.model';
 import { BankService } from '../../../service/bank';
+import { ThemeService } from '../../../service/theme';
+import { TransactionFlow } from '../../../service/transaction-flow';
 import { Logo } from '../logo/logo';
 
 @Component({
   selector: 'app-navbar',
   imports: [RouterLink, RouterLinkActive, Logo, NgIcon],
-  viewProviders: [provideIcons({ lucideLogOut })],
+  viewProviders: [provideIcons({ lucideLogOut, lucideMoon, lucideSun })],
 
   templateUrl: './navbar.html',
   styleUrl: './navbar.css',
@@ -17,13 +20,21 @@ import { Logo } from '../logo/logo';
 export class Navbar {
   private readonly authService = inject(AuthService);
   private readonly bank = inject(BankService);
+  protected readonly theme = inject(ThemeService);
   constructor(private router: Router) {}
 
+  private readonly flow = inject(TransactionFlow);
+
   protected readonly transactionLinks = [
-    { path: '/transactions/deposit', label: 'Deposit' },
-    { path: '/transactions/withdraw', label: 'Withdraw' },
-    { path: '/transactions/transfer', label: 'Transfer' },
+    { type: TransactionType.Deposit, label: 'Deposit' },
+    { type: TransactionType.Withdraw, label: 'Withdraw' },
+    { type: TransactionType.TransferOut, label: 'Transfer' },
   ];
+
+  protected transact(type: TransactionType): void {
+    this.closeMenu();
+    this.flow.run(type);
+  }
 
   protected readonly menuOpen = signal(false);
 

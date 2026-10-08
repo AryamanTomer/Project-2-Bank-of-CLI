@@ -1,4 +1,4 @@
-<div class="flex items-center gap-(--space-s) px-6 pt-6 pb-2">
+<div class="flex items-center gap-(--space-s) px-6 pt-6 pb-2 bg-[#F8F8F8]">
   <span
     class="flex size-11 shrink-0 items-center justify-center rounded-full border font-bold text-(length:--step-4) {{
       style
@@ -16,7 +16,7 @@
   </div>
 </div>
 
-<mat-dialog-content>
+<mat-dialog-content class="bg-[#F8F8F8]">
   <div class="flex flex-col gap-(--space-m)">
     @if (data.transactionType == 'TRANSFER_IN' || data.transactionType == 'TRANSFER_OUT') {
       <div class="grid grid-cols-1 items-center gap-(--space-s) sm:grid-cols-[1fr_auto_1fr]">
@@ -79,7 +79,7 @@
 </mat-dialog-content>
 
 <mat-dialog-actions
-  class="flex flex-col-reverse gap-(--space-s) px-6! pb-6! mb-4 sm:flex-row sm:justify-end"
+  class="flex flex-col-reverse gap-(--space-s) px-6! pb-6! mb-4 sm:flex-row sm:justify-end bg-[#F8F8F8]"
 >
   <!-- [mat-dialog-close]="false" closes the dialog and sends `false` back (Back to the input step). -->
   <button

@@ -182,3 +182,49 @@ body {
     opacity: 0.5;
   }
 }
+
+/* Dark mode: Invert colours and rotate hue */
+html[data-theme='dark'] {
+  filter: invert(1) hue-rotate(180deg);
+}
+
+/* Fade between themes */
+html.theme-transition[data-theme='dark'] {
+  animation: theme-to-dark 500ms linear;
+}
+
+html.theme-transition[data-theme='light'] {
+  animation: theme-to-light 500ms linear;
+}
+
+@keyframes theme-to-dark {
+  0% { filter: invert(0) hue-rotate(0deg); }
+  50% { filter: invert(0.5) hue-rotate(0deg); }
+  50.01% { filter: invert(0.5) hue-rotate(180deg); }
+  100% { filter: invert(1) hue-rotate(180deg); }
+}
+
+@keyframes theme-to-light {
+  0% { filter: invert(1) hue-rotate(180deg); }
+  50% { filter: invert(0.5) hue-rotate(180deg); }
+  50.01% { filter: invert(0.5) hue-rotate(0deg); }
+  100% { filter: invert(0) hue-rotate(0deg); }
+}
+
+/* Dark mode for pop ups */
+html[data-theme='dark'] .cdk-overlay-pane,
+html[data-theme='dark'] .no-invert {
+  filter: invert(1) hue-rotate(180deg);
+}
+
+/* Lighter cards in dark mode */
+html[data-theme='dark'] app-card > .bg-white,
+html[data-theme='dark'] app-auth-page .card {
+  background-color: #dedede;
+}
+
+/* Keep the login/register gradient panel in its real colours in dark mode */
+html[data-theme='dark'] app-auth-page .left,
+html[data-theme='dark'] app-auth-page .tablet-background {
+  filter: invert(1) hue-rotate(180deg) hue-rotate(calc(var(--hue-rotate, 0) * 1deg));
+}
