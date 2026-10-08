@@ -1,15 +1,18 @@
+import { CdkMenu, CdkMenuItem, CdkMenuTrigger } from '@angular/cdk/menu';
+import { ConnectedPosition } from '@angular/cdk/overlay';
+import { HttpClient } from '@angular/common/http';
 import { ChangeDetectorRef, Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { matChevronLeftFillOutline, matChevronRightFillOutline } from '@ng-icons/material-symbols/outline';
 import { NgIcon, provideIcons } from '@ng-icons/core';
+import {
+  matChevronLeftFillOutline,
+  matChevronRightFillOutline,
+} from '@ng-icons/material-symbols/outline';
 import { Button } from '../../../shared/components/button/button';
 import { Dropdown } from '../../../shared/components/dropdown/dropdown';
 import { Input } from '../../../shared/components/input/input';
 import { Label } from '../../../shared/components/label/label';
 import { LoadingRow } from '../../../shared/components/loading-row/loading-row';
-import { CdkMenu, CdkMenuItem, CdkMenuTrigger } from '@angular/cdk/menu';
-import { ConnectedPosition } from '@angular/cdk/overlay';
-import { HttpClient } from '@angular/common/http';
 
 interface Transaction {
   id: number;
@@ -21,14 +24,24 @@ interface Transaction {
 }
 
 @Component({
-  imports: [FormsModule, NgIcon, Button, Dropdown, Input, Label, LoadingRow, CdkMenu, CdkMenuItem, CdkMenuTrigger],
+  imports: [
+    FormsModule,
+    NgIcon,
+    Button,
+    Dropdown,
+    Input,
+    Label,
+    LoadingRow,
+    CdkMenu,
+    CdkMenuItem,
+    CdkMenuTrigger,
+  ],
   selector: 'app-transaction-table',
   styleUrl: './transaction-table.css',
   templateUrl: './transaction-table.html',
   viewProviders: [provideIcons({ matChevronLeftFillOutline, matChevronRightFillOutline })],
 })
 export class TransactionTable {
-
   transactions: Transaction[] = [];
   filteredTransactions: Transaction[] = [];
   tableData: Transaction[] = [];
@@ -56,7 +69,7 @@ export class TransactionTable {
 
   constructor(
     private readonly cdr: ChangeDetectorRef,
-    private readonly http: HttpClient
+    private readonly http: HttpClient,
   ) {
     this.loadTransactions();
   }
@@ -69,39 +82,33 @@ export class TransactionTable {
 
   loadTransactions(): void {
     this.http.get<Transaction[]>('transactions.json').subscribe({
-      next: data => {
+      next: (data) => {
         this.transactions = data;
         this.filteredTransactions = data;
         this.updateTable();
 
         this.cdr.detectChanges();
       },
-      error: error => {
+      error: (error) => {
         console.error('Failed to load transactions: ', error);
-      }
+      },
     });
   }
 
   updateTable(): void {
-    this.totalPages = Math.ceil(
-      this.filteredTransactions.length / this.rowsPerPage
-    );
+    this.totalPages = Math.ceil(this.filteredTransactions.length / this.rowsPerPage);
 
     const startIndex = (this.currentPage - 1) * this.rowsPerPage;
     const endIndex = startIndex + this.rowsPerPage;
 
-    this.tableData = this.filteredTransactions.slice(
-      startIndex,
-      endIndex
-    );
+    this.tableData = this.filteredTransactions.slice(startIndex, endIndex);
   }
 
   applyFiltersAndSort(): void {
     const search = this.searchString.toLowerCase().trim();
 
     // Start with all transactions
-    let results = this.transactions.filter(transaction => {
-
+    let results = this.transactions.filter((transaction) => {
       // Search filter
       const matchesSearch =
         transaction.category.toLowerCase().includes(search) ||
@@ -118,7 +125,7 @@ export class TransactionTable {
     });
 
     // Sorting
-    if (this.orderBy !== '') {
+    if (this.orderBy !== '' && this.sortDirection !== '') {
       results.sort((a, b) => {
         let comparison = 0;
 
@@ -144,9 +151,7 @@ export class TransactionTable {
             break;
         }
 
-        return this.sortDirection.toLowerCase() === 'dsc'
-          ? -comparison
-          : comparison;
+        return this.sortDirection.toLowerCase() === 'descending' ? -comparison : comparison;
       });
     }
 
@@ -156,7 +161,6 @@ export class TransactionTable {
 
     this.updateTable();
   }
-
 
   previousPage(): void {
     if (this.currentPage > 1) {
@@ -171,5 +175,4 @@ export class TransactionTable {
       this.updateTable();
     }
   }
-
 }

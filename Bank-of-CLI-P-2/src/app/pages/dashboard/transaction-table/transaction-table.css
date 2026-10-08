@@ -12,14 +12,9 @@
 
 #transaction-table-form {
   padding-bottom: 2vw;
-  display: flex;
   gap: 1vw;
-  width: 100%;
-}
-
-#transaction-table-form app-input {
-  flex: 1 1 auto;
-  min-width: 0;
+  display: grid;
+  grid-template-columns: 1fr repeat(3, auto);
 }
 
 #pagination {
@@ -93,6 +88,20 @@ tbody tr + tr {
   border-top: 1px solid #ddd;
 }
 
+@media (max-width: 768px) {
+  #transaction-table-form {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  #transaction-table-form app-input {
+    grid-column: 1 / -1;
+  }
+
+  #transaction-table-form app-dropdown {
+    width: 100%;
+  }
+}
+
 /* mobile: stack each transaction into a card */
 @media (max-width: 640px) {
   .transaction-table-container {
@@ -107,14 +116,9 @@ tbody tr + tr {
 
   /* one control per row */
   #transaction-table-form {
-    flex-direction: column;
+    grid-template-columns: 1fr;
     gap: 8px;
     padding-bottom: 16px;
-  }
-
-  #transaction-table-form app-input,
-  #transaction-table-form app-dropdown {
-    width: 100%;
   }
 
   #transaction-table thead {
