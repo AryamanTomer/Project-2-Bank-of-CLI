@@ -25,6 +25,7 @@
 }
 
 .left {
+  filter: hue-rotate(calc(var(--hue-rotate) * 1deg));
   border-radius: 1rem;
   background: url('/assets/auth/mesh-desktop.png');
   background-size: cover;
@@ -80,9 +81,16 @@
 
 @media screen and (max-width: 1080px) {
   .wrapper {
-    background: url('/assets/auth/mesh-tablet.png');
-    background-size: cover;
     padding: 0;
+  }
+
+  .tablet-background {
+    width: 100dvw;
+    height: 100dvh;
+    background: url('/assets/auth/mesh-tablet.png');
+    filter: hue-rotate(calc(var(--hue-rotate) * 1deg));
+    background-size: cover;
+    position: absolute;
   }
 
   .card {
@@ -92,6 +100,7 @@
     box-shadow: none;
     border-radius: 1rem;
     padding: 0;
+    z-index: 1;
   }
 
   .left {
@@ -102,6 +111,10 @@
 @media screen and (max-width: 640px) {
   .wrapper {
     background: white;
+  }
+
+  .tablet-background {
+    background: none;
   }
 
   .right {

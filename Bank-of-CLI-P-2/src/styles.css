@@ -84,7 +84,11 @@ select {
 /* End CSS Reset */
 
 :root {
-  --primary: #853ddf;
+  --hue-rotate: 0;
+  /* --hue-rotate: -30; */
+  /* --hue-rotate: 270; */
+  --base: #853ddf;
+  --primary: oklch(from var(--base) l c calc(h + var(--hue-rotate)));
 
   --primary-dark-10: color-mix(in oklch, var(--primary), black 10%);
   --primary-dark-20: color-mix(in oklch, var(--primary), black 20%);
@@ -157,9 +161,11 @@ select {
 
 body {
   font-family: 'Inter', sans-serif;
+  background-color: rgb(248, 248, 248);
 }
 
-.skeleton-loading :is(h1, h2, h3, h4, p, span, a, button, label, .card-number):not(.no-skeleton, .no-skeleton *),
+.skeleton-loading
+  :is(h1, h2, h3, h4, p, span, a, button, label, .card-number):not(.no-skeleton, .no-skeleton *),
 .skeleton-loading:not(:has(*), .chart) {
   color: transparent !important;
   background: var(--color-gray-200, #e5e7eb) !important;
@@ -172,5 +178,7 @@ body {
 }
 
 @keyframes skeleton-pulse {
-  50% { opacity: 0.5; }
+  50% {
+    opacity: 0.5;
+  }
 }

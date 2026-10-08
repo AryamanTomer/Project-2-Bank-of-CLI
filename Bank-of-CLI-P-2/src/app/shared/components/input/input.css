@@ -11,15 +11,23 @@ input {
   outline: 2px solid transparent;
   transition:
     outline 0.3s ease,
-    filter 0.3s ease;
+    filter 0.3s ease,
+    color 0.3s ease;
 
-  &:focus {
-    outline: 2px solid var(--primary);
-    filter: brightness(0.95);
+  &:enabled {
+    &:focus {
+      outline: 2px solid var(--primary);
+      filter: brightness(0.95);
+    }
+
+    &:hover {
+      filter: brightness(0.95);
+    }
   }
 
-  &:hover {
-    filter: brightness(0.95);
+  &:disabled {
+    cursor: not-allowed;
+    color: rgb(200, 200, 200);
   }
 
   &::placeholder {
@@ -29,4 +37,30 @@ input {
 
 div {
   position: relative;
+}
+
+img {
+  position: absolute;
+  right: var(--space-s);
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1;
+  cursor: pointer;
+  width: 1.2rem;
+  transition: filter 0.3s ease;
+
+  &:hover + input {
+    filter: brightness(0.95);
+  }
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type='number'] {
+  -moz-appearance: textfield;
 }

@@ -6,12 +6,12 @@ import { LoadingSkeleton } from '../../directives/loading-skeleton/loading-skele
   selector: 'app-card',
   imports: [LoadingSkeleton],
   templateUrl: './card.html',
-  host: { '[class]': 'classes()' },
+  // host: { '[class]': 'classes()' },
 })
 export class Card {
   class = input('');
   loading = input(false);
   classes = computed(() =>
-     twMerge('block border-2 border-gray-200 p-4 rounded-xl shadow-lg', this.class()),
-);
+    twMerge('border-2 border-gray-200 p-4 rounded-xl shadow-lg', this.class()),
+  );
 }

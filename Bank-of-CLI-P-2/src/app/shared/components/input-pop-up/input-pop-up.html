@@ -1,0 +1,65 @@
+<h1 mat-dialog-title>
+  New
+  {{
+    data.transactionType.charAt(0) +
+      data.transactionType.substring(1, data.transactionType.length).toLowerCase() ===
+    'Transfer_out'
+      ? 'Transfer'
+      : data.transactionType.charAt(0) +
+        data.transactionType.substring(1, data.transactionType.length).toLowerCase()
+  }}
+</h1>
+<mat-dialog-content>
+  <div class="flex flex-col md:flex-row gap-x-4">
+    @if (data.transactionType == 'TRANSFER_IN' || data.transactionType == 'TRANSFER_OUT') {
+      <app-card class="flex flex-col justify-start w-full shadow-none mt-3">
+        <h2 class="font-semibold text-black text-md pb-2">Amount</h2>
+        <app-input
+          [type]="'number'"
+          inputId="amount"
+          [(value)]="amount"
+          class="font-semibold text-1xl text-black"
+        />
+      </app-card>
+
+      <app-card class="flex flex-col justify-start w-full shadow-none mt-3">
+        <h2 class="font-semibold text-black text-md pb-2">Destination Account</h2>
+        <app-input
+          [type]="'number'"
+          inputId="desAccount"
+          [(value)]="destinationAccount"
+          class="font-semibold text-1xl text-black"
+        />
+      </app-card>
+    } @else {
+      <app-card class="flex flex-col justify-start w-1/2 shadow-none mt-3">
+        <h2 class="font-semibold text-black text-md pb-2">Amount</h2>
+        <app-input
+          [type]="'number'"
+          inputId="amount"
+          [(value)]="amount"
+          class="font-semibold text-1xl text-black"
+        />
+      </app-card>
+    }
+  </div>
+  <app-card class="flex flex-col justify-start shadow-none mt-3 w-full">
+    <h2 class="font-semibold text-black text-md pb-2">Notes</h2>
+    <app-input
+      [type]="'text'"
+      inputId="Notes"
+      [(value)]="notes"
+      class="font-semibold text-1xl w-full text-black"
+    />
+  </app-card>
+  <mat-dialog-actions align="end" class="flex flex-row gap-x-5">
+    <app-card class="py-2.5 border">
+      <!-- mat-dialog-close closes the dialog. With no value, the result is undefined. -->
+      <button mat-dialog-close>Cancel</button>
+    </app-card>
+    <div class="button-container">
+      <!-- [mat-dialog-close]="true" closes the dialog and sends `true` back to the parent. -->
+      <button [mat-dialog-close]="true" class="button-container">Continue</button>
+    </div>
+  </mat-dialog-actions>
+</mat-dialog-content>

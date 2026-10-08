@@ -5,6 +5,7 @@
     [name]="name() || inputId()"
     [value]="value()"
     [placeholder]="placeholder() || ''"
+    [disabled]="disabled()"
     (input)="onInput($event)"
     [class]="classes()"
     required

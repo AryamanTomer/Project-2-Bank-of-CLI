@@ -7,7 +7,6 @@ import {
   FormEntries,
 } from '../../shared/components/auth/auth';
 import { BankService } from '../../service/bank';
-import { finalizeConsumerAfterComputation } from '@angular/core/primitives/signals';
 
 @Component({
   imports: [AuthPage],
@@ -45,7 +44,8 @@ export class RegisterPage {
     },
   ];
   readonly callback: AuthCallback = async <T>(formEntries: FormEntries): ActionResult<T> => {
-    console.log(formEntries);
+    // console.log(formEntries);
+
     await new Promise((resolve) => setTimeout(resolve, 1500));
     const error = this.bank.register(
       String(formEntries['accountId'] ?? ''),
@@ -58,10 +58,6 @@ export class RegisterPage {
         errors: [error],
       };
     }
-    // return {
-    //   success: false,
-    //   errors: ['Account ID already exists. Please try again.'],
-    // };
     return {
       success: true,
       toast: 'Registration successful! You will be redirected to the login page in 3s.',

@@ -8,6 +8,8 @@ import {
 } from '../../shared/components/auth/auth';
 import { BankService } from '../../service/bank';
 
+import { AuthService } from '../../service/auth/auth.service';
+
 @Component({
   imports: [AuthPage],
   selector: 'app-login-page',
@@ -15,6 +17,7 @@ import { BankService } from '../../service/bank';
   templateUrl: './login-page.html',
 })
 export class LoginPage {
+  private readonly authService = inject(AuthService);
   private readonly bank = inject(BankService);
   readonly heading = 'Account Login';
   readonly description =
@@ -35,23 +38,23 @@ export class LoginPage {
       type: 'password',
     },
   ];
+
   readonly callback: AuthCallback = async <T>(formEntries: FormEntries): ActionResult<T> => {
-    console.log(formEntries);
+    // console.log(formEntries);
+
     await new Promise((resolve) => setTimeout(resolve, 1500));
-    // return {
-    //   success: false,
-    //   errors: ['Invalid credentials. Please try again.'],
-    // };
-    const error = this.bank.login(
-      String(formEntries['accountId'] ?? ''),
-      String(formEntries['accountPin'] ?? ''),
-    );
+
+    const accountId = String(formEntries['accountId'] ?? '');
+    const accountPin = String(formEntries['accountPin'] ?? '');
+    const error = this.bank.login(accountId, accountPin);
     if (error) {
       return {
         success: false,
         errors: [error],
       };
     }
+
+    await this.authService.login({ accountId, accountPin });
     return {
       success: true,
       redirect: '/dashboard',

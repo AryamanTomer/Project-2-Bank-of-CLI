@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { AfterViewInit, Component, inject, computed } from '@angular/core';
+import { AfterViewInit, Component, computed, inject } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { Button } from '../../shared/components/button/button';
 import { Card } from '../../shared/components/card/card';
@@ -31,7 +31,6 @@ export class Dashboard implements AfterViewInit {
   cardholderName = 'John Doe';
   cardNumber = '4827 1938 6274 9183';
   expirationDate = '08/30';
-
   currentDate = new Date();
 
   protected readonly account = computed(() => {
