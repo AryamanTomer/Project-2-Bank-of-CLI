@@ -1,11 +1,20 @@
 import { Component, inject, signal } from '@angular/core';
 import { ToastService } from '../../service/toast';
+import { MatDialog } from '@angular/material/dialog';
+import { PopUp } from '../../shared/components/pop-up/pop-up';
+import { InputPopUp } from '../../shared/components/input-pop-up/input-pop-up';
 import { Button } from '../../shared/components/button/button';
 import { Card } from '../../shared/components/card/card';
 import { Dropdown } from '../../shared/components/dropdown/dropdown';
 import { Input } from '../../shared/components/input/input';
 import { Label } from '../../shared/components/label/label';
 import { ToastContainer } from '../../shared/components/toast/toast';
+import { Transaction } from '../../models/Transaction.model';
+import { TransactionStatus } from '../../models/TransactionStatus.model';
+import { TransactionType } from '../../models/TransactionType.model';
+import { CdkMenu, CdkMenuItem, CdkMenuTrigger } from '@angular/cdk/menu';
+import { firstValueFrom } from 'rxjs';
+import { ErrorPopUp } from '../../shared/components/error-pop-up/error-pop-up';
 
 // Snippets live here (not in the template) so Angular doesn't parse `{{`, `@` or tags inside them.
 const snippets = {
@@ -38,7 +47,17 @@ this.toast.show('Custom', 'success', 5000); // message, type, duration ms`,
 };
 
 @Component({
-  imports: [Button, Card, Dropdown, Input, Label, ToastContainer],
+  imports: [
+    Button,
+    Card,
+    Dropdown,
+    Input,
+    Label,
+    ToastContainer,
+    CdkMenu,
+    CdkMenuItem,
+    CdkMenuTrigger,
+  ],
   selector: 'app-docs',
   template: `
     <app-toast />
@@ -58,7 +77,7 @@ this.toast.show('Custom', 'success', 5000); // message, type, duration ms`,
         <div class="flex gap-3">
           <app-button class="w-48" (clicked)="toast.success('Clicked')">Click me</app-button>
           <app-button class="w-48" [disabled]="true">Disabled</app-button>
-          <app-button class="w-48" [disabled]="true" [loading]="true">Loading</app-button>
+          <app-button class="w-48" [disabled]="true">Loading</app-button>
         </div>
         <pre class="overflow-x-auto rounded-xl bg-gray-100 p-3 text-sm">{{ snippets.button }}</pre>
       </section>
@@ -142,6 +161,34 @@ this.toast.show('Custom', 'success', 5000); // message, type, duration ms`,
           <app-button class="w-48" (clicked)="toast.error('Error toast')">Error</app-button>
         </div>
         <pre class="overflow-x-auto rounded-xl bg-gray-100 p-3 text-sm">{{ snippets.toast }}</pre>
+
+        <app-button class="w-48" [cdkMenuTriggerFor]="transactionMenu">Make Transaction</app-button>
+        <ng-template #transactionMenu>
+          <div cdkMenu class="flex min-w-40 flex-col rounded-xl bg-white p-1.5 shadow-lg">
+            <button
+              cdkMenuItem
+              class="cursor-pointer rounded-lg px-3 py-2.5 text-left hover:bg-purple-200 focus-visible:bg-purple-200 focus-visible:outline-none"
+              (click)="processTransaction(types.Deposit)"
+            >
+              Deposit
+            </button>
+            <button
+              cdkMenuItem
+              class="cursor-pointer rounded-lg px-3 py-2.5 text-left hover:bg-purple-200 focus-visible:bg-purple-200 focus-visible:outline-none"
+              (click)="processTransaction(types.Withdraw)"
+            >
+              Withdraw
+            </button>
+            <button
+              cdkMenuItem
+              class="cursor-pointer rounded-lg px-3 py-2.5 text-left hover:bg-purple-200 focus-visible:bg-purple-200 focus-visible:outline-none"
+              (click)="processTransaction(types.TransferOut)"
+            >
+              Transfer
+            </button>
+          </div>
+        </ng-template>
+        <pre class="overflow-x-auto rounded-xl bg-gray-100 p-3 text-sm">{{ result() }}</pre>
       </section>
     </main>
   `,
@@ -155,4 +202,56 @@ export class Docs {
   protected text = signal('');
   protected password = signal('');
   protected search = signal('');
+
+  private readonly dialog = inject(MatDialog);
+  protected readonly types = TransactionType;
+  protected readonly result = signal('No transaction yet.');
+
+  // Input -> (destination check) -> confirm. Back/error-continue return to input; cancel aborts.
+  protected async processTransaction(transactionType: TransactionType): Promise<void> {
+    const tx: Transaction = {
+      transactionId: '',
+      accountId: '001',
+      recipientAccountId: '0001',
+      amount: 0,
+      description: '',
+      transactionType,
+      dateCreated: new Date(),
+      transferId: null,
+      transactionStatus: TransactionStatus.Pending,
+    };
+
+    while (true) {
+      const next = await firstValueFrom(
+        this.dialog
+          .open<InputPopUp, Transaction, boolean>(InputPopUp, { width: '700px', data: tx })
+          .afterClosed(),
+      );
+      if (!next) return;
+
+      if (tx.recipientAccountId !== '0001') {
+        await firstValueFrom(
+          this.dialog
+            .open<ErrorPopUp, { error: string }, boolean>(ErrorPopUp, {
+              width: '700px',
+              data: { error: 'Destination account not found' },
+            })
+            .afterClosed(),
+        );
+        continue;
+      }
+
+      const confirmed = await firstValueFrom(
+        this.dialog
+          .open<PopUp, Transaction, boolean>(PopUp, { width: '700px', data: tx })
+          .afterClosed(),
+      );
+      if (confirmed === undefined) return; // dismissed
+      if (confirmed) {
+        this.result.set(JSON.stringify(tx, null, 2));
+        return;
+      }
+      // false = Back -> loop to input
+    }
+  }
 }
