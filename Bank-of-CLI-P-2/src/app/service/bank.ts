@@ -14,15 +14,26 @@ interface AccountRecord {
 @Injectable({ providedIn: 'root'})
 export class BankService {
 
+    private readonly storageKey = 'currentAccountId';
+
+    readonly accountsLoaded = signal<boolean>(false);
+
     readonly currentAccountId = signal<string | null>(null);
 
     private accounts = new Map<string, AccountRecord>();
 
-    constructor(private readonly http: HttpClient) {}
+    constructor(private readonly http: HttpClient) {
+        const savedId = localStorage.getItem(this.storageKey);
+        if(savedId) {
+            this.currentAccountId.set(savedId);
+        }
+        this.loadFromFile();
+    }
 
     loadFromFile(): void {
         this.http.get<AccountRecord[]>('accounts.json').subscribe((accounts) => {
             this.load(accounts);
+            this.accountsLoaded.set(true);
         });
     }
 
@@ -50,6 +61,7 @@ export class BankService {
             return 'Invalid credentials. Please try again, your account may not exist.';
         }
         this.currentAccountId.set(accountId);
+        localStorage.setItem(this.storageKey, accountId);
         return '';
     }
 
