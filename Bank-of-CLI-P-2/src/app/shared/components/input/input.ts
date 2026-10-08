@@ -4,7 +4,7 @@ import { lucideEye, lucideEyeOff } from '@ng-icons/lucide';
 import { matSearchOutline } from '@ng-icons/material-symbols/outline';
 import { twMerge } from 'tailwind-merge';
 
-export type InputType = 'text' | 'password' | 'search';
+export type InputType = 'text' | 'password' | 'search' | 'number';
 
 @Component({
   imports: [NgIcon],
