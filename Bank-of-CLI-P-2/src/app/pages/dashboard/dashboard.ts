@@ -1,3 +1,5 @@
+﻿import { CdkMenu, CdkMenuItem, CdkMenuTrigger } from '@angular/cdk/menu';
+import { ConnectedPosition } from '@angular/cdk/overlay';
 import { DatePipe } from '@angular/common';
 import { AfterViewInit, Component, computed, DestroyRef, effect, inject, signal } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
@@ -14,11 +16,22 @@ import { Transaction } from '../../models/Transaction.model';
 import { TransactionStatus } from '../../models/TransactionStatus.model';
 import { TransactionType } from '../../models/TransactionType.model';
 import { BankService } from '../../service/bank';
+import { TransactionFlow } from '../../service/transaction-flow';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [MatCardModule, TransactionTable, Button, Card, DatePipe, NgIcon],
+  imports: [
+    MatCardModule,
+    TransactionTable,
+    Button,
+    Card,
+    DatePipe,
+    NgIcon,
+    CdkMenu,
+    CdkMenuItem,
+    CdkMenuTrigger,
+  ],
   providers: [
     provideIcons({
       matMoneyBagFillOutline,
@@ -32,7 +45,16 @@ import { BankService } from '../../service/bank';
 })
 export class Dashboard implements AfterViewInit {
   private readonly bank = inject(BankService);
+  private readonly flow = inject(TransactionFlow);
+  protected readonly types = TransactionType;
   private chart?: Chart;
+
+  // Tried in order; the CDK uses the first one that fits on screen
+  menuPositions: ConnectedPosition[] = [
+    { originX: 'end', originY: 'bottom', overlayX: 'end', overlayY: 'top', offsetY: 8 },
+    { originX: 'start', originY: 'bottom', overlayX: 'start', overlayY: 'top', offsetY: 8 },
+    { originX: 'start', originY: 'top', overlayX: 'end', overlayY: 'top', offsetX: -8 },
+  ];
   protected readonly accountsLoaded = this.bank.accountsLoaded;
   protected readonly transactionsLoaded = this.bank.transactionsLoaded;
   cardNumber = '4827 1938 6274 9183';
@@ -107,7 +129,7 @@ export class Dashboard implements AfterViewInit {
       this.applyHistory(history);
     });
 
-    this.loadingTimer = setTimeout(() => this.stopLoading(), 10000);
+    this.loadingTimer = setTimeout(() => this.stopLoading(), 60000);
   }
 
   ngAfterViewInit(): void {
@@ -175,6 +197,10 @@ export class Dashboard implements AfterViewInit {
         },
       },
     });
+  }
+
+  protected processTransaction(type: TransactionType) {
+    return this.flow.run(type);
   }
 
   getLastFiveMonths(): string[] {

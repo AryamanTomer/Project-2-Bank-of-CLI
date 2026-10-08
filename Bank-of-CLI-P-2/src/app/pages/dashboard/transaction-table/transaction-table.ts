@@ -1,8 +1,7 @@
-import { CdkMenu, CdkMenuItem, CdkMenuTrigger } from '@angular/cdk/menu';
+﻿import { CdkMenu, CdkMenuItem, CdkMenuTrigger } from '@angular/cdk/menu';
 import { ConnectedPosition } from '@angular/cdk/overlay';
 import { ChangeDetectorRef, Component, effect, inject, input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import {
   matChevronLeftFillOutline,
@@ -10,6 +9,7 @@ import {
 } from '@ng-icons/material-symbols/outline';
 import { TransactionType } from '../../../models/TransactionType.model';
 import { BankService } from '../../../service/bank';
+import { TransactionFlow } from '../../../service/transaction-flow';
 import { Button } from '../../../shared/components/button/button';
 import { Dropdown } from '../../../shared/components/dropdown/dropdown';
 import { Input } from '../../../shared/components/input/input';
@@ -37,7 +37,6 @@ interface Transaction {
     CdkMenu,
     CdkMenuItem,
     CdkMenuTrigger,
-    RouterLink,
   ],
   selector: 'app-transaction-table',
   styleUrl: './transaction-table.css',
@@ -46,6 +45,8 @@ interface Transaction {
 })
 export class TransactionTable {
   private readonly bank = inject(BankService);
+  private readonly flow = inject(TransactionFlow);
+  protected readonly types = TransactionType;
 
   transactions: Transaction[] = [];
   filteredTransactions: Transaction[] = [];
@@ -187,6 +188,10 @@ export class TransactionTable {
     this.currentPage = 1;
 
     this.updateTable();
+  }
+
+  protected processTransaction(type: TransactionType) {
+    return this.flow.run(type);
   }
 
   previousPage(): void {

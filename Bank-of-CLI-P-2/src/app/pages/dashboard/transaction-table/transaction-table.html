@@ -15,9 +15,9 @@
     </app-button>
     <ng-template #transactionMenu>
       <div cdkMenu class="transaction-menu">
-        <a cdkMenuItem routerLink="/transactions/deposit">Deposit</a>
-        <a cdkMenuItem routerLink="/transactions/withdraw">Withdraw</a>
-        <a cdkMenuItem routerLink="/transactions/transfer">Transfer</a>
+        <button cdkMenuItem (click)="processTransaction(types.Deposit)">Deposit</button>
+        <button cdkMenuItem (click)="processTransaction(types.Withdraw)">Withdraw</button>
+        <button cdkMenuItem (click)="processTransaction(types.TransferOut)">Transfer</button>
       </div>
     </ng-template>
   </div>
