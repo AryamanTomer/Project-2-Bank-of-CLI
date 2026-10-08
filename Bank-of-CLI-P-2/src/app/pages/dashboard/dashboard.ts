@@ -4,6 +4,7 @@ import { MatCardModule } from '@angular/material/card';
 import { Button } from '../../shared/components/button/button';
 import { Card } from '../../shared/components/card/card';
 import { TransactionTable } from './transaction-table/transaction-table';
+import {DestroyRef} from '@angular/core';
 
 import Chart from 'chart.js/auto';
 
@@ -25,6 +26,7 @@ import { AuthService } from '../../service/auth/auth.service';
   ],
   styleUrl: './dashboard.css',
   templateUrl: './dashboard.html',
+  host: { '(document:keydown.enter)': 'stopLoading()' }
 })
 export class Dashboard implements AfterViewInit {
   private readonly authService = inject(AuthService);
@@ -34,6 +36,17 @@ export class Dashboard implements AfterViewInit {
   cardNumber = '4827 1938 6274 9183';
   expirationDate = '08/30';
   currentDate = new Date();
+
+  // loading
+  protected readonly isLoading = signal(true);
+  constructor() {
+    const timer = setTimeout(() => this.isLoading.set(false), 10000);
+    inject(DestroyRef).onDestroy(() => clearTimeout(timer));
+  }
+
+  stopLoading(): void {
+    this.isLoading.set(false);
+  }
 
   ngAfterViewInit(): void {
     const yAxis = this.getYAxisRange();
