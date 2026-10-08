@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { AuthPage } from '../../shared/components/auth-page/auth-page';
 import {
   ActionResult,
@@ -6,6 +6,7 @@ import {
   AuthFields,
   FormEntries,
 } from '../../shared/components/auth/auth';
+import { BankService } from '../../service/bank';
 
 @Component({
   imports: [AuthPage],
@@ -14,6 +15,7 @@ import {
   templateUrl: './register-page.html',
 })
 export class RegisterPage {
+  private readonly bank = inject(BankService);
   readonly heading = 'Register Account';
   readonly description =
     'Get started with a new account. Fill in your details below to set up your secure account dashboard.';
@@ -45,14 +47,17 @@ export class RegisterPage {
     // console.log(formEntries);
 
     await new Promise((resolve) => setTimeout(resolve, 1500));
-
-    if (formEntries['accountId'] === 'ACT-1001') {
+    const error = this.bank.register(
+      String(formEntries['accountId'] ?? ''),
+      String(formEntries['accountPin'] ?? ''),
+      String(formEntries['nickname'] ?? ''),
+    );
+    if (error) {
       return {
         success: false,
-        errors: ['Account ID already exists. Please try again.'],
+        errors: [error],
       };
     }
-
     return {
       success: true,
       toast: 'Registration successful! You will be redirected to the login page in 3s.',

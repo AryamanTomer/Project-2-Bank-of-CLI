@@ -6,6 +6,7 @@ import {
   AuthFields,
   FormEntries,
 } from '../../shared/components/auth/auth';
+import { BankService } from '../../service/bank';
 
 import { AuthService } from '../../service/auth/auth.service';
 
@@ -17,7 +18,7 @@ import { AuthService } from '../../service/auth/auth.service';
 })
 export class LoginPage {
   private readonly authService = inject(AuthService);
-
+  private readonly bank = inject(BankService);
   readonly heading = 'Account Login';
   readonly description =
     'Welcome back! Please enter your login credentials to access your secure account dashboard.';
@@ -43,15 +44,17 @@ export class LoginPage {
 
     await new Promise((resolve) => setTimeout(resolve, 1500));
 
-    if (formEntries['accountId'] === 'ACT-1001') {
+    const accountId = String(formEntries['accountId'] ?? '');
+    const accountPin = String(formEntries['accountPin'] ?? '');
+    const error = this.bank.login(accountId, accountPin);
+    if (error) {
       return {
         success: false,
-        errors: ['Invalid credentials. Please try again.'],
+        errors: [error],
       };
     }
 
-    await this.authService.login(formEntries as any);
-
+    await this.authService.login({ accountId, accountPin });
     return {
       success: true,
       redirect: '/dashboard',
