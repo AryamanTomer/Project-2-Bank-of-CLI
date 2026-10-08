@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { AfterViewInit, Component } from '@angular/core';
+import { AfterViewInit, Component, computed, inject, signal } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { Button } from '../../shared/components/button/button';
 import { Card } from '../../shared/components/card/card';
@@ -10,6 +10,7 @@ import Chart from 'chart.js/auto';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { matMoneyBagFillOutline, matSavingsFillOutline } from '@ng-icons/material-symbols/outline';
 import { matAddCircleRound } from '@ng-icons/material-symbols/round';
+import { AuthService } from '../../service/auth/auth.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -26,10 +27,12 @@ import { matAddCircleRound } from '@ng-icons/material-symbols/round';
   templateUrl: './dashboard.html',
 })
 export class Dashboard implements AfterViewInit {
+  private readonly authService = inject(AuthService);
+  protected readonly nickname = this.authService.getCurrentUser()!.user.nickname;
+
   cardholderName = 'John Doe';
   cardNumber = '4827 1938 6274 9183';
   expirationDate = '08/30';
-
   currentDate = new Date();
 
   ngAfterViewInit(): void {
