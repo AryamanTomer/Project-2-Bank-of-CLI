@@ -30,6 +30,7 @@
   display: flex;
   gap: var(--space-xs);
   align-items: center;
+  pointer-events: all;
 
   .logo-container {
     background: var(--primary);
