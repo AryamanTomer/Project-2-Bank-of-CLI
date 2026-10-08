@@ -46,7 +46,7 @@
   <!-- Analytics -->
   <div class="analytics-section">
     <!-- This Month -->
-    <app-card class="monthly-summary" [loading]="!accountsLoaded()">
+    <app-card class="monthly-summary" [loading]="!transactionsLoaded()">
       <h2 class="summary-title no-skeleton">This Month</h2>
       <div class="income-spending-card">
         <!-- Income -->
@@ -58,8 +58,14 @@
             </div>
           </div>
           <div class="stat-bottom">
-            <h2>$5,000</h2>
-            <span class="change positive">↑ 7%</span>
+            <h2>${{ monthSummary().income }}</h2>
+            <span
+              class="change"
+              [class.positive]="monthSummary().incomeDirection === 'up'"
+              [class.negative]="monthSummary().incomeDirection === 'down'"
+            >
+              {{ monthSummary().incomeChange }}
+            </span>
           </div>
         </app-card>
         <!-- Spending -->
@@ -71,8 +77,14 @@
             </div>
           </div>
           <div class="stat-bottom">
-            <h2>$2,000</h2>
-            <span class="change negative">↓ 6%</span>
+            <h2>${{ monthSummary().spending }}</h2>
+            <span
+              class="change"
+              [class.positive]="monthSummary().spendingDirection === 'up'"
+              [class.negative]="monthSummary().spendingDirection === 'down'"
+            >
+              {{ monthSummary().spendingChange }}
+            </span>
           </div>
         </app-card>
       </div>
