@@ -1,18 +1,20 @@
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { CdkMenu, CdkMenuItem, CdkMenuTrigger } from '@angular/cdk/menu';
+import { ConnectedPosition } from '@angular/cdk/overlay';
+import { ChangeDetectorRef, Component, effect, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { matChevronLeftFillOutline, matChevronRightFillOutline } from '@ng-icons/material-symbols/outline';
+import { RouterLink } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
+import { matChevronLeftFillOutline, matChevronRightFillOutline } from '@ng-icons/material-symbols/outline';
+import { TransactionType } from '../../../models/TransactionType.model';
+import { BankService } from '../../../service/bank';
 import { Button } from '../../../shared/components/button/button';
 import { Dropdown } from '../../../shared/components/dropdown/dropdown';
 import { Input } from '../../../shared/components/input/input';
 import { Label } from '../../../shared/components/label/label';
 import { LoadingRow } from '../../../shared/components/loading-row/loading-row';
-import { CdkMenu, CdkMenuItem, CdkMenuTrigger } from '@angular/cdk/menu';
-import { ConnectedPosition } from '@angular/cdk/overlay';
-import { HttpClient } from '@angular/common/http';
 
 interface Transaction {
-  id: number;
+  id: string;
   date: string;
   category: string;
   destination: string;
@@ -21,13 +23,14 @@ interface Transaction {
 }
 
 @Component({
-  imports: [FormsModule, NgIcon, Button, Dropdown, Input, Label, LoadingRow, CdkMenu, CdkMenuItem, CdkMenuTrigger],
+  imports: [FormsModule, NgIcon, Button, Dropdown, Input, Label, LoadingRow, CdkMenu, CdkMenuItem, CdkMenuTrigger, RouterLink],
   selector: 'app-transaction-table',
   styleUrl: './transaction-table.css',
   templateUrl: './transaction-table.html',
   viewProviders: [provideIcons({ matChevronLeftFillOutline, matChevronRightFillOutline })],
 })
 export class TransactionTable {
+  private readonly bank = inject(BankService);
 
   transactions: Transaction[] = [];
   filteredTransactions: Transaction[] = [];
@@ -54,31 +57,52 @@ export class TransactionTable {
     { originX: 'start', originY: 'bottom', overlayX: 'start', overlayY: 'top', offsetY: 8 },
   ];
 
-  constructor(
-    private readonly cdr: ChangeDetectorRef,
-    private readonly http: HttpClient
-  ) {
-    this.loadTransactions();
+  constructor(private readonly cdr: ChangeDetectorRef) {
+    effect(() => {
+      this.bank.revision();
+      if (!this.bank.transactionsLoaded()) return;
+      const id = this.bank.currentAccountId();
+      this.transactions = id ? this.rowsFor(id) : [];
+      this.applyFiltersAndSort();
+      this.cdr.detectChanges();
+    });
   }
 
   // loading values
   loadingRows = Array.from({ length: this.rowsPerPage });
   dataLoading(): boolean {
-    return this.transactions.length === 0;
+    return !this.bank.transactionsLoaded();
   }
 
-  loadTransactions(): void {
-    this.http.get<Transaction[]>('transactions.json').subscribe({
-      next: data => {
-        this.transactions = data;
-        this.filteredTransactions = data;
-        this.updateTable();
+  private rowsFor(accountId: string): Transaction[] {
+    return this.bank.getTransactions(accountId).map((transaction) => {
+      const other = transaction.recipientAccountId
+        ? this.bank.getAccount(transaction.recipientAccountId)
+        : undefined;
+      const category =
+        transaction.transactionType === TransactionType.Deposit
+          ? 'Deposit'
+          : transaction.transactionType === TransactionType.Withdraw
+            ? 'Withdraw'
+            : 'Transfer';
+      const status =
+        transaction.transactionStatus.charAt(0) +
+        transaction.transactionStatus.slice(1).toLowerCase();
 
-        this.cdr.detectChanges();
-      },
-      error: error => {
-        console.error('Failed to load transactions: ', error);
-      }
+      return {
+        id: transaction.transactionId,
+        date: transaction.dateCreated.toLocaleString('en-US', {
+          month: '2-digit',
+          day: '2-digit',
+          year: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit',
+        }),
+        category,
+        destination: other?.accountName ?? '-',
+        status,
+        amount: transaction.amount,
+      };
     });
   }
 

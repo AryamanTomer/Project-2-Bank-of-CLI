@@ -4,6 +4,7 @@ import { Docs } from './pages/docs/docs';
 import { LoginPage } from './pages/login-page/login-page';
 import { NotFound } from './pages/not-found/not-found';
 import { RegisterPage } from './pages/register-page/register-page';
+import { TransactionPage } from './pages/transaction-page/transaction-page';
 import { authGuard } from './service/auth/auth.guard';
 
 export const routes: Routes = [
@@ -28,6 +29,11 @@ export const routes: Routes = [
     canActivate: [authGuard({ reverse: false })],
   },
   { path: 'docs', component: Docs },
+  {
+    path: 'transactions/:kind',
+    component: TransactionPage,
+    canActivate: [authGuard({ reverse: false })],
+  },
   { path: 'not-found', component: NotFound },
   { path: '**', redirectTo: 'not-found' }, // must stay last
 ];

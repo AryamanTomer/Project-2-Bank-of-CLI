@@ -1,4 +1,6 @@
+import { provideHttpClient } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 import { TransactionTable } from './transaction-table';
 
 describe('TransactionTable', () => {
@@ -7,7 +9,8 @@ describe('TransactionTable', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TransactionTable]
+      imports: [TransactionTable],
+      providers: [provideHttpClient(), provideRouter([])],
     })
       .compileComponents();
 
