@@ -52,6 +52,10 @@ export class PopUp {
     style: 'currency',
     currency: 'USD',
   });
+  title =
+    (<Record<string, string>>{ WITHDRAW: 'Withdrawal', DEPOSIT: 'Deposit' })[
+      this.data.transactionType
+    ] ?? 'Transfer';
   style = statusStyles[this.data.transactionType];
   redStyle = statusStyles[TransactionType.Withdraw];
   greenStyle = statusStyles[TransactionType.Deposit];
