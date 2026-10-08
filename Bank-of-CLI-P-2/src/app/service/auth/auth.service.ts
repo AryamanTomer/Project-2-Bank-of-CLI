@@ -1,20 +1,19 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable, inject, signal } from '@angular/core';
-import { jwtDecode } from 'jwt-decode';
+import { Injectable, inject } from '@angular/core';
 import { tap } from 'rxjs/operators';
 
-// const FAKE_SECRET = 'a-string-secret-at-least-256-bits-long';
-const FAKE_JWT =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImFjY291bnRJZCI6MSwibmlja25hbWUiOiJKb2huIn0sImlhdCI6MTUxNjIzOTAyMiwiZXhwIjo5OTk5OTk5OTk5fQ.CS5z1eQwI7DDc7xKUmX1mLABiCpYzzUihZdlIXtFCIk';
+import { SignJWT, jwtVerify } from 'jose';
 
-export interface JwtPayload {
-  user: {
-    accountId: number;
-    nickname: string;
-  };
-  iat: number;
-  exp: number;
-}
+const SECRET_KEY = 'a-super-secret-key-that-is-at-least-256-bits-long';
+const secretKey = new TextEncoder().encode(SECRET_KEY);
+
+type ValidAuth<T> = { isValid: true; payload: T };
+type ErrorAuth = { isValid: false; errors: string[] };
+type AuthResult<T> = Promise<ValidAuth<T> | ErrorAuth>;
+
+type JwtPayload = {
+  accountId: string;
+};
 
 @Injectable({
   providedIn: 'root',
@@ -23,36 +22,48 @@ export class AuthService {
   // private http = inject(HttpClient);
   // private apiUrl = 'https://api.yourdomain.com/auth';
 
-  async login(credentials: { accountId: string; accountPin: string }): Promise<void> {
+  private createToken = async (payload: JwtPayload) =>
+    await new SignJWT(payload)
+      .setProtectedHeader({ alg: 'HS256' })
+      .setIssuedAt()
+      .setExpirationTime('30d')
+      .sign(secretKey);
+
+  private async verifyToken(token: string): AuthResult<JwtPayload> {
+    try {
+      const { payload }: { payload: JwtPayload } = await jwtVerify(token, secretKey, {
+        algorithms: ['HS256'],
+      });
+      return { isValid: true, payload };
+    } catch (error) {
+      // If expired, signature is invalid, or malformed
+      return { isValid: false, errors: [(error as Error).message] };
+    }
+  }
+
+  public async login(credentials: JwtPayload): Promise<void> {
     // return this.http.post<{ token: string }>(`${this.apiUrl}/login`, credentials).pipe(
     //   tap(response => {
     //     // Save the JWT in localStorage (or sessionStorage)
     //     localStorage.setItem('jwt', response.token);
     //   })
     // );
-    localStorage.setItem('jwt', FAKE_JWT);
-    const decoded = jwtDecode<JwtPayload>(FAKE_JWT);
+
+    const token = await this.createToken(credentials);
+    localStorage.setItem('jwt', token);
   }
 
-  logout() {
+  public logout(): void {
     localStorage.removeItem('jwt');
   }
 
-  getCurrentUser(): JwtPayload | null {
-    const token = localStorage.getItem('jwt');
-    if (!token) return null;
+  public async getCurrentUser(): Promise<AuthResult<JwtPayload>> {
+    const token = localStorage.getItem('jwt') ?? '';
+    return this.verifyToken(token);
+  }
 
-    try {
-      const decoded = jwtDecode<JwtPayload>(token);
-      if (decoded.exp * 1000 < Date.now()) {
-        this.logout();
-        return null;
-      }
-      return decoded;
-    } catch (error) {
-      // Invalid token format
-      this.logout();
-      return null;
-    }
+  public async isLoggedIn(): Promise<boolean> {
+    const currentUser = await this.getCurrentUser();
+    return currentUser.isValid;
   }
 }

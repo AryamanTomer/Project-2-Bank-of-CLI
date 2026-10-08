@@ -8,11 +8,12 @@ import { AuthService } from './auth.service';
  */
 export const authGuard: (options: { reverse: boolean }) => CanActivateFn =
   ({ reverse }: { reverse: boolean }) =>
-  () => {
+  async () => {
     const authService = inject(AuthService);
     const router = inject(Router);
 
-    const isLoggedIn = !!authService.getCurrentUser();
+    const isLoggedIn = await authService.isLoggedIn();
+    if (!isLoggedIn) authService.logout();
 
     if (reverse === isLoggedIn) {
       return router.createUrlTree([isLoggedIn ? '/dashboard' : '/login']);

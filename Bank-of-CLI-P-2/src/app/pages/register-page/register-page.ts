@@ -1,4 +1,5 @@
 import { Component, inject } from '@angular/core';
+import { BankService } from '../../service/bank';
 import { AuthPage } from '../../shared/components/auth-page/auth-page';
 import {
   ActionResult,
@@ -6,7 +7,6 @@ import {
   AuthFields,
   FormEntries,
 } from '../../shared/components/auth/auth';
-import { BankService } from '../../service/bank';
 
 @Component({
   imports: [AuthPage],
@@ -44,20 +44,21 @@ export class RegisterPage {
     },
   ];
   readonly callback: AuthCallback = async <T>(formEntries: FormEntries): ActionResult<T> => {
-    // console.log(formEntries);
-
     await new Promise((resolve) => setTimeout(resolve, 1500));
+
     const error = this.bank.register(
       String(formEntries['accountId'] ?? ''),
       String(formEntries['accountPin'] ?? ''),
       String(formEntries['nickname'] ?? ''),
     );
+
     if (error) {
       return {
         success: false,
         errors: [error],
       };
     }
+
     return {
       success: true,
       toast: 'Registration successful! You will be redirected to the login page in 3s.',

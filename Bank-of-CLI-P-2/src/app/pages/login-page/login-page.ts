@@ -1,4 +1,5 @@
 import { Component, inject } from '@angular/core';
+import { BankService } from '../../service/bank';
 import { AuthPage } from '../../shared/components/auth-page/auth-page';
 import {
   ActionResult,
@@ -6,7 +7,6 @@ import {
   AuthFields,
   FormEntries,
 } from '../../shared/components/auth/auth';
-import { BankService } from '../../service/bank';
 
 import { AuthService } from '../../service/auth/auth.service';
 
@@ -40,13 +40,12 @@ export class LoginPage {
   ];
 
   readonly callback: AuthCallback = async <T>(formEntries: FormEntries): ActionResult<T> => {
-    // console.log(formEntries);
-
     await new Promise((resolve) => setTimeout(resolve, 1500));
 
     const accountId = String(formEntries['accountId'] ?? '');
     const accountPin = String(formEntries['accountPin'] ?? '');
     const error = this.bank.login(accountId, accountPin);
+
     if (error) {
       return {
         success: false,
@@ -54,7 +53,8 @@ export class LoginPage {
       };
     }
 
-    await this.authService.login({ accountId, accountPin });
+    await this.authService.login({ accountId });
+
     return {
       success: true,
       redirect: '/dashboard',

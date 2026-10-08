@@ -28,12 +28,12 @@ export const routes: Routes = [
     component: Dashboard,
     canActivate: [authGuard({ reverse: false })],
   },
-  { path: 'docs', component: Docs },
   {
     path: 'transactions/:kind',
     component: TransactionPage,
     canActivate: [authGuard({ reverse: false })],
   },
+  { path: 'docs', component: Docs },
   { path: 'not-found', component: NotFound },
   { path: '**', redirectTo: 'not-found' }, // must stay last
 ];

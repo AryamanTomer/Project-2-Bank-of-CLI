@@ -165,7 +165,10 @@ body {
 }
 
 .skeleton-loading
-  :is(h1, h2, h3, h4, p, span, a, button, label, pre, .card-number):not(.no-skeleton, .no-skeleton *),
+  :is(h1, h2, h3, h4, p, span, a, button, label, pre, .card-number):not(
+    .no-skeleton,
+    .no-skeleton *
+  ),
 .skeleton-loading:not(:has(*), .chart) {
   color: transparent !important;
   background: var(--color-gray-200, #e5e7eb) !important;
