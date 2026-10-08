@@ -1,13 +1,22 @@
-import { Component, signal } from '@angular/core';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { Component, inject, signal } from '@angular/core';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
+import { NgIcon, provideIcons } from '@ng-icons/core';
+import { lucideLogOut } from '@ng-icons/lucide';
+import { AuthService } from '../service/auth/auth.service';
+import { Logo } from '../shared/components/logo/logo';
 
 @Component({
   selector: 'app-navbar',
-  imports: [RouterLink, RouterLinkActive],
+  imports: [RouterLink, RouterLinkActive, Logo, NgIcon],
+  viewProviders: [provideIcons({ lucideLogOut })],
+
   templateUrl: './navbar.html',
   styleUrl: './navbar.css',
 })
 export class Navbar {
+  private readonly authService = inject(AuthService);
+  constructor(private router: Router) {}
+
   protected readonly transactionLinks = [
     { path: '/transactions/deposit', label: 'Deposit' },
     { path: '/transactions/withdraw', label: 'Withdraw' },
@@ -15,7 +24,6 @@ export class Navbar {
   ];
 
   protected readonly menuOpen = signal(false);
-
 
   private hovering = false;
 
@@ -43,11 +51,15 @@ export class Navbar {
     this.menuOpen.set(false);
   }
 
-  
   protected onFocusOut(event: FocusEvent): void {
     const next = event.relatedTarget as Node | null;
     if (!(event.currentTarget as HTMLElement).contains(next)) {
       this.closeMenu();
     }
+  }
+
+  protected logout() {
+    this.authService.logout();
+    this.router.navigate(['login']);
   }
 }
