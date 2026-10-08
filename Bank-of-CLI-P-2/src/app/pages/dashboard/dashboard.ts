@@ -1,6 +1,9 @@
+import { CdkMenu, CdkMenuItem, CdkMenuTrigger } from '@angular/cdk/menu';
+import { ConnectedPosition } from '@angular/cdk/overlay';
 import { DatePipe } from '@angular/common';
 import { AfterViewInit, Component, computed, DestroyRef, effect, inject } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
+import { RouterLink } from '@angular/router';
 import { Button } from '../../shared/components/button/button';
 import { Card } from '../../shared/components/card/card';
 import { TransactionTable } from './transaction-table/transaction-table';
@@ -18,7 +21,18 @@ import { BankService } from '../../service/bank';
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [MatCardModule, TransactionTable, Button, Card, DatePipe, NgIcon],
+  imports: [
+    MatCardModule,
+    TransactionTable,
+    Button,
+    Card,
+    DatePipe,
+    NgIcon,
+    CdkMenu,
+    CdkMenuItem,
+    CdkMenuTrigger,
+    RouterLink,
+  ],
   providers: [
     provideIcons({
       matMoneyBagFillOutline,
@@ -37,6 +51,10 @@ export class Dashboard implements AfterViewInit {
   cardNumber = '4827 1938 6274 9183';
   expirationDate = '08/30';
   currentDate = new Date();
+  menuPositions: ConnectedPosition[] = [
+    { originX: 'end', originY: 'bottom', overlayX: 'end', overlayY: 'top', offsetY: 8 },
+    { originX: 'start', originY: 'bottom', overlayX: 'start', overlayY: 'top', offsetY: 8 },
+  ];
 
   protected readonly account = computed(() => {
     this.bank.revision();

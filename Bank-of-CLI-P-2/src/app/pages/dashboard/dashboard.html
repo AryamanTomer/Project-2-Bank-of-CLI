@@ -6,14 +6,30 @@
       <span class="date-badge">
         {{ currentDate | date: 'EEE, MMM d' }}
       </span>
-      <h1>Welcome back, {{ account()?.accountName }}.</h1>
-      <p>Stay on top of your account activity and transactions.</p>
-      <app-button class="new-transaction-button no-skeleton">
-        <div class="flex justify-center items-center gap-3">
-          <span>New Transaction</span>
-          <ng-icon name="matAddCircleRound" size="20" class="pointer-events-none" />
+      <div class="welcome-row">
+        <div class="welcome-copy">
+          <h1>Welcome back, {{ account()?.accountName }}.</h1>
+          <p>Stay on top of your account activity and transactions.</p>
         </div>
-      </app-button>
+        <app-button
+          class="new-transaction-button no-skeleton"
+          type="button"
+          [cdkMenuTriggerFor]="transactionMenu"
+          [cdkMenuPosition]="menuPositions"
+        >
+          <div class="flex justify-center items-center gap-3">
+            <span>New Transaction</span>
+            <ng-icon name="matAddCircleRound" size="20" class="pointer-events-none" />
+          </div>
+        </app-button>
+        <ng-template #transactionMenu>
+          <div cdkMenu class="transaction-menu">
+            <a cdkMenuItem routerLink="/transactions/deposit">Deposit</a>
+            <a cdkMenuItem routerLink="/transactions/withdraw">Withdraw</a>
+            <a cdkMenuItem routerLink="/transactions/transfer">Transfer</a>
+          </div>
+        </ng-template>
+      </div>
     </app-card>
 
     <!-- Total Balance -->
