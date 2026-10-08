@@ -88,6 +88,9 @@
   .left,
   .right {
     width: 0;
+    button {
+      background: none;
+    }
 
     * {
       display: none;
@@ -113,6 +116,7 @@
   display: block;
   border-radius: 9999px;
   padding: 0.5rem 2.25rem;
+  font-size: var(--step-0);
   color: #000;
   font-weight: 500;
   white-space: nowrap;
