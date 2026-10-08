@@ -51,7 +51,6 @@
     font-weight: 600;
     font-size: var(--step-1);
     padding: 0.75em 1em;
-    border: 2px solid transparent; /* matches Cancel's border so heights are equal */
     border-radius: 0.75rem;
     transition:
       outline 0.3s ease,

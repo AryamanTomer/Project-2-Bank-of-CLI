@@ -1,7 +1,5 @@
-import { Component, computed, inject } from '@angular/core';
-import { MatButton } from '@angular/material/button';
+import { Component, inject } from '@angular/core';
 import { Card } from '../card/card';
-import { Input } from '../input/input';
 import {
   MAT_DIALOG_DATA,
   MatDialogActions,
@@ -12,7 +10,6 @@ import {
 import { matArrowForwardFillOutline } from '@ng-icons/material-symbols/outline';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { Transaction } from '../../../models/Transaction.model';
-import { TransactionStatus } from '../../../models/TransactionStatus.model';
 import { TransactionType } from '../../../models/TransactionType.model';
 
 // The shape of the data the parent passes in.
@@ -34,16 +31,7 @@ const statusStyles: Record<TransactionType, string> = {
   styleUrl: './pop-up.css',
   templateUrl: './pop-up.html',
   viewProviders: [provideIcons({ matArrowForwardFillOutline })],
-  imports: [
-    MatDialogTitle,
-    MatDialogContent,
-    MatDialogActions,
-    MatDialogClose,
-    MatButton,
-    Card,
-    Input,
-    NgIcon,
-  ],
+  imports: [MatDialogTitle, MatDialogContent, MatDialogActions, MatDialogClose, Card, NgIcon],
 })
 export class PopUp {
   // MAT_DIALOG_DATA holds whatever the parent passed in through `data`.

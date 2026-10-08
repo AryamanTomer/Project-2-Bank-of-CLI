@@ -1,8 +1,9 @@
 import { Component, input } from '@angular/core';
 import { Auth, AuthCallback, AuthFields } from '../auth/auth';
+import { Logo } from '../logo/logo';
 
 @Component({
-  imports: [Auth],
+  imports: [Auth, Logo],
   selector: 'app-auth-page',
   styleUrl: './auth-page.css',
   templateUrl: './auth-page.html',
