@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { AfterViewInit, Component, computed, DestroyRef, effect, inject } from '@angular/core';
+import { AfterViewInit, Component, computed, DestroyRef, effect, inject, signal } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { Button } from '../../shared/components/button/button';
 import { Card } from '../../shared/components/card/card';
@@ -28,6 +28,7 @@ import { BankService } from '../../service/bank';
   ],
   styleUrl: './dashboard.css',
   templateUrl: './dashboard.html',
+  host: { '(document:keydown.enter)': 'stopLoading()' }
 })
 export class Dashboard implements AfterViewInit {
   private readonly bank = inject(BankService);
@@ -83,13 +84,30 @@ export class Dashboard implements AfterViewInit {
     return { labels, values };
   });
 
+  // Deliberate 10s loading state; Enter skips it. Still waits on real data.
+  private readonly delayActive = signal(true);
+  private loadingTimer?: ReturnType<typeof setTimeout>;
+  protected readonly isLoading = computed(
+    () => this.delayActive() || !this.accountsLoaded() || !this.transactionsLoaded(),
+  );
+
+  stopLoading(): void {
+    clearTimeout(this.loadingTimer);
+    this.delayActive.set(false);
+  }
+
   constructor() {
-    inject(DestroyRef).onDestroy(() => this.chart?.destroy());
+    inject(DestroyRef).onDestroy(() => {
+      this.chart?.destroy();
+      clearTimeout(this.loadingTimer);
+    });
     effect(() => {
       const history = this.balanceHistory();
       if (!this.chart) return;
       this.applyHistory(history);
     });
+
+    this.loadingTimer = setTimeout(() => this.stopLoading(), 10000);
   }
 
   ngAfterViewInit(): void {
