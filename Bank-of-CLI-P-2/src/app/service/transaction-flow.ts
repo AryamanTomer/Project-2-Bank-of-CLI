@@ -23,7 +23,11 @@ export class TransactionFlow {
     const tx: Transaction = {
       transactionId: '',
       accountId: this.bank.currentAccountId() ?? '',
-      recipientAccountId: this.bank.currentAccountId() ?? '',
+      recipientAccountId:
+        transactionType === TransactionType.TransferOut ||
+        transactionType === TransactionType.TransferIn
+          ? ''
+          : null,
       amount: 0,
       description: '',
       transactionType,
@@ -40,12 +44,12 @@ export class TransactionFlow {
       );
       if (!next) return;
 
-      if (
-        transactionType === TransactionType.TransferOut &&
-        !this.bank.getAccount((tx.recipientAccountId ?? '').trim())
-      ) {
-        await this.showError('Destination account not found');
-        continue;
+      if (transactionType === TransactionType.TransferOut) {
+        tx.recipientAccountId = (tx.recipientAccountId ?? '').trim().toUpperCase();
+        if (!this.bank.getAccount(tx.recipientAccountId)) {
+          await this.showError('Destination account not found');
+          continue;
+        }
       }
 
       const confirmed = await firstValueFrom(

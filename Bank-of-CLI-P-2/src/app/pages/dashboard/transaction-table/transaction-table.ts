@@ -1,6 +1,6 @@
 ﻿import { CdkMenu, CdkMenuItem, CdkMenuTrigger } from '@angular/cdk/menu';
 import { ConnectedPosition } from '@angular/cdk/overlay';
-import { ChangeDetectorRef, Component, effect, inject, input } from '@angular/core';
+import { Component, effect, inject, input, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import {
@@ -23,6 +23,7 @@ interface Transaction {
   destination: string;
   status: string;
   amount: number;
+  note: string;
 }
 
 @Component({
@@ -50,7 +51,8 @@ export class TransactionTable {
 
   transactions: Transaction[] = [];
   filteredTransactions: Transaction[] = [];
-  tableData: Transaction[] = [];
+  // A signal so a new payment redraws the table in the same visit.
+  protected readonly tableData = signal<Transaction[]>([]);
 
   currentPage = 1;
   rowsPerPage = 5;
@@ -73,14 +75,13 @@ export class TransactionTable {
     { originX: 'start', originY: 'bottom', overlayX: 'start', overlayY: 'top', offsetY: 8 },
   ];
 
-  constructor(private readonly cdr: ChangeDetectorRef) {
+  constructor() {
     effect(() => {
       this.bank.revision();
       if (!this.bank.transactionsLoaded()) return;
       const id = this.bank.currentAccountId();
       this.transactions = id ? this.rowsFor(id) : [];
       this.applyFiltersAndSort();
-      this.cdr.detectChanges();
     });
   }
 
@@ -119,6 +120,7 @@ export class TransactionTable {
         destination: other?.accountName ?? '-',
         status,
         amount: transaction.amount,
+        note: transaction.description?.trim() ?? '',
       };
     });
   }
@@ -129,7 +131,7 @@ export class TransactionTable {
     const startIndex = (this.currentPage - 1) * this.rowsPerPage;
     const endIndex = startIndex + this.rowsPerPage;
 
-    this.tableData = this.filteredTransactions.slice(startIndex, endIndex);
+    this.tableData.set(this.filteredTransactions.slice(startIndex, endIndex));
   }
 
   applyFiltersAndSort(): void {
@@ -142,6 +144,7 @@ export class TransactionTable {
         transaction.category.toLowerCase().includes(search) ||
         transaction.destination.toLowerCase().includes(search) ||
         transaction.status.toLowerCase().includes(search) ||
+        transaction.note.toLowerCase().includes(search) ||
         transaction.amount.toString().includes(search);
 
       // Category filter

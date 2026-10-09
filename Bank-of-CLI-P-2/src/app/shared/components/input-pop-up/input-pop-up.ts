@@ -33,7 +33,14 @@ export class InputPopUp {
   // Amounts are JS doubles; past ~9e15 they silently round, so cap well below that.
   protected readonly max = 999_999_999.99;
   protected overMax = computed(() => +this.amount() > this.max);
-  protected invalid = computed(() => !(+this.amount() > 0) || this.overMax());
+  protected readonly needsDestination =
+    this.data.transactionType === 'TRANSFER_IN' || this.data.transactionType === 'TRANSFER_OUT';
+  protected invalid = computed(
+    () =>
+      !(+this.amount() > 0) ||
+      this.overMax() ||
+      (this.needsDestination && this.destinationAccount().trim() === ''),
+  );
   constructor() {
     effect(() => {
       this.data.amount = +this.amount();

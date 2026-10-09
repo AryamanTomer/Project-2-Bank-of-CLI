@@ -170,7 +170,7 @@ export class BankService {
     const error = this.checkAmount(amount);
     if (error) return error;
 
-    const recipientId = recipientAccountId.trim();
+    const recipientId = recipientAccountId.trim().toUpperCase();
     if (!this.accounts.has(recipientId)) return 'Destination account not found.';
     if (recipientId === accountId) return 'You cannot transfer to the same account.';
 

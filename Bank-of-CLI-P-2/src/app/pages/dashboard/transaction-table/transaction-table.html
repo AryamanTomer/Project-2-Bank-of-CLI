@@ -73,7 +73,7 @@
           <tr app-loading-row></tr>
         }
       } @else {
-        @for (transaction of tableData; track transaction.id) {
+        @for (transaction of tableData(); track transaction.id) {
           <tr>
             <td data-label="Date/Time">{{ transaction.date }}</td>
             <td data-label="Category">{{ transaction.category }}</td>
