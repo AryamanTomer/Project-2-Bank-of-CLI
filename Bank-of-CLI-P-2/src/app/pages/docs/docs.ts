@@ -70,10 +70,6 @@ classes = computed(() =>
       class="mx-auto flex max-w-4xl flex-col gap-6 px-6 py-10 [&_code]:rounded-md [&_code]:bg-purple-100 [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:text-sm [&_code]:font-normal [&_code]:text-purple-800"
     >
       <h1 class="text-4xl font-bold tracking-tight text-purple-900">Component docs</h1>
-      <p class="text-gray-600">
-        Every component in <code>shared/components</code>, with basic usage. All accept an optional
-        <code>class</code> input that is merged with <code>tailwind-merge</code>.
-      </p>
 
       <section
         class="flex flex-col gap-4 rounded-2xl border border-gray-200 bg-white p-6 shadow-sm"
@@ -83,26 +79,22 @@ classes = computed(() =>
         </h2>
         <p class="text-gray-600">A component's final look comes from three sources:</p>
         <ol class="list-decimal space-y-2 pl-6">
-          <li><strong>Its own CSS file</strong> (e.g. <code>button.css</code>)</li>
+          <li><strong>Its own CSS file</strong></li>
           <li>
             <strong>Default Tailwind classes inside the component file</strong>
           </li>
-          <li>
-            <strong>Tailwind classes passed from outside</strong> via the <code>class</code> input
-            (e.g. <code>{{ snippets.passedClass }}</code
-            >).
-          </li>
+          <li><strong>Tailwind classes passed from outside via the 'class' input</strong></li>
         </ol>
         <!-- <p class="text-gray-600">
-          <code>twMerge</code> merges 2 and 3 into one class string: when both set the same property
-          (<code>p-4</code> vs <code>p-8</code>), the outside class wins and the default is dropped;
+          <strong>twMerge</strong> merges 2 and 3 into one class string: when both set the same property
+          (<strong>p-4</strong> vs <strong>p-8</strong>), the outside class wins and the default is dropped;
           everything else is kept. That string goes on the element with
-          <code>[class]="classes()"</code>. The component CSS (1) applies alongside it through
-          normal CSS rules, so it is <em>not</em> merged by <code>twMerge</code>: it only loses to a
-          utility if the CSS sits in <code>&#64;layer components</code> (Tailwind utilities live in
+          <strong>[class]="classes()"</strong>. The component CSS (1) applies alongside it through
+          normal CSS rules, so it is <em>not</em> merged by <strong>twMerge</strong>: it only loses to a
+          utility if the CSS sits in <strong>&#64;layer components</strong> (Tailwind utilities live in
           a later layer). Unlayered CSS beats utilities regardless of order. Button's rules are
-          currently unlayered (the <code>&#64;layer</code> wrapper is commented out), so
-          <code>button.css</code> wins over conflicting classes passed to Button.
+          currently unlayered (the <strong>&#64;layer</strong> wrapper is commented out), so
+          <strong>button.css</strong> wins over conflicting classes passed to Button.
         </p> -->
         <div class="flex flex-col gap-3">
           <app-card class="max-w-sm"><p>Defaults only</p></app-card>
@@ -117,11 +109,11 @@ classes = computed(() =>
         class="flex flex-col gap-4 rounded-2xl border border-gray-200 bg-white p-6 shadow-sm"
       >
         <h2 class="flex items-center gap-3 border-b border-gray-200 pb-3 text-2xl font-semibold">
-          Button <code>app-button</code>
+          Button <strong>app-button</strong>
         </h2>
         <p class="text-gray-600">
-          Inputs: <code>type</code> ('button' | 'submit'), <code>disabled</code>,
-          <code>class</code>. Output: <code>clicked</code>.
+          Inputs: <strong>type</strong> ('button' | 'submit'), <strong>disabled</strong>,
+          <strong>class</strong>. Output: <strong>clicked</strong>.
         </p>
         <div class="flex flex-wrap gap-3">
           <app-button class="w-48" (clicked)="toast.success('Clicked')">Click me</app-button>
@@ -137,12 +129,12 @@ classes = computed(() =>
         class="flex flex-col gap-4 rounded-2xl border border-gray-200 bg-white p-6 shadow-sm"
       >
         <h2 class="flex items-center gap-3 border-b border-gray-200 pb-3 text-2xl font-semibold">
-          Card <code>app-card</code>
+          Card <strong>app-card</strong>
         </h2>
-        <p class="text-gray-600">
+        <!-- <p class="text-gray-600">
           Content-projected container with a border, padding and shadow. Input:
-          <code>loading</code> (boolean) swaps the content for a skeleton.
-        </p>
+          <strong>loading</strong> (boolean) swaps the content for a skeleton.
+        </p> -->
         <app-card class="max-w-sm"> <p>Anything goes in here</p></app-card>
         <app-card class="max-w-sm" [loading]="cardLoading()">
           <p>Loaded content: this is hidden while loading.</p>
@@ -159,11 +151,11 @@ classes = computed(() =>
         class="flex flex-col gap-4 rounded-2xl border border-gray-200 bg-white p-6 shadow-sm"
       >
         <h2 class="flex items-center gap-3 border-b border-gray-200 pb-3 text-2xl font-semibold">
-          Dropdown <code>app-dropdown</code>
+          Dropdown <strong>app-dropdown</strong>
         </h2>
         <p class="text-gray-600">
-          Inputs: <code>options</code> (string[]), <code>placeHolder</code>. Two-way:
-          <code>[(value)]</code>.
+          Inputs: <strong>options</strong> (string[]), <strong>placeHolder</strong>. Two-way:
+          <strong>[(value)]</strong>.
         </p>
         <app-dropdown [options]="fruits" placeHolder="Pick a fruit" [(value)]="fruit" />
         <p class="text-gray-600">
@@ -178,19 +170,19 @@ classes = computed(() =>
         class="flex flex-col gap-4 rounded-2xl border border-gray-200 bg-white p-6 shadow-sm"
       >
         <h2 class="flex items-center gap-3 border-b border-gray-200 pb-3 text-2xl font-semibold">
-          Input <code>app-input</code>
+          Input <strong>app-input</strong>
         </h2>
         <p class="">
-          Inputs: <code>inputId</code> (required), <code>name</code>, <code>type</code> ('text' |
-          'password' | 'search'), <code>class</code>. Two-way: <code>[(value)]</code>.
+          Inputs: <strong>inputId</strong> (required), <strong>name</strong>,
+          <strong>type</strong> ('text' | 'password' | 'search'), <strong>class</strong>. Two-way:
+          <strong>[(value)]</strong>.
         </p>
         <ul class="list-disc pl-6">
-          <li><code>text</code>: plain input, no icon.</li>
+          <li><strong>text</strong>: plain input, no icon.</li>
           <li>
-            <code>password</code>: eye icon button on the right that toggles showing/hiding the
-            password.
+            <strong>password</strong>: eye icon button on the right that toggles the password.
           </li>
-          <li><code>search</code>: decorative search icon on the right.</li>
+          <li><strong>search</strong>: decorative search icon on the right.</li>
         </ul>
         <app-input inputId="docs-demo-text" [(value)]="text" />
         <app-input inputId="docs-demo-password" [(value)]="password" type="password" />
@@ -208,9 +200,9 @@ classes = computed(() =>
         class="flex flex-col gap-4 rounded-2xl border border-gray-200 bg-white p-6 shadow-sm"
       >
         <h2 class="flex items-center gap-3 border-b border-gray-200 pb-3 text-2xl font-semibold">
-          Label <code>app-label</code>
+          Label <strong>app-label</strong>
         </h2>
-        <p>Status pill. Input: <code>status</code> ('Approved' | 'Pending' | 'Rejected').</p>
+        <p>Status pill. Input: <strong>status</strong> ('Approved' | 'Pending' | 'Rejected').</p>
         <div class="flex flex-wrap gap-3">
           <app-label status="Approved" />
           <app-label status="Pending" />
@@ -225,10 +217,10 @@ classes = computed(() =>
         class="flex flex-col gap-4 rounded-2xl border border-gray-200 bg-white p-6 shadow-sm"
       >
         <h2 class="flex items-center gap-3 border-b border-gray-200 pb-3 text-2xl font-semibold">
-          Toast <code>app-toast</code> + <code>ToastService</code>
+          Toast <strong>app-toast</strong> + <strong>ToastService</strong>
         </h2>
         <p class="text-gray-600">
-          Place <code>&lt;app-toast /&gt;</code> once at the root, then call the service from
+          Place <strong>&lt;app-toast /&gt;</strong> once at the root, then call the service from
           anywhere.
         </p>
         <div class="flex flex-wrap gap-3">
