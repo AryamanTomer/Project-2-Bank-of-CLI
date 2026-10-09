@@ -22,12 +22,12 @@ export class TransactionFlow {
   async run(transactionType: TransactionType): Promise<Transaction | undefined> {
     const tx: Transaction = {
       transactionId: '',
-      accountId: this.bank.currentAccountId() ?? '',
+      accountId: this.bank.currentAccountId() ?? '1001',
       recipientAccountId:
         transactionType === TransactionType.TransferOut ||
         transactionType === TransactionType.TransferIn
-          ? ''
-          : null,
+          ? null
+          : (this.bank.currentAccountId() ?? '10001'),
       amount: 0,
       description: '',
       transactionType,
