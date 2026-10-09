@@ -117,7 +117,7 @@
 
   <!-- Transaction history -->
   <div class="transaction-history-section">
-    <app-card class="transactions-card no-skeleton">
+    <app-card class="transactions-card no-skeleton" [loading]="isLoading()">
       <app-transaction-table [loading]="isLoading()"></app-transaction-table>
     </app-card>
   </div>
