@@ -176,8 +176,8 @@
 
   background: linear-gradient(
     45deg,
-    oklch(from var(--primary) l c calc(h - 20)),
-    oklch(from var(--primary) l c calc(h + 20))
+    oklch(from var(--primary) l c calc(h - 25)),
+    oklch(from var(--primary) l c calc(h + 25))
   );
 
   color: white;

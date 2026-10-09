@@ -28,6 +28,7 @@
   filter: hue-rotate(calc(var(--hue-rotate) * 1deg));
   border-radius: 1rem;
   background: url('/assets/auth/mesh-desktop.png');
+  background-position: center;
   background-size: cover;
   padding: var(--space-m);
   display: flex;
@@ -83,8 +84,8 @@
   .tablet-background {
     width: 100dvw;
     height: 100dvh;
-    background: url('/assets/auth/mesh-tablet.png');
     filter: hue-rotate(calc(var(--hue-rotate) * 1deg));
+    background: url('/assets/auth/mesh-tablet.png');
     background-size: cover;
     background-position: center;
     position: absolute;
